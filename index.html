@@ -219,7 +219,8 @@ footer{border-top:1px solid var(--line);padding:44px 0}
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches, FINE=matchMedia('(pointer:fine)').matches;
-window.addEventListener('load',()=>{document.body.classList.add('lit');setTimeout(()=>document.getElementById('veil').classList.add('gone'),1700)});
+function reveal(){document.body.classList.add('lit');setTimeout(()=>document.getElementById('veil').classList.add('gone'),1700)}
+if(document.readyState==='complete'){reveal()}else{window.addEventListener('load',reveal)}
 const hd=document.getElementById('hd');addEventListener('scroll',()=>hd.classList.toggle('sc',scrollY>60));
 const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.16});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
