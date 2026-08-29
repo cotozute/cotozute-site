@@ -247,4 +247,39 @@ if(!RM){
   hero.addEventListener('mouseleave',()=>{if(!TOUCH){att.x=-999;att.y=-999}});
   function burst(x,y){for(const p of ps){const d=Math.hypot(p.x-x,p.y-y);if(d<130){const a=Math.atan2(p.y-y,p.x-x);p.vx+=Math.cos(a)*1.7;p.vy+=Math.sin(a)*1.7}}if(navigator.vibrate)navigator.vibrate(12)}
   function onTilt(e){if(touching)return;const g=e.gamma||0,b=e.beta||0;att.x=W/2+g*8;att.y=H*0.42+(b-45)*6}
-  function addGyro(){if(gyroOn)return;gyroOn=true;addEventListener('deviceorientation',onT
+  function addGyro(){if(gyroOn)return;gyroOn=true;addEventListener('deviceorientation',onTilt)}
+  if(TOUCH){
+    if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+      hero.addEventListener('touchstart',()=>{if(!gyroOn){DeviceOrientationEvent.requestPermission().then(r=>{if(r==='granted')addGyro()}).catch(()=>{})}},{once:true});
+    }else{
+      addGyro();
+    }
+    hero.addEventListener('touchstart',e=>{touching=true;const r=hero.getBoundingClientRect();const t=e.touches[0];att.x=t.clientX-r.left;att.y=t.clientY-r.top;burst(att.x,att.y)});
+    hero.addEventListener('touchmove',e=>{const r=hero.getBoundingClientRect();const t=e.touches[0];att.x=t.clientX-r.left;att.y=t.clientY-r.top});
+    hero.addEventListener('touchend',()=>{touching=false});
+  }else{
+    hero.addEventListener('click',e=>{const r=hero.getBoundingClientRect();burst(e.clientX-r.left,e.clientY-r.top)});
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of ps){
+      const ddx=att.x-p.x, ddy=att.y-p.y, d2a=ddx*ddx+ddy*ddy;
+      if(d2a<40000){const f=0.0006;p.vx+=ddx*f;p.vy+=ddy*f}
+      p.vx*=0.985;p.vy*=0.985;
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      p.x=Math.max(0,Math.min(W,p.x));p.y=Math.max(0,Math.min(H,p.y));
+    }
+    ctx.fillStyle='rgba(240,235,225,.55)';
+    for(const p of ps){ctx.beginPath();ctx.arc(p.x,p.y,1.6,0,Math.PI*2);ctx.fill()}
+    ctx.strokeStyle='rgba(240,235,225,.12)';
+    for(let i=0;i<ps.length;i++){for(let j=i+1;j<ps.length;j++){const a=ps[i],b=ps[j];const dx2=a.x-b.x,dy2=a.y-b.y,d2b=dx2*dx2+dy2*dy2;if(d2b<9000){ctx.globalAlpha=1-d2b/9000;ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}}}
+    ctx.globalAlpha=1;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+</script>
+</body>
+</html>
