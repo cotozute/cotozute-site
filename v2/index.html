@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>合同会社ことづて｜COTOZUTE</title>
+<meta name="description" content="ことばは、巡り、響きあい、もっと美しくなる。AIの力で言葉の可能性をひらき、SNSの力でつながりを広げる。合同会社ことづて（COTOZUTE）公式サイト。">
+<meta name="theme-color" content="#F7F4EC">
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:title" content="合同会社ことづて｜COTOZUTE">
+<meta property="og:description" content="ことばは、巡り、響きあい、もっと美しくなる。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cotozute.com/">
+<meta property="og:image" content="https://cotozute.com/assets/logo.webp">
+<link rel="icon" href="assets/logo.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   COTOZUTE — mobile first
+   ========================================================= */
+:root{
+  --paper:#F7F4EC; --paper-2:#FCFAF6; --paper-3:#F1ECE1;
+  --ink:#1E2A44; --ink-2:#2E3B58; --ink-soft:#5A6580;
+  --gold:#AE8742; --gold-2:#C9A868; --gold-3:#E4D3AC;
+  --line:rgba(174,135,66,.30); --line-2:rgba(30,42,68,.10);
+  --serif:"Shippori Mincho B1",'Hiragino Mincho ProN','Yu Mincho',serif;
+  --latin:"Cormorant Garamond","Shippori Mincho B1",serif;
+  --sans:"Zen Kaku Gothic New",'Hiragino Sans','Yu Gothic',sans-serif;
+  --ease:cubic-bezier(.22,.68,.24,1);
+  --max:1180px;
+  --gut:clamp(20px,5.5vw,40px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-weight:300;line-height:1.95;font-size:15px;
+  letter-spacing:.045em;-webkit-font-smoothing:antialiased;overflow-x:clip;
+}
+img{max-width:100%;display:block;height:auto}
+a{color:inherit;text-decoration:none}
+p{margin:0 0 1.15em}
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+
+/* ---------- intro ---------- */
+#intro{position:fixed;inset:0;z-index:200;background:var(--paper);display:grid;place-items:center;
+  transition:opacity .9s var(--ease),visibility .9s}
+#intro img{width:min(46vw,180px);opacity:0;transform:scale(.94);
+  animation:introLogo 2s var(--ease) forwards}
+#intro.done{opacity:0;visibility:hidden}
+@keyframes introLogo{0%{opacity:0;transform:scale(.94)}45%{opacity:1;transform:scale(1)}100%{opacity:1;transform:scale(1)}}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--gut);transition:background .5s var(--ease),padding .5s var(--ease),box-shadow .5s var(--ease)}
+header.scrolled{background:rgba(247,244,236,.9);backdrop-filter:blur(12px);
+  padding:9px var(--gut);box-shadow:0 1px 0 var(--line-2)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand img{width:62px;transition:width .5s var(--ease)}
+header.scrolled .brand img{width:48px}
+.brand span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.menu-btn{background:none;border:0;padding:10px;cursor:pointer;position:relative;z-index:110}
+.menu-btn span{display:block;width:24px;height:1px;background:var(--ink);margin:6px 0;transition:.4s var(--ease)}
+.menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+nav{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--paper-2);
+  transform:translateX(100%);transition:transform .6s var(--ease);
+  display:flex;align-items:center;justify-content:center;box-shadow:-24px 0 70px -50px #000}
+nav.open{transform:none}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:28px;text-align:center}
+nav a{font-family:var(--latin);font-size:17px;letter-spacing:.24em;color:var(--ink-2);position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+nav a:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:grid;align-content:center;
+  padding:112px var(--gut) 110px;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(102deg,var(--paper) 0%,rgba(247,244,236,.86) 26%,rgba(247,244,236,.30) 52%,rgba(247,244,236,0) 72%)}
+.hero-inner{position:relative;z-index:4;width:100%;max-width:var(--max);margin:0 auto}
+.hero h1{font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(25px,6.6vw,62px);line-height:1.6;letter-spacing:.06em}
+.brsm{display:block}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln i{display:block;font-style:normal;transform:translateY(110%);animation:riseUp 1.4s var(--ease) forwards}
+.hero h1 .ln:nth-child(2) i{animation-delay:.16s}
+@keyframes riseUp{to{transform:translateY(0)}}
+.rule{width:0;height:1px;background:var(--gold);margin:26px 0 20px;animation:ruleGrow 1.3s var(--ease) .8s forwards}
+@keyframes ruleGrow{to{width:88px}}
+.hero .lead{font-family:var(--serif);color:var(--gold);letter-spacing:.12em;
+  font-size:clamp(14px,3.9vw,20px);margin:0 0 22px;opacity:0;animation:fadeUp 1.1s var(--ease) 1s forwards}
+.hero .sub{color:var(--ink-soft);font-size:clamp(12.5px,3.3vw,15.5px);line-height:2.45;margin:0;
+  opacity:0;animation:fadeUp 1.1s var(--ease) 1.2s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+.hero-figure{position:absolute;right:-9%;bottom:0;width:70%;max-width:300px;z-index:2;
+  opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
+@keyframes heroInSm{from{opacity:0;transform:translateX(38px)}to{opacity:.42;transform:none}}
+
+.seal{position:absolute;right:-12%;top:15%;width:64vw;max-width:300px;z-index:1;
+  opacity:0;animation:sealIn 2.2s var(--ease) .9s forwards}
+.seal img{animation:spinSlow 100s linear infinite}
+@keyframes sealIn{to{opacity:.7}}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+.wave{position:absolute;pointer-events:none;z-index:1;opacity:0}
+.wave.w1{left:-16%;width:132%;bottom:4%;animation:waveIn 1.8s var(--ease) 1.1s forwards}
+.wave.w1 img{animation:drift 26s ease-in-out infinite}
+.wave.w2{left:-24%;width:140%;bottom:26%;animation:waveIn 1.8s var(--ease) 1.35s forwards}
+.wave.w2 img{animation:drift2 34s ease-in-out infinite}
+@keyframes waveIn{to{opacity:.85}}
+@keyframes drift{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-3%,-10px,0)}}
+@keyframes drift2{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(3.4%,12px,0)}}
+
+.floatword{position:absolute;z-index:3;font-family:var(--serif);color:var(--gold);
+  font-size:clamp(10px,2.6vw,14px);letter-spacing:.5em;opacity:0}
+.floatword.a{right:5%;top:14%;animation:fw 1.5s var(--ease) 1.6s forwards,bob 7s ease-in-out 3s infinite}
+.floatword.b{right:34%;top:44%;animation:fw 1.5s var(--ease) 1.9s forwards,bob 9s ease-in-out 3s infinite;display:none}
+.floatword.c{right:8%;top:62%;animation:fw 1.5s var(--ease) 2.1s forwards,bob 8s ease-in-out 3s infinite}
+.floatword.d{right:40%;top:78%;animation:fw 1.5s var(--ease) 2.4s forwards,bob 10s ease-in-out 3s infinite;display:none}
+@keyframes fw{to{opacity:.72}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.scrollcue{display:none;position:absolute;left:clamp(14px,3vw,34px);bottom:0;z-index:5;
+  flex-direction:column;align-items:center;gap:14px;opacity:0;animation:fadeUp 1.1s var(--ease) 2s forwards}
+.scrollcue span{font-family:var(--latin);font-size:11px;letter-spacing:.4em;color:var(--gold);writing-mode:vertical-rl}
+.scrollcue i{display:block;width:1px;height:78px;background:var(--line);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;top:-40%;left:0;width:1px;height:40%;background:var(--gold);
+  animation:cue 2.4s ease-in-out infinite}
+@keyframes cue{0%{top:-40%}70%,100%{top:100%}}
+
+/* ---------- shared ---------- */
+section{position:relative;z-index:2}
+.wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,13vw,150px) var(--gut)}
+.eyebrow{font-family:var(--latin);font-size:12px;letter-spacing:.4em;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin:0 0 18px}
+.eyebrow::after{content:"";flex:0 0 42px;height:1px;background:var(--line)}
+h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
+  font-size:clamp(21px,5.6vw,38px);line-height:1.7;letter-spacing:.07em}
+.muted{color:var(--ink-soft);font-size:clamp(13.5px,3.5vw,15px);line-height:2.3}
+.reveal{opacity:0;transform:translateY(26px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+.divider{position:relative;height:clamp(70px,16vw,170px);overflow:hidden;pointer-events:none}
+.divider img{position:absolute;left:50%;top:50%;width:160%;max-width:none;
+  transform:translate(-50%,-50%);opacity:.7;animation:drift 30s ease-in-out infinite}
+
+/* ---------- message ---------- */
+#message{background:linear-gradient(180deg,transparent,var(--paper-3) 45%,transparent)}
+.msg-grid{display:grid;gap:clamp(30px,7vw,80px)}
+.origin{border-left:1px solid var(--line);padding-left:clamp(18px,4.5vw,36px)}
+.origin .kanji{font-family:var(--serif);font-size:clamp(40px,12vw,86px);color:var(--gold-3);
+  line-height:1;letter-spacing:.12em;margin-bottom:14px}
+
+/* ---------- service scenes ----------
+   1シーン＝イラストの舞台。イラストがふわっと登場し、その上に文字が上から重なる。
+   各シーンの位置は下のカスタムプロパティで個別に微調整できる:
+     --aw イラスト幅 / --ax 横位置 / --ay 下からの位置 / --cw 文字幅 / --ct 文字の上余白
+   ------------------------------------ */
+.scene{position:relative;display:grid;align-content:start;
+  min-height:var(--mh,clamp(660px,180vw,780px));margin:clamp(64px,17vw,112px) 0;
+  padding-top:var(--ct,4px)}
+.stage{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}
+.art{position:absolute;right:var(--ax,-10%);bottom:var(--ay,0);width:var(--aw,82%);
+  opacity:0;transform:translateY(34px) scale(.94);
+  transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);will-change:transform}
+.scene.in .art{opacity:1;transform:none}
+.art .main{width:100%;animation:levitate 9s ease-in-out infinite}
+@keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+/* 追加パーツ用（後から <img class="part" style="--px:..;--py:..;--pw:..;--pd:..s"> を足せる） */
+.art .part{position:absolute;left:var(--px,50%);top:var(--py,50%);width:var(--pw,18%);
+  animation:levitate 7s ease-in-out var(--pd,0s) infinite}
+.art .glow{position:absolute;left:50%;top:50%;width:96%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,104,.22),transparent 64%)}
+.art .ring{position:absolute;left:50%;top:48%;width:84%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;border:1px solid var(--line)}
+.art .ring::after{content:"";position:absolute;inset:8%;border-radius:50%;
+  border:1px dashed rgba(174,135,66,.24);animation:spinSlow 70s linear infinite}
+.spark{position:absolute;border-radius:50%;background:var(--gold-2);
+  width:5px;height:5px;opacity:0;transition:opacity 1.3s var(--ease) .7s}
+.scene.in .spark{opacity:.55}
+.spark.s1{right:14%;top:14%;animation:bob 6.5s ease-in-out infinite}
+.spark.s2{right:56%;top:36%;width:3px;height:3px;animation:bob 8.5s ease-in-out .6s infinite}
+.spark.s3{right:30%;bottom:16%;width:4px;height:4px;animation:bob 7.5s ease-in-out 1.2s infinite}
+
+.copy{position:relative;z-index:2;max-width:var(--cw,32em)}
+.copy::before{content:"";position:absolute;inset:-22px -18px;z-index:-1;border-radius:34px;
+  background:rgba(247,244,236,.84);
+  box-shadow:0 0 74px 48px rgba(247,244,236,.84)}
+.copy > *{opacity:0;transform:translateY(-22px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.scene.in .copy > *{opacity:1;transform:none}
+.scene.in .copy > *:nth-child(1){transition-delay:.30s}
+.scene.in .copy > *:nth-child(2){transition-delay:.44s}
+.scene.in .copy > *:nth-child(3){transition-delay:.58s}
+.scene.in .copy > *:nth-child(4){transition-delay:.72s}
+.num{font-family:var(--latin);font-size:12px;letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
+.scene h3{font-family:var(--serif);font-weight:500;margin:0;
+  font-size:clamp(20px,5.6vw,31px);letter-spacing:.07em}
+.scene h3 small{display:block;font-family:var(--latin);font-size:11.5px;letter-spacing:.3em;
+  color:var(--gold);margin-top:9px;font-weight:400}
+.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;
+  font-size:clamp(14.5px,3.9vw,18px);margin:16px 0 12px}
+
+.cards{display:grid;gap:18px;margin-top:14px}
+.card{background:var(--paper-2);border:1px solid var(--line-2);padding:0 0 26px;overflow:hidden;
+  transition:transform .7s var(--ease),box-shadow .7s var(--ease),border-color .7s var(--ease)}
+.card:hover{transform:translateY(-7px);box-shadow:0 22px 44px -28px rgba(30,42,68,.45);border-color:var(--line)}
+.card .strip{height:66px;overflow:hidden;display:grid;place-items:center;background:var(--paper-3)}
+.card .strip img{width:170%;max-width:none;transition:transform 1.2s var(--ease)}
+.card:hover .strip img{transform:scale(1.07)}
+.card .body{padding:22px clamp(18px,5vw,28px) 0}
+.card h4{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.07em;margin:0 0 5px}
+.card .en{font-family:var(--latin);font-size:11px;letter-spacing:.26em;color:var(--gold);margin-bottom:12px}
+.card p{font-size:13.5px;line-height:2.1;color:var(--ink-soft);margin:0}
+
+/* ---------- about ---------- */
+#about{background:var(--paper-3)}
+.about-grid{display:grid;gap:clamp(28px,7vw,80px)}
+table.info{width:100%;border-collapse:collapse;font-size:13.5px}
+table.info th,table.info td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.info th{font-weight:400;color:var(--gold);font-family:var(--serif);letter-spacing:.1em;
+  width:6.5em;padding-right:14px}
+table.info td{color:var(--ink-2);line-height:2.05}
+
+/* ---------- contact ---------- */
+#contact{text-align:center}
+#contact .wrap{max-width:820px}
+#contact .eyebrow{justify-content:center}
+.contact-seal{width:min(52vw,220px);margin:0 auto 22px;opacity:.85}
+.contact-seal img{animation:spinSlow 120s linear infinite reverse}
+.mail{display:inline-flex;align-items:center;font-family:var(--latin);
+  font-size:clamp(17px,5.2vw,30px);letter-spacing:.1em;word-break:break-all;
+  border-bottom:1px solid var(--line);padding:9px 4px;
+  transition:color .5s var(--ease),border-color .5s var(--ease)}
+.mail:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;position:relative;z-index:2}
+.foot-in{max-width:var(--max);margin:0 auto;display:grid;gap:26px}
+.fl{font-family:var(--latin);letter-spacing:.3em;font-size:15px}
+.fr{font-size:11.5px;letter-spacing:.1em;color:rgba(247,244,236,.6)}
+.foot-nav{display:flex;flex-wrap:wrap;gap:18px;list-style:none;margin:0;padding:0;
+  font-size:12px;letter-spacing:.16em}
+.foot-nav a{color:rgba(247,244,236,.78);transition:color .4s}
+.foot-nav a:hover{color:var(--gold-2)}
+
+/* =========================================================
+   ≥ 600px
+   ========================================================= */
+@media (min-width:600px){
+  .cards{grid-template-columns:1fr 1fr;gap:22px}
+  .floatword.b,.floatword.d{display:block}
+  .hero-figure{max-width:380px}
+}
+
+/* =========================================================
+   ≥ 900px  (desktop)
+   ========================================================= */
+@media (min-width:900px){
+  body{font-size:15.5px}
+  header{padding:22px var(--gut)}
+  header.scrolled{padding:12px var(--gut)}
+  .brand img{width:96px}
+  header.scrolled .brand img{width:70px}
+  .menu-btn{display:none}
+  nav{position:static;width:auto;background:none;transform:none;box-shadow:none;display:block}
+  nav ul{flex-direction:row;gap:clamp(18px,2.6vw,40px)}
+  nav a{font-size:14px;letter-spacing:.22em}
+
+  .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
+  .hero h1{line-height:1.55;letter-spacing:.09em}
+  .hero-inner{max-width:var(--max)}
+  .hero-figure{width:auto;max-width:none;height:92%;right:0;
+    animation:heroIn 1.9s var(--ease) .45s forwards}
+  .hero-figure img{height:100%;width:auto;object-fit:contain;object-position:bottom right}
+  @keyframes heroIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:none}}
+  .seal{right:24vw;top:26%;width:min(30vw,340px);max-width:none}
+  .wave.w1{left:-8%;width:116%;bottom:6%}
+  .wave.w2{left:-14%;width:120%;bottom:24%}
+  .scrollcue{display:flex}
+  .brsm{display:none}
+  .rule{margin:38px 0 26px}
+  @keyframes ruleGrow{to{width:110px}}
+
+  .msg-grid{grid-template-columns:1.05fr .95fr;align-items:center}
+  .about-grid{grid-template-columns:1fr 1fr}
+  table.info{font-size:14.5px}
+  table.info th{width:9em}
+
+  .scene{min-height:clamp(620px,62vw,840px);align-content:center;padding-top:0}
+  .art{--aw:clamp(300px,44vw,540px);--ax:7%}
+  .scene.alt .art{right:auto;left:var(--ax)}
+  .copy{--cw:41em}
+  .scene.alt .copy{margin-left:auto}
+  .spark.s1{right:10%;top:12%}
+  .spark.s3{right:24%;bottom:18%}
+
+  .foot-in{grid-template-columns:auto 1fr auto;align-items:center;gap:30px}
+  .foot-nav{justify-content:center}
+  .fr{text-align:right}
+}
+
+/* =========================================================
+   ≥ 1200px
+   ========================================================= */
+@media (min-width:1200px){
+  .cards{grid-template-columns:repeat(4,1fr)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+  .art,.copy > *{opacity:1!important;transform:none!important}
+  .spark{opacity:.55!important}
+  .hero h1 .ln i{transform:none}
+  .rule{width:88px}
+  .hero .lead,.hero .sub,.scrollcue,.seal,.floatword{opacity:1}
+  .hero-figure{opacity:.42}
+  .wave{opacity:.85}
+  @media(min-width:900px){.hero-figure{opacity:1}.rule{width:110px}}
+}
+</style>
+</head>
+<body>
+
+<div id="intro"><img src="assets/logo.webp" alt="COTOZUTE 言伝" width="480" height="480"></div>
+
+<header id="hd">
+  <a class="brand" href="#top">
+    <img src="assets/logo.webp" alt="合同会社ことづて" width="480" height="480">
+    <span>COTOZUTE</span>
+  </a>
+  <button class="menu-btn" id="mb" aria-label="メニューを開く" aria-expanded="false" aria-controls="nv">
+    <span></span><span></span><span></span>
+  </button>
+  <nav id="nv">
+    <ul>
+      <li><a href="#top">TOP</a></li>
+      <li><a href="#message">MESSAGE</a></li>
+      <li><a href="#service">SERVICE</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
+  <div class="wave w2">
+    <img src="assets/wave-2-sm.webp" srcset="assets/wave-2-sm.webp 760w, assets/wave-2.webp 1400w"
+         sizes="140vw" alt="" width="1400" height="467">
+  </div>
+  <div class="wave w1">
+    <img src="assets/wave-1-sm.webp" srcset="assets/wave-1-sm.webp 760w, assets/wave-1.webp 1400w"
+         sizes="132vw" alt="" width="1400" height="453">
+  </div>
+  <div class="seal">
+    <img src="assets/wave-3-sm.webp" srcset="assets/wave-3-sm.webp 440w, assets/wave-3.webp 760w"
+         sizes="(min-width:900px) 30vw, 64vw" alt="" width="760" height="755">
+  </div>
+  <div class="hero-figure" id="hf">
+    <img src="assets/hero-sm.webp" srcset="assets/hero-sm.webp 520w, assets/hero.webp 820w"
+         sizes="(min-width:900px) 46vw, 74vw" alt="" width="820" height="1216" fetchpriority="high">
+  </div>
+
+  <span class="floatword a">こ と ば</span>
+  <span class="floatword b">響 き あ う</span>
+  <span class="floatword c">つ な が る</span>
+  <span class="floatword d">未 来 へ</span>
+
+  <div class="hero-inner">
+    <h1>
+      <span class="ln"><i>ことばは、巡り、<br class="brsm">響きあい、</i></span>
+      <span class="ln"><i>もっと美しくなる。</i></span>
+    </h1>
+    <div class="rule"></div>
+    <p class="lead">想いをつなぎ、<br class="brsm">未来をつくる言伝パートナー。</p>
+    <p class="sub">
+      AIの力で言葉の可能性をひらき、<br>
+      SNSの力でつながりを広げる。<br>
+      伝えることを、価値に変えていきます。
+    </p>
+  </div>
+
+  <div class="scrollcue"><span>SCROLL</span><i></i></div>
+</section>
+
+<!-- ==================== MESSAGE ==================== -->
+<section id="message">
+  <div class="wrap">
+    <div class="msg-grid">
+      <div class="reveal">
+        <p class="eyebrow">BRAND MESSAGE</p>
+        <h2>ことばは、つなぐ。<br>未来を、つくる。</h2>
+        <p class="muted">
+          コミュニケーションツールが無数に発達し、「よろしくお伝えください」と
+          人に気持ちを運んでもらう発想は、いつのまにか消えていきました。
+        </p>
+        <p class="muted">
+          言伝（ことづて）とは、言葉が人づてに伝わるときに、
+          より素敵な気持ちへと磨かれていく、その様子を切り取った言葉です。
+          わたしたちは、言葉を大切にする会社でありたいと考えています。
+        </p>
+      </div>
+      <div class="origin reveal" style="--d:.15s">
+        <div class="kanji">言伝</div>
+        <p class="muted">
+          伝えるという小さな荷に、価値を見出す。<br>
+          ひとつひとつの言葉が、世界をより良く、
+          やさしい未来へとつないでいく。<br>
+          その架け橋となるパートナーでありたい。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <img src="assets/wave-4-sm.webp" srcset="assets/wave-4-sm.webp 760w, assets/wave-4.webp 1400w"
+       sizes="160vw" alt="" width="1400" height="467" loading="lazy" decoding="async">
+</div>
+
+<!-- ==================== SERVICE ==================== -->
+<section id="service">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">SERVICE</p>
+      <h2>事業内容</h2>
+      <p class="muted" style="max-width:38em">
+        AIを土台に、伝えることのすべてを引き受けます。
+        いま、わたしたちが手を動かしているのは、次の領域です。
+      </p>
+    </div>
+
+    <article class="scene" style="--ax:-9%;--aw:86%">
+      <div class="stage">
+        <div class="art">
+          <span class="glow"></span>
+          <span class="ring"></span>
+          <img class="main" src="assets/svc-ai-sm.webp"
+               srcset="assets/svc-ai-sm.webp 400w, assets/svc-ai.webp 620w"
+               sizes="(min-width:900px) 540px, 84vw" alt="AI活用支援"
+               width="620" height="877" loading="lazy" decoding="async">
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
+        </div>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy">
+        <div class="num">01</div>
+        <h3>AI活用支援<small>AI SUPPORT</small></h3>
+        <p class="catch">「AIはあなたから作業を奪います」<br>ですが「仕事は奪いません」。</p>
+        <p class="muted">
+          仕事をしていて「時間が足りない」と感じることがあるなら、
+          AIをもっと活用して、たくさんの時間を手に入れましょう。
+          ツール選定から業務への組み込み、運用が続く状態づくりまで伴走します。
+        </p>
+      </div>
+    </article>
+
+    <article class="scene alt" style="--ax:-10%;--aw:88%">
+      <div class="stage">
+        <div class="art">
+          <span class="glow"></span>
+          <span class="ring"></span>
+          <img class="main" src="assets/svc-auto-sm.webp"
+               srcset="assets/svc-auto-sm.webp 400w, assets/svc-auto.webp 620w"
+               sizes="(min-width:900px) 540px, 84vw" alt="業務自動化相談"
+               width="620" height="827" loading="lazy" decoding="async">
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
+        </div>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy">
+        <div class="num">02</div>
+        <h3>業務自動化相談<small>AUTOMATION</small></h3>
+        <p class="catch">「めんどくさいけど、やるしかない」<br>と感じる仕事は、だいたい一番大事な事です。</p>
+        <p class="muted">
+          なにが一番大切なのかをよく知っている人の、目の黒いうちに。
+          手を動かしている本人にしか気づけない勘どころを、
+          そのまま仕組みへ写し取っていきます。
+        </p>
+      </div>
+    </article>
+
+    <article class="scene" style="--ax:-8%;--aw:82%;--mh:clamp(680px,184vw,800px)">
+      <div class="stage">
+        <div class="art">
+          <span class="glow"></span>
+          <span class="ring"></span>
+          <img class="main" src="assets/svc-video-sm.webp"
+               srcset="assets/svc-video-sm.webp 400w, assets/svc-video.webp 620w"
+               sizes="(min-width:900px) 540px, 84vw" alt="動画制作"
+               width="620" height="912" loading="lazy" decoding="async">
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
+        </div>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy">
+        <div class="num">03</div>
+        <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
+        <p class="catch">伝わる一本を、続けられる形で。</p>
+        <p class="muted">
+          企画・台本から、AIを活用した素材づくり、編集、書き出しまで。
+          単発の一本で終わらせず、同じ品質で出し続けられる制作ラインごとお渡しします。
+        </p>
+      </div>
+    </article>
+
+    <div class="cards">
+      <div class="card reveal">
+        <div class="strip"><img src="assets/wave-2-sm.webp" alt="" width="760" height="253" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>SNSアドバイス</h4>
+          <div class="en">SNS ADVICE</div>
+          <p>これから専用のSNSを立ち上げる人、今のSNSを見てもらいたい人、
+             “コンサル”という言葉が苦手な人へ。「腑に落ちる助言」をします。</p>
+        </div>
+      </div>
+      <div class="card reveal" style="--d:.08s">
+        <div class="strip"><img src="assets/wave-5-sm.webp" alt="" width="760" height="248" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>コンテンツ制作環境構築</h4>
+          <div class="en">CREATIVE SETUP</div>
+          <p>作る。それとも、作ってもらう。もっと大切なのは
+             「作り続けられる状態を創る」です。</p>
+        </div>
+      </div>
+      <div class="card reveal" style="--d:.16s">
+        <div class="strip"><img src="assets/wave-6-sm.webp" alt="" width="760" height="252" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>LINEマーケティング</h4>
+          <div class="en">LINE MARKETING</div>
+          <p>お客様とは真心で接したい。直接会わずに、どこまで心の接客ができるのか。
+             真心の自動化に挑戦するマーケティングです。</p>
+        </div>
+      </div>
+      <div class="card reveal" style="--d:.24s">
+        <div class="strip"><img src="assets/wave-1-sm.webp" alt="" width="760" height="246" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>音声・音楽・総合演出</h4>
+          <div class="en">SOUND &amp; DIRECTION</div>
+          <p>ナレーション、音楽、間の設計まで。
+             耳から届くものを整えると、伝わり方が変わります。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <img src="assets/wave-6-sm.webp" srcset="assets/wave-6-sm.webp 760w, assets/wave-6.webp 1400w"
+       sizes="160vw" alt="" width="1400" height="465" loading="lazy" decoding="async">
+</div>
+
+<!-- ==================== ABOUT ==================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="eyebrow">ABOUT</p>
+        <h2>会社概要</h2>
+        <p class="muted">
+          COTOZUTEは、言葉の力を信じています。
+          伝えるという小さな荷に、価値を見出し、そして行動する。
+          その架け橋となるパートナーでありたいと考えています。
+        </p>
+      </div>
+      <div class="reveal" style="--d:.15s">
+        <table class="info">
+          <tr><th>商号</th><td>合同会社ことづて（COTOZUTE LLC）</td></tr>
+          <tr><th>本店所在地</th><td>〒103-0026<br>東京都中央区日本橋兜町17-2<br>兜町第6ビル4F</td></tr>
+          <tr><th>設立年月日</th><td>2026年8月7日</td></tr>
+          <tr><th>代表社員</th><td>向後 晋之介</td></tr>
+          <tr><th>資本金</th><td>100,000円</td></tr>
+          <tr><th>法人番号</th><td>3010003052316</td></tr>
+          <tr><th>事業目的</th><td>SNSマーケティングの企画、運用及びコンサルティング業務／AI（人工知能）を活用したシステム及びコンテンツの開発並びに提供業務／Webサイト及びSNSコンテンツの制作並びに運用代行業務／オンライン講座及びデジタルコンテンツの企画、制作並びに販売業務／各種物品（デザインパネル等）の企画、製造及び販売業務／前各号に附帯又は関連する一切の事業</td></tr>
+          <tr><th>連絡先</th><td>hello@cotozute.com</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-seal reveal">
+      <img src="assets/wave-3-sm.webp" srcset="assets/wave-3-sm.webp 440w, assets/wave-3.webp 760w"
+           sizes="52vw" alt="" width="760" height="755" loading="lazy" decoding="async">
+    </div>
+    <div class="reveal" style="--d:.1s">
+      <p class="eyebrow">CONTACT</p>
+      <h2>お問い合わせ</h2>
+      <p class="muted">
+        ご相談・お見積り・取材のご依頼は、メールにて承っております。
+      </p>
+      <p style="margin-top:30px">
+        <a class="mail" href="mailto:hello@cotozute.com">hello@cotozute.com</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-in">
+    <div>
+      <div class="fl">COTOZUTE</div>
+      <div class="fr" style="margin-top:6px">合同会社ことづて</div>
+    </div>
+    <ul class="foot-nav">
+      <li><a href="#message">MESSAGE</a></li>
+      <li><a href="#service">SERVICE</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
+    <div class="fr">&copy; COTOZUTE LLC.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* intro */
+  var hide = function(){
+    setTimeout(function(){ document.getElementById('intro').classList.add('done'); }, reduce ? 0 : 1600);
+  };
+  if(document.readyState === 'complete'){ hide(); } else { window.addEventListener('load', hide); }
+  setTimeout(function(){ document.getElementById('intro').classList.add('done'); }, 5000);
+
+  /* header */
+  var hd = document.getElementById('hd');
+  var onScroll = function(){ hd.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* drawer */
+  var mb = document.getElementById('mb'), nv = document.getElementById('nv');
+  mb.addEventListener('click', function(){
+    var open = nv.classList.toggle('open');
+    mb.classList.toggle('open', open);
+    mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nv.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      nv.classList.remove('open'); mb.classList.remove('open');
+      mb.setAttribute('aria-expanded','false');
+    }
+  });
+
+  /* scroll reveal */
+  var els = document.querySelectorAll('.reveal, .scene');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* hero parallax (pointer devices only) */
+  if(!reduce && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
+    var hf = document.getElementById('hf'), tx=0, ty=0, cx=0, cy=0, raf=null;
+    var loop = function(){
+      cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+      hf.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+      if(Math.abs(tx-cx) > .1 || Math.abs(ty-cy) > .1){ raf = requestAnimationFrame(loop); } else { raf = null; }
+    };
+    window.addEventListener('mousemove', function(e){
+      tx = (e.clientX / window.innerWidth - .5) * -18;
+      ty = (e.clientY / window.innerHeight - .5) * -12;
+      if(!raf) raf = requestAnimationFrame(loop);
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>
