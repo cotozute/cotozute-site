@@ -12,7 +12,7 @@ var CFG = {
   space     : 'fall',   /* 奥行き演出：fall=波形の面 off=なし（depth=立体ネットは不採用） */
   stringsOn : false,    /* 弦は不採用 */
   moire     : true,     /* 干渉縞（モアレ） */
-  scan      : true,     /* 走査線 */
+  scan      : false,    /* 走査線は不採用 */
   density   : 1.00,
   speed     : 1.00,
   strength  : 1.00,
@@ -56,7 +56,7 @@ function build(){
   S.guil    = (mode==='guilloche')? buildGuil(q)  : null;
   S.strings = CFG.stringsOn ? buildStrings(q) : [];
   S.f3      = (mode==='field3d') ? buildField3(q) : null;
-  S.fall    = (CFG.space==='fall')  ? buildFall(q)  : null;
+  S.fall    = (CFG.space==='fall' && !SM) ? buildFall(q) : null;   /* スマホでは出さない */
   S.depth   = (CFG.space==='depth') ? buildDepth(q) : null;
   S.moire   = CFG.moire ? buildMoire(q) : null;
   S.field   = (mode==='field')  ? buildField(q)  : null;
@@ -81,20 +81,26 @@ function build(){
   S.nets = []; S.netF = null;
 
   /* --- 音声波形 --- */
-  S.waves = [
-    {x0:0.30,x1:0.92,y:0.392,h:0.054,sp:1.00,col:GOLD,a:0.34,d:0.40,st:SM?3.4:3.2,base:0.06},
-    {x0:-0.02,x1:0.58,y:0.690,h:0.032,sp:0.72,col:INK2,a:0.26,d:0.26,st:SM?4.0:3.8,base:0.05},
-    {x0:0.34,x1:1.02,y:0.965,h:0.030,sp:1.35,col:INK2,a:0.22,d:0.70,st:SM?4.2:4.0,base:0.05}
+  S.waves = SM ? [
+    {x0:0.06,x1:1.04,y:0.205,h:0.050,sp:0.26,col:GOLD,a:0.34,d:0.40,st:3.4,base:0.06},
+    {x0:-0.04,x1:0.78,y:0.688,h:0.046,sp:0.19,col:INK2,a:0.30,d:0.26,st:3.8,base:0.05},
+    {x0:0.16,x1:1.04,y:0.800,h:0.036,sp:0.32,col:GOLD,a:0.26,d:0.70,st:4.0,base:0.05}
+  ] : [
+    {x0:0.30,x1:0.92,y:0.392,h:0.054,sp:0.26,col:GOLD,a:0.34,d:0.40,st:3.2,base:0.06},
+    {x0:-0.02,x1:0.58,y:0.690,h:0.032,sp:0.19,col:INK2,a:0.26,d:0.26,st:3.8,base:0.05},
+    {x0:0.34,x1:1.02,y:0.965,h:0.030,sp:0.32,col:INK2,a:0.22,d:0.70,st:4.0,base:0.05}
   ];
-  S.wavesF = [
-    {x0:0.02,x1:0.50,y:0.900,h:0.040,sp:1.25,col:GOLD,a:0.40,d:1.30,st:SM?3.6:3.0,base:0.10}
+  S.wavesF = SM ? [
+    {x0:-0.02,x1:0.66,y:0.760,h:0.044,sp:0.30,col:GOLD,a:0.42,d:1.30,st:3.4,base:0.10}
+  ] : [
+    {x0:0.02,x1:0.50,y:0.900,h:0.040,sp:0.30,col:GOLD,a:0.40,d:1.30,st:3.0,base:0.10}
   ];
 
   S.bars = [
-    {x0:SM?0.10:0.30, x1:SM?0.70:0.80, y:1.0, h:0.085, n:Math.round((SM?26:46)*q)||18,
-     sp:1.15, col:GOLD, a:0.26, d:0.66, w:2.0},
-    {x0:SM?0.02:0.12, x1:SM?0.44:0.44, y:1.0, h:0.048, n:Math.round((SM?16:26)*q)||12,
-     sp:0.80, col:INK2, a:0.18, d:0.36, w:1.6}
+    {x0:SM?0.00:0.30, x1:SM?0.94:0.80, y:SM?0.878:1.0, h:SM?0.105:0.085, n:Math.round((SM?34:46)*q)||18,
+     sp:0.30, col:GOLD, a:0.26, d:0.66, w:2.0},
+    {x0:SM?0.06:0.12, x1:SM?0.62:0.44, y:SM?0.940:1.0, h:SM?0.062:0.048, n:Math.round((SM?22:26)*q)||12,
+     sp:0.22, col:INK2, a:0.18, d:0.36, w:1.6}
   ];
 
   S.osc = [];   /* 連続波（心電図・蛇に見える線）は不採用 */
@@ -359,7 +365,7 @@ function drawCont(ctx,C,t,gain,boost,yMin){
 
 /* ---------- 立体の流れ場：3D空間を流れる線を透視投影する ---------- */
 function buildField3(q){
-  var n = Math.max(7, Math.round((SM?11:18)*q)), i, L=[], main;
+  var n = Math.max(7, Math.round((SM?13:18)*q)), i, L=[], main;
   for(i=0;i<n;i++){
     main = (i%5===0);
     L.push({
@@ -367,13 +373,13 @@ function buildField3(q){
       y : (Math.random()-0.5)*1.45,
       z : 0.75 + Math.random()*4.2,
       ph: Math.random()*6.2832,
-      w : main ? 3.4 : 1.3,
+      w : main ? (SM?4.0:3.4) : (SM?1.7:1.3),
       col: (i%3) ? GOLD : INK2,
-      a : main ? 0.38 : 0.20,
+      a : main ? (SM?0.46:0.38) : (SM?0.27:0.20),
       vz: 0.16 + Math.random()*0.24
     });
   }
-  return {lines:L, F:0.60, vpx:(SM?0.74:0.70), vpy:(SM?0.30:0.38), near:0.42, far:6.4};
+  return {lines:L, F:0.60, vpx:(SM?0.66:0.70), vpy:(SM?0.46:0.38), near:0.42, far:6.4};
 }
 function drawField3(ctx,S3,ln,t,gain,dt,boost){
   var steps = SM?34:50, ds = 0.092, i;
@@ -476,10 +482,10 @@ function buildMoire(q){
     return {cx:cx,cy:cy,ang:ang,pitch:pitch,n:Math.max(24,Math.round(n*q)),
             len:len,bow:bow,col:col,a:a,sp:sp,pp:pp};
   }
-  var cx = SM?0.60:0.58, cy = SM?0.62:0.54;
+  var cx = SM?0.54:0.58, cy = SM?0.50:0.54;
   return [
-    fam(cx, cy,  0.062, 6.0, SM?84:150, 1.55, 52, GOLD, 0.180,  0.0075, 0.55),
-    fam(cx, cy, -0.034, 6.6, SM?78:138, 1.50,-44, INK2, 0.155, -0.0052, 0.42)
+    fam(cx, cy,  0.062, 6.0, SM?96:150, SM?1.9:1.55, 52, GOLD, SM?0.205:0.180,  0.0075, 0.55),
+    fam(cx, cy, -0.034, 6.6, SM?88:138, SM?1.85:1.50,-44, INK2, SM?0.180:0.155, -0.0052, 0.42)
   ];
 }
 function drawMoire(ctx,F,t,gain,boost){
