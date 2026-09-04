@@ -11,7 +11,7 @@ var CFG = {
   flowMode  : 'field3d',/* 流線：field=平面の流れ場 field3d=立体の流れ場 off=なし */
   space     : 'fall',   /* 奥行き演出：fall=波形の面 off=なし（depth=立体ネットは不採用） */
   stringsOn : false,    /* 弦は不採用 */
-  moire     : true,     /* 干渉縞（モアレ） */
+  moire     : false,    /* 干渉縞は不採用（横一定間隔の線＝走査線に見えるため） */
   scan      : false,    /* 走査線は不採用 */
   density   : 1.00,
   speed     : 1.00,
