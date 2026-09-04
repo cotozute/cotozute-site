@@ -244,8 +244,9 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .card{background:var(--paper-2);border:1px solid var(--line-2);padding:0 0 26px;overflow:hidden;
   transition:transform .7s var(--ease),box-shadow .7s var(--ease),border-color .7s var(--ease)}
 .card:hover{transform:translateY(-7px);box-shadow:0 22px 44px -28px rgba(30,42,68,.45);border-color:var(--line)}
-.card .strip{height:66px;overflow:hidden;display:grid;place-items:center;background:var(--paper-3)}
-.card .strip img{width:170%;max-width:none;transition:transform 1.2s var(--ease)}
+.card .strip{height:186px;overflow:hidden;display:grid;place-items:center;background:var(--paper-3);padding:8px 0}
+.card .strip img{width:auto;height:100%;max-width:none;object-fit:contain;transition:transform 1.2s var(--ease)}
+.card .strip img.deco{width:170%;height:auto;object-fit:cover}
 .card:hover .strip img{transform:scale(1.07)}
 .card .body{padding:22px clamp(18px,5vw,28px) 0}
 .card h4{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.07em;margin:0 0 5px}
@@ -362,6 +363,11 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .wave{opacity:.85}
   .wave .wtrack{transform:none}
   @media(min-width:900px){.hero-figure{opacity:1}.rule{width:110px}}
+}
+/* ---------- スマホ・タブレット：挿絵が文字（＝顔）に被らないように ---------- */
+@media (max-width:899px){
+  .scene{min-height:var(--mh,clamp(700px,200vw,820px))}
+  .stage .art{width:74%}
 }
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
@@ -552,7 +558,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
           <img class="main" src="assets/svc-ai-sm.webp"
                srcset="assets/svc-ai-sm.webp 400w, assets/svc-ai.webp 620w"
                sizes="(min-width:900px) 540px, 84vw" alt="AI活用支援"
-               width="620" height="877" loading="lazy" decoding="async">
+               width="426" height="620" loading="lazy" decoding="async">
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
@@ -577,7 +583,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
           <img class="main" src="assets/svc-auto-sm.webp"
                srcset="assets/svc-auto-sm.webp 400w, assets/svc-auto.webp 620w"
                sizes="(min-width:900px) 540px, 84vw" alt="業務自動化相談"
-               width="620" height="827" loading="lazy" decoding="async">
+               width="557" height="620" loading="lazy" decoding="async">
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
@@ -602,7 +608,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
           <img class="main" src="assets/svc-video-sm.webp"
                srcset="assets/svc-video-sm.webp 400w, assets/svc-video.webp 620w"
                sizes="(min-width:900px) 540px, 84vw" alt="動画制作"
-               width="620" height="912" loading="lazy" decoding="async">
+               width="620" height="620" loading="lazy" decoding="async">
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
@@ -621,7 +627,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
     <div class="cards">
       <div class="card reveal">
-        <div class="strip"><img src="assets/wave-2-sm.webp" alt="" width="760" height="253" loading="lazy" decoding="async"></div>
+        <div class="strip"><img src="assets/card-sns-sm.webp" srcset="assets/card-sns-sm.webp 400w, assets/card-sns.webp 620w" sizes="240px" alt="SNSアドバイス" width="620" height="514" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>SNSアドバイス</h4>
           <div class="en">SNS ADVICE</div>
@@ -630,7 +636,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         </div>
       </div>
       <div class="card reveal" style="--d:.08s">
-        <div class="strip"><img src="assets/wave-5-sm.webp" alt="" width="760" height="248" loading="lazy" decoding="async"></div>
+        <div class="strip"><img src="assets/card-creative-sm.webp" srcset="assets/card-creative-sm.webp 400w, assets/card-creative.webp 620w" sizes="240px" alt="コンテンツ制作環境構築" width="456" height="620" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>コンテンツ制作環境構築</h4>
           <div class="en">CREATIVE SETUP</div>
@@ -639,7 +645,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         </div>
       </div>
       <div class="card reveal" style="--d:.16s">
-        <div class="strip"><img src="assets/wave-6-sm.webp" alt="" width="760" height="252" loading="lazy" decoding="async"></div>
+        <div class="strip"><img src="assets/card-line-sm.webp" srcset="assets/card-line-sm.webp 400w, assets/card-line.webp 620w" sizes="240px" alt="LINEマーケティング" width="620" height="519" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>LINEマーケティング</h4>
           <div class="en">LINE MARKETING</div>
@@ -648,7 +654,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         </div>
       </div>
       <div class="card reveal" style="--d:.24s">
-        <div class="strip"><img src="assets/wave-1-sm.webp" alt="" width="760" height="246" loading="lazy" decoding="async"></div>
+        <div class="strip"><img class="deco" src="assets/wave-1-sm.webp" alt="" width="760" height="246" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>音声・音楽・総合演出</h4>
           <div class="en">SOUND &amp; DIRECTION</div>
