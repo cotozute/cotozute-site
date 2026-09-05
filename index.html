@@ -203,6 +203,8 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
   transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);will-change:transform}
 .scene.in .art{opacity:1;transform:none}
 .art .main{width:100%;animation:levitate 9s ease-in-out infinite}
+.art .overlay{position:absolute;left:0;top:0;width:100%;pointer-events:none;
+  animation:levitate 9s ease-in-out infinite}
 @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
 /* 追加パーツ用（後から <img class="part" style="--px:..;--py:..;--pw:..;--pd:..s"> を足せる） */
 .art .part{position:absolute;left:var(--px,50%);top:var(--py,50%);width:var(--pw,18%);
@@ -222,11 +224,11 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .spark.s3{right:30%;bottom:16%;width:4px;height:4px;animation:bob 7.5s ease-in-out 1.2s infinite}
 
 .copy{position:relative;z-index:2;max-width:var(--cw,32em)}
-.copy::before{content:"";position:absolute;inset:-22px -18px;z-index:-1;border-radius:34px;
-  background:rgba(247,244,236,.84);
-  box-shadow:0 0 74px 48px rgba(247,244,236,.84)}
 .copy > *{opacity:0;transform:translateY(-22px);
-  transition:opacity 1s var(--ease),transform 1s var(--ease)}
+  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  text-shadow:0 0 3px rgba(255,255,255,.98), 0 0 7px rgba(255,255,255,.95),
+    0 0 14px rgba(255,255,255,.9), 0 0 26px rgba(252,250,246,.78),
+    0 0 46px rgba(247,244,236,.62)}
 .scene.in .copy > *{opacity:1;transform:none}
 .scene.in .copy > *:nth-child(1){transition-delay:.30s}
 .scene.in .copy > *:nth-child(2){transition-delay:.44s}
@@ -624,10 +626,10 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         <div class="art karakuri">
           <span class="glow"></span>
           <span class="ring"></span>
-          <img class="main" src="assets/svc-ai-sm.webp"
-               srcset="assets/svc-ai-sm.webp 400w, assets/svc-ai.webp 620w"
-               sizes="(min-width:900px) 540px, 84vw" alt="AI活用支援"
-               width="426" height="620" loading="lazy" decoding="async">
+          <img class="main" src="assets/svc-ai-anim.webp" alt="AI活用支援"
+               width="367" height="535" loading="lazy" decoding="async">
+          <img class="overlay" src="assets/svc-ai-fuda.webp" alt="" aria-hidden="true"
+               width="367" height="535" loading="lazy" decoding="async">
           <span class="fx fx-steam" aria-hidden="true"><i></i><i class="s2"></i><i class="s3"></i></span>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
