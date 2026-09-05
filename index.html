@@ -364,18 +364,22 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .wave .wtrack{transform:none}
   @media(min-width:900px){.hero-figure{opacity:1}.rule{width:110px}}
 }
-/* ---------- スマホ・タブレット：挿絵は文字のすぐ下に置き、余白を詰める ----------
-   PCは「舞台の上に文字を重ねる」構図のままだが、縦長の画面では
-   舞台の高さぶん間延びするので、文字→挿絵の縦並びに切り替える。 ---------- */
+/* ---------- スマホ・タブレット：挿絵を思い切り上へ寄せ、文字を重ねる ----------
+   PCと同じ「舞台の上に文字が乗る」構図を、縦長画面でも成立させる。
+   絵を負のマージンで文字の下へ潜り込ませることで、
+   セクションの高さ＝文字＋絵−重なり ぶんだけになり、間延びしない。
+   重なり量は --overlap の1か所で調整できる。 ---------- */
 @media (max-width:899px){
-  .scene{min-height:0;margin:clamp(30px,7vw,52px) 0}
-  .copy{order:1}
-  .stage{position:relative;inset:auto;order:2;overflow:visible;
-         display:flex;justify-content:flex-end}
+  .scene{min-height:0;margin:clamp(24px,6vw,44px) 0;
+         --overlap:clamp(170px,62vw,300px)}
+  .copy{order:1;position:relative;z-index:2}
+  .stage{position:relative;inset:auto;order:2;z-index:0;overflow:visible;
+         display:flex;justify-content:flex-end;
+         margin-top:calc(var(--overlap) * -1)}
   .art{position:relative;right:auto;bottom:auto;
-       width:min(72%,300px);margin:2px -3% 0 0}
+       width:min(80%,330px);margin:0 -4% 0 0}
   .scene.alt .stage{justify-content:flex-start}
-  .scene.alt .art{margin:2px 0 0 -3%}
+  .scene.alt .art{margin:0 0 0 -4%}
   .spark.s2{display:none}
 }
 </style>
