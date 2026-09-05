@@ -806,7 +806,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   var closeIntro = function(){ intro.classList.add('done'); };
   var start = function(){
     var a = document.getElementById('czlogo-a');
-    if(a) a.classList.add('go');
+    if(a) a.classList.add(reduce ? 'done' : 'go');
     setTimeout(closeIntro, 4700);
   };
   if(document.readyState === 'complete'){ start(); } else { window.addEventListener('load', start); }
@@ -845,15 +845,33 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     els.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* 本文中のロゴ：画面に入ったところで描き始める */
+  /* 本文中のロゴ：画面に入ったら筆で書き始める。
+     書き上がった絵はそのまま残す（従来どおり）。
+     ただし、いちど画面から完全に外れたら状態を巻き戻し、
+     次にこのエリアへ戻ってきたときはまた最初から書き直す。 */
   var b = document.getElementById('czlogo-b');
   if(b){
-    if('IntersectionObserver' in window){
+    if(reduce || !('IntersectionObserver' in window)){
+      b.classList.add('done');
+    } else {
+      var drawn = false;
       var mo = new IntersectionObserver(function(es){
-        es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('go'); mo.unobserve(e.target); } });
-      }, {threshold:.4});
+        es.forEach(function(e){
+          if(!drawn && e.isIntersecting && e.intersectionRatio >= .4){
+            drawn = true;
+            e.target.classList.add('go');
+          } else if(drawn && !e.isIntersecting){
+            /* 完全に画面外に出たときだけ巻き戻す。
+               go を外したあとレイアウトを強制的に読み直させないと、
+               同じアニメーションが再生されない。 */
+            drawn = false;
+            e.target.classList.remove('go');
+            void e.target.getBoundingClientRect();
+          }
+        });
+      }, {threshold:[0,.4]});
       mo.observe(b);
-    } else { b.classList.add('done'); }
+    }
   }
 
   /* hero: まず静止画を出し、読み込みが済んでから
