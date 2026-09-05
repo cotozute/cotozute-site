@@ -202,6 +202,7 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
   opacity:0;transform:translateY(34px) scale(.94);
   transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);will-change:transform}
 .scene.in .art{opacity:1;transform:none}
+.art picture{display:block}
 .art .main{width:100%;animation:levitate 9s ease-in-out infinite}
 @keyframes levitate{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
 /* 追加パーツ用（後から <img class="part" style="--px:..;--py:..;--pw:..;--pd:..s"> を足せる） */
@@ -254,6 +255,14 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .card h4{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.07em;margin:0 0 5px}
 .card .en{font-family:var(--latin);font-size:11px;letter-spacing:.26em;color:var(--gold);margin-bottom:12px}
 .card p{font-size:13.5px;line-height:2.1;color:var(--ink-soft);margin:0}
+
+/* ---------- 02 業務自動化相談（鹿威し）----------
+   この項目だけ挿絵が横長なので、縦長前提の寸法だと小さく沈み、
+   スマホでは --overlap に飲み込まれて文字の下へ完全に隠れる。
+   この項目にだけ寸法と重なり量を持たせる。 ---------- */
+.scene.wide{--overlap:clamp(56px,16vw,96px)}
+@media(min-width:900px){ .scene.wide .art{--aw:clamp(340px,52vw,560px);--ax:4%} }
+@media(max-width:899px){ .scene.wide .art{width:min(96%,380px);margin:0 0 0 -6%} }
 
 /* ---------- about ---------- */
 #about{background:var(--paper-3)}
@@ -676,14 +685,14 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       </div>
     </article>
 
-    <article class="scene alt" style="--ax:-10%;--aw:88%">
+    <article class="scene alt wide" style="--ax:-10%;--aw:88%">
       <div class="stage">
         <div class="art shishi">
-          <img class="main" src="assets/svc-auto-sm.webp"
-               srcset="assets/svc-auto-sm.webp 400w, assets/svc-auto.webp 620w"
-               sizes="(min-width:900px) 540px, 84vw" alt="業務自動化相談"
-               width="557" height="620" loading="lazy" decoding="async">
-          <span class="fx fx-water" aria-hidden="true"><i class="drop"></i><i class="drop d2"></i><i class="ripple"></i><i class="ripple r2"></i></span>
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-auto-anim.webp">
+            <img class="main" src="assets/svc-auto-anim-sm.webp" alt="業務自動化相談"
+                 width="560" height="364" loading="lazy" decoding="async">
+          </picture>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
