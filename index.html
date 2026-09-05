@@ -893,6 +893,31 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     } else { b.classList.add('done'); }
   }
 
+  /* hero: まず静止画を出し、読み込みが済んでから
+     「風を受けて目を閉じたり開いたり」するアニメWebPへ静かに差し替える。
+     ・prefers-reduced-motion / 通信節約モード / 2G のときは静止画のまま
+     ・アニメの1コマ目は hero.webp と同じ絵なので、切り替わりは見えない */
+  (function(){
+    if(reduce) return;
+    var c = navigator.connection || {};
+    if(c.saveData) return;
+    if(/2g/.test(c.effectiveType || '')) return;
+    var img = document.querySelector('.hero-figure img');
+    if(!img) return;
+    var src = window.matchMedia('(min-width:900px)').matches
+              ? 'assets/hero-anim.webp' : 'assets/hero-anim-sm.webp';
+    var swap = function(){
+      var pre = new Image();
+      pre.onload = function(){
+        img.removeAttribute('srcset'); img.removeAttribute('sizes');
+        img.src = src;
+      };
+      pre.src = src;
+    };
+    if(document.readyState === 'complete'){ setTimeout(swap, 400); }
+    else { window.addEventListener('load', function(){ setTimeout(swap, 400); }); }
+  })();
+
   /* hero parallax (pointer devices only) */
   if(!reduce && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
     var hf = document.getElementById('hf'), tx=0, ty=0, cx=0, cy=0, raf=null;
