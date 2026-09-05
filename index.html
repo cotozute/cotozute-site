@@ -166,6 +166,16 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
   animation:cue 2.4s ease-in-out infinite}
 @keyframes cue{0%{top:-40%}70%,100%{top:100%}}
 
+/* スマホ：ヒーローが 100svh を確保していたため、文字の下に画面半分ぶんの
+   空白ができていた。高さは中身に任せ、MESSAGE の上余白も詰める。 */
+@media (max-width:899px){
+  .hero{min-height:auto;padding:112px var(--gut) 34px}
+  #message > .wrap{padding-top:clamp(26px,7vw,48px)}
+}
+/* 600px以上では女性の絵の上限幅が380pxに上がるため、
+   中身なりの高さだと絵が下にはみ出して切れる。その分だけ床を張る。 */
+@media (min-width:600px) and (max-width:899px){ .hero{min-height:690px} }
+
 /* ---------- shared ---------- */
 section{position:relative;z-index:2}
 .wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,13vw,150px) var(--gut)}
