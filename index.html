@@ -364,6 +364,62 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .wave .wtrack{transform:none}
   @media(min-width:900px){.hero-figure{opacity:1}.rule{width:110px}}
 }
+/* ---------- 挿絵のループアニメーション ----------
+   からくり人形も鹿威しも「決まった周期で同じ動きを繰り返す機械」なので、
+   なめらかにせず、動く→止まる→戻る の間を作って機械らしさを残す。 ---------- */
+.art .fx{position:absolute;inset:0;pointer-events:none;z-index:2}
+.art .fx i{position:absolute;display:block}
+
+/* 茶運び人形：すり足で前へ出て、止まって、戻る */
+.art.karakuri .main{animation:karakuri 9.5s cubic-bezier(.34,0,.64,1) infinite}
+@keyframes karakuri{
+  0%,10%  {transform:translate(0,0) rotate(0deg)}
+  32%     {transform:translate(-3%,-.5%) rotate(-.5deg)}
+  40%,52% {transform:translate(-3%,0) rotate(-.5deg)}
+  74%     {transform:translate(0,-.5%) rotate(0deg)}
+  82%,100%{transform:translate(0,0) rotate(0deg)}
+}
+/* 湯呑みから立ちのぼる湯気 */
+.fx-steam i{left:26.5%;bottom:59%;width:8px;height:15%;border-radius:8px;opacity:0;
+  background:linear-gradient(to top,rgba(90,110,150,0),rgba(90,110,150,.85) 42%,rgba(90,110,150,0));
+  filter:blur(3.4px);transform-origin:50% 100%;
+  animation:steam 4.6s ease-out infinite}
+.fx-steam i.s2{left:30.5%;height:11%;animation-duration:5.4s;animation-delay:1.5s}
+.fx-steam i.s3{left:23%;height:10%;animation-duration:6.2s;animation-delay:3s}
+@keyframes steam{
+  0%  {opacity:0;transform:translate(0,0) scaleY(.6)}
+  18% {opacity:.9}
+  60% {opacity:.6;transform:translate(-3px,-70%) scaleY(1.1)}
+  100%{opacity:0;transform:translate(3px,-135%) scaleY(1.35)}
+}
+
+/* 鹿威し：竹筒から落ちる雫、水面の波紋、そして「コトン」の一瞬 */
+.art.shishi .main{animation:shishi 7s ease-in-out infinite}
+@keyframes shishi{
+  0%,66%  {transform:translate(0,0)}
+  69%     {transform:translate(0,.7%)}
+  72%     {transform:translate(0,-.25%)}
+  75%,100%{transform:translate(0,0)}
+}
+.fx-water .drop{left:49.4%;width:3px;height:7px;border-radius:50% 50% 60% 60%;
+  background:rgba(120,140,175,.55);animation:drop 1.75s cubic-bezier(.4,0,.9,1) infinite}
+.fx-water .drop.d2{animation-delay:.88s}
+@keyframes drop{
+  0%      {top:45%;opacity:0}
+  12%     {opacity:.9}
+  78%     {top:63%;opacity:.9}
+  86%,100%{top:63%;opacity:0}
+}
+.fx-water .ripple{left:49%;top:65.5%;width:15%;aspect-ratio:3.6/1;
+  border:1px solid rgba(90,110,150,.68);border-radius:50%;opacity:0;
+  animation:ripple 1.75s ease-out infinite}
+.fx-water .ripple.r2{animation-delay:.88s;width:11%}
+@keyframes ripple{
+  0%,66%{transform:translate(-50%,-50%) scale(.12);opacity:0}
+  72%   {opacity:.65}
+  100%  {transform:translate(-50%,-50%) scale(1.5);opacity:0}
+}
+
 /* ---------- スマホ・タブレット：挿絵を思い切り上へ寄せ、文字を重ねる ----------
    PCと同じ「舞台の上に文字が乗る」構図を、縦長画面でも成立させる。
    絵を負のマージンで文字の下へ潜り込ませることで、
@@ -565,13 +621,14 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
     <article class="scene" style="--ax:-9%;--aw:86%">
       <div class="stage">
-        <div class="art">
+        <div class="art karakuri">
           <span class="glow"></span>
           <span class="ring"></span>
           <img class="main" src="assets/svc-ai-sm.webp"
                srcset="assets/svc-ai-sm.webp 400w, assets/svc-ai.webp 620w"
                sizes="(min-width:900px) 540px, 84vw" alt="AI活用支援"
                width="426" height="620" loading="lazy" decoding="async">
+          <span class="fx fx-steam" aria-hidden="true"><i></i><i class="s2"></i><i class="s3"></i></span>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
@@ -590,13 +647,14 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
     <article class="scene alt" style="--ax:-10%;--aw:88%">
       <div class="stage">
-        <div class="art">
+        <div class="art shishi">
           <span class="glow"></span>
           <span class="ring"></span>
           <img class="main" src="assets/svc-auto-sm.webp"
                srcset="assets/svc-auto-sm.webp 400w, assets/svc-auto.webp 620w"
                sizes="(min-width:900px) 540px, 84vw" alt="業務自動化相談"
                width="557" height="620" loading="lazy" decoding="async">
+          <span class="fx fx-water" aria-hidden="true"><i class="drop"></i><i class="drop d2"></i><i class="ripple"></i><i class="ripple r2"></i></span>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
