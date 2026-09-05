@@ -189,9 +189,7 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
   transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
 .reveal.in{opacity:1;transform:none}
 
-.divider{position:relative;height:clamp(70px,16vw,170px);overflow:hidden;pointer-events:none}
-.divider img{position:absolute;left:50%;top:50%;width:160%;max-width:none;
-  transform:translate(-50%,-50%);opacity:.7;animation:drift 30s ease-in-out infinite}
+/* セクション間の波模様（.divider）は廃止した。復活させないこと。 */
 
 /* ---------- message ---------- */
 #message{background:linear-gradient(180deg,transparent,var(--paper-3) 45%,transparent)}
@@ -603,11 +601,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   </div>
 </section>
 
-<div class="divider">
-  <img src="assets/wave-4-sm.webp" srcset="assets/wave-4-sm.webp 760w, assets/wave-4.webp 1400w"
-       sizes="160vw" alt="" width="1400" height="467" loading="lazy" decoding="async">
-</div>
-
 <!-- ==================== SERVICE ==================== -->
 <section id="service">
   <div class="wrap">
@@ -668,10 +661,11 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     <article class="scene" style="--ax:-8%;--aw:82%;--mh:clamp(680px,184vw,800px)">
       <div class="stage">
         <div class="art">
-          <img class="main" src="assets/svc-video-sm.webp"
-               srcset="assets/svc-video-sm.webp 400w, assets/svc-video.webp 620w"
-               sizes="(min-width:900px) 540px, 84vw" alt="動画制作"
-               width="620" height="620" loading="lazy" decoding="async">
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-video-anim.webp">
+            <img class="main" src="assets/svc-video-anim-sm.webp" alt="動画制作"
+                 width="760" height="826" loading="lazy" decoding="async">
+          </picture>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
@@ -728,11 +722,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     </div>
   </div>
 </section>
-
-<div class="divider">
-  <img src="assets/wave-6-sm.webp" srcset="assets/wave-6-sm.webp 760w, assets/wave-6.webp 1400w"
-       sizes="160vw" alt="" width="1400" height="465" loading="lazy" decoding="async">
-</div>
 
 <!-- ==================== ABOUT ==================== -->
 <section id="about">
