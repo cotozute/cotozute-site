@@ -254,7 +254,7 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .card{background:var(--paper-2);border:1px solid var(--line-2);padding:0 0 26px;overflow:hidden;
   transition:transform .7s var(--ease),box-shadow .7s var(--ease),border-color .7s var(--ease)}
 .card:hover{transform:translateY(-7px);box-shadow:0 22px 44px -28px rgba(30,42,68,.45);border-color:var(--line)}
-.card .strip{height:186px;overflow:hidden;display:grid;place-items:center;background:var(--paper-3);padding:8px 0}
+.card .strip{height:186px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--paper-3);padding:8px 0}
 .card .strip img{width:auto;height:100%;max-width:none;object-fit:contain;transition:transform 1.2s var(--ease)}
 .card .strip img.deco{width:170%;height:auto;object-fit:cover}
 .card:hover .strip img{transform:scale(1.07)}
@@ -426,6 +426,14 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     width:min(100%,430px);margin:0}
   .scene.s-abacus .copy-body{order:2;margin-top:calc(var(--catch-over,42px) * -1)}
   .scene.s-abacus .catch{margin-top:0}
+}
+
+/* 03 動画制作：挿絵が横長（4:3）になったので、縦長前提の --overlap では
+      絵が本文の下へほぼ隠れてしまう。この項目だけ重なりを浅くして中央に置く。 */
+@media (max-width:899px){
+  .scene.s-video{--overlap:clamp(18px,4.5vw,44px)}
+  .scene.s-video .stage{justify-content:center}
+  .scene.s-video .art{width:min(100%,420px);margin:0}
 }
 
 @media (max-width:899px){
@@ -672,13 +680,13 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       </div>
     </article>
 
-    <article class="scene" style="--ax:-8%;--aw:82%;--mh:clamp(680px,184vw,800px)">
+    <article class="scene s-video" style="--ax:-8%;--aw:82%;--mh:clamp(560px,140vw,660px)">
       <div class="stage">
         <div class="art">
           <picture>
             <source media="(min-width:900px)" srcset="assets/svc-video-anim.webp">
             <img class="main" src="assets/svc-video-anim-sm.webp" alt="動画制作"
-                 width="760" height="826" loading="lazy" decoding="async">
+                 width="620" height="465" loading="lazy" decoding="async">
           </picture>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
@@ -698,7 +706,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
     <div class="cards">
       <div class="card reveal">
-        <div class="strip"><img src="assets/card-sns-sm.webp" srcset="assets/card-sns-sm.webp 400w, assets/card-sns.webp 620w" sizes="240px" alt="SNSの助言" width="620" height="514" loading="lazy" decoding="async"></div>
+        <div class="strip"><img src="assets/card-sns-anim.webp" alt="SNSの助言" width="496" height="372" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>SNSの助言</h4>
           <div class="en">SNS ADVICE</div>
@@ -707,7 +715,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         </div>
       </div>
       <div class="card reveal" style="--d:.08s">
-        <div class="strip"><img src="assets/card-creative-sm.webp" srcset="assets/card-creative-sm.webp 400w, assets/card-creative.webp 620w" sizes="240px" alt="コンテンツ制作環境構築" width="456" height="620" loading="lazy" decoding="async"></div>
+        <div class="strip"><img src="assets/card-creative-anim.webp" alt="コンテンツ制作環境構築" width="496" height="372" loading="lazy" decoding="async"></div>
         <div class="body">
           <h4>コンテンツ制作環境構築</h4>
           <div class="en">CREATIVE SETUP</div>
