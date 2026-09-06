@@ -449,6 +449,33 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .scene.alt .art{margin:0 0 0 -4%}
   .spark.s2{display:none}
 }
+/* ================= 可読性の基準（2026-09-05） =================
+   ヒーロー大見出しの2行目 .hero h1 .ln.s2 = clamp(15px,4.1vw,27px) / color:var(--ink)
+   を「これ以上小さい文字は読めない」基準として、MESSAGE 以降の文字を引き上げる。
+   下限と傾き（4.1vw）は基準と完全に同じ。上限だけ、PCで文字が巨大になりすぎない
+   ように役割ごとに抑えている。会社概要（#about）とフッターは対象外。 */
+#message,#service,#contact{
+  --fs-base:clamp(15px,4.1vw,20px);   /* 本文 */
+  --fs-label:clamp(15px,4.1vw,17px);  /* 英字ラベル・番号 */
+}
+#message .muted,#service .muted,#contact .muted,
+#service .card p,#service .catch{font-size:var(--fs-base);color:var(--ink)}
+#service .card p{line-height:2.1}
+#message .eyebrow,#service .eyebrow,#contact .eyebrow,
+#service .num,#service .card .en,#service .scene h3 small{font-size:var(--fs-label)}
+#service .eyebrow,#message .eyebrow,#contact .eyebrow{letter-spacing:.3em}
+#service .card .en{letter-spacing:.2em}
+#service .scene h3 small{letter-spacing:.22em}
+/* 本文が大きくなったぶん、見出しの序列を保つために一段上げる */
+#service .card h4{font-size:clamp(19px,5.2vw,25px)}
+#service .scene h3{font-size:clamp(22px,6vw,33px)}
+/* 項目見出し(h3)を上げたぶん、セクション見出し(h2)がそれを下回らないよう合わせて上げる */
+#message h2,#service h2,#contact h2{font-size:clamp(24px,6.6vw,40px)}
+/* そろばんの読み上げ文字も基準へ寄せる（絵の余白に収まる範囲で） */
+#service .chant{font-size:15px;font-size:4.5cqw}
+/* ヒーローの導入文も基準に合わせる */
+.hero .lead{font-size:clamp(15px,4.1vw,22px)}
+.hero .sub{font-size:clamp(15px,4.1vw,17px);color:var(--ink)}
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
 </head>
