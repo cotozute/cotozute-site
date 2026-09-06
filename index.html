@@ -76,7 +76,7 @@ body::before{
 /* ---------- intro ---------- */
 #intro{position:fixed;inset:0;z-index:200;background:var(--paper);display:grid;place-items:center;
   transition:opacity .9s var(--ease),visibility .9s;cursor:pointer}
-#intro .cz-logo{width:min(33vw,138px)}
+#intro .cz-logo{width:min(42vw,175px)}
 #intro.done{opacity:0;visibility:hidden}
 
 /* ---------- header ---------- */
@@ -108,7 +108,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 .hero{position:relative;min-height:100svh;display:grid;align-content:center;
   padding:112px var(--gut) 110px;overflow:hidden}
 .hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:linear-gradient(102deg,var(--paper) 0%,rgba(247,244,236,.86) 26%,rgba(247,244,236,.30) 52%,rgba(247,244,236,0) 72%)}
+  background:linear-gradient(102deg,rgba(247,244,236,.55) 0%,rgba(247,244,236,.34) 30%,rgba(247,244,236,0) 62%)}
 .hero-inner{position:relative;z-index:5;width:100%;max-width:var(--max);margin:0 auto}
 .hero h1{font-family:var(--serif);font-weight:500;margin:0;
   font-size:clamp(25px,6.6vw,62px);line-height:1.6;letter-spacing:.06em}
@@ -172,18 +172,14 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 /* スマホ：ヒーローが 100svh を確保していたため、文字の下に画面半分ぶんの
    空白ができていた。高さは中身に任せ、MESSAGE の上余白も詰める。 */
 @media (max-width:899px){
-  .hero{min-height:auto;padding:112px var(--gut) 26px}
+  /* 挿絵が無くなり文字だけになったので、スマホでも一画面ぶんの余白を持たせる
+     （挿絵があった頃は絵が高さを作っていたので min-height:auto だった） */
+  .hero{min-height:76svh;padding:112px var(--gut) 40px}
   #message > .wrap{padding-top:clamp(26px,7vw,48px)}
-  /* スマホでは絵をコピーの下へ落とす。横長の挿絵を文字の背面に敷くと
-     鳩が本文に重なって読めなくなるため。縦長の絵に戻さない限り復活させないこと。 */
-  .hero-inner{order:1}
-  .hero-figure{position:relative;right:auto;left:auto;top:auto;bottom:auto;
-    width:112%;max-width:none;margin:20px -6% -8px;order:2;
-    -webkit-mask-image:none;mask-image:none}
 }
 /* 600px以上では女性の絵の上限幅が380pxに上がるため、
    中身なりの高さだと絵が下にはみ出して切れる。その分だけ床を張る。 */
-@media (min-width:600px) and (max-width:899px){ .hero-figure{width:88%;margin:22px auto -8px} }
+@media (min-width:600px) and (max-width:899px){ .hero{min-height:66svh} }
 
 /* ---------- shared ---------- */
 section{position:relative;z-index:2}
@@ -458,33 +454,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .scene.alt .art{margin:0 0 0 -4%}
   .spark.s2{display:none}
 }
-/* ================= 可読性の基準（2026-09-05） =================
-   ヒーロー大見出しの2行目 .hero h1 .ln.s2 = clamp(15px,4.1vw,27px) / color:var(--ink)
-   を「これ以上小さい文字は読めない」基準として、MESSAGE 以降の文字を引き上げる。
-   下限と傾き（4.1vw）は基準と完全に同じ。上限だけ、PCで文字が巨大になりすぎない
-   ように役割ごとに抑えている。会社概要（#about）とフッターは対象外。 */
-#message,#service,#contact{
-  --fs-base:clamp(15px,4.1vw,20px);   /* 本文 */
-  --fs-label:clamp(15px,4.1vw,17px);  /* 英字ラベル・番号 */
-}
-#message .muted,#service .muted,#contact .muted,
-#service .card p,#service .catch{font-size:var(--fs-base);color:var(--ink)}
-#service .card p{line-height:2.1}
-#message .eyebrow,#service .eyebrow,#contact .eyebrow,
-#service .num,#service .card .en,#service .scene h3 small{font-size:var(--fs-label)}
-#service .eyebrow,#message .eyebrow,#contact .eyebrow{letter-spacing:.3em}
-#service .card .en{letter-spacing:.2em}
-#service .scene h3 small{letter-spacing:.22em}
-/* 本文が大きくなったぶん、見出しの序列を保つために一段上げる */
-#service .card h4{font-size:clamp(19px,5.2vw,25px)}
-#service .scene h3{font-size:clamp(22px,6vw,33px)}
-/* 項目見出し(h3)を上げたぶん、セクション見出し(h2)がそれを下回らないよう合わせて上げる */
-#message h2,#service h2,#contact h2{font-size:clamp(24px,6.6vw,40px)}
-/* そろばんの読み上げ文字も基準へ寄せる（絵の余白に収まる範囲で） */
-#service .chant{font-size:15px;font-size:4.5cqw}
-/* ヒーローの導入文も基準に合わせる */
-.hero .lead{font-size:clamp(15px,4.1vw,22px)}
-.hero .sub{font-size:clamp(15px,4.1vw,17px);color:var(--ink)}
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
 </head>
@@ -561,10 +530,9 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="top">
-  <div class="hero-figure" id="hf">
-    <img src="assets/hero-sm.webp" srcset="assets/hero-sm.webp 480w, assets/hero.webp 800w"
-         sizes="(min-width:900px) 56vw, 96vw" alt="" width="800" height="600" fetchpriority="high">
-  </div>
+  <!-- トップの挿絵（着物の女性 → 鳩を放つ少年）は 2026-09-06 に外した。
+       いまのトップは文字とテック演出レイヤーだけで、アニメーションは無し。
+       戻すときは .hero-figure のCSSとアニメ差し替えJS・パララックスJSも一緒に復活させること。 -->
 
   <!-- テック演出レイヤー（画像なし・canvas） -->
   <canvas class="cz-tech cz-tech--back"  id="czTechBack"  aria-hidden="true"></canvas>
@@ -656,7 +624,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       <p class="eyebrow">SERVICE</p>
       <h2>事業内容</h2>
       <p class="muted" style="max-width:38em">
-        あなたがお仕事で困っている事をお伺いし、マーケティングとAIを駆使して解決をお手伝いする会社です。
+        AIを土台に、伝えることのすべてを引き受けます。
+        いま、わたしたちが手を動かしているのは、次の領域です。
       </p>
     </div>
 
@@ -686,7 +655,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       <div class="copy copy-body">
         <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
         <p class="muted">
-          「仕事が大変で時間が足りない」と感じるなら、AIを上手に活用し沢山の時間を手に入れましょう。
+          仕事で「時間が足りない」と感じるなら、AIを細部まで活用して、たくさんの時間を手に入れることで、仕事の質がもっと上がります。
         </p>
       </div>
     </article>
@@ -734,7 +703,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
         <p class="catch">動画で伝えられる情報は文字の5000倍</p>
         <p class="muted">
-          動画は「人間と一緒」企画、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。
+          動画は「人間と一緒」規格、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。
         </p>
       </div>
     </article>
@@ -745,7 +714,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         <div class="body">
           <h4>SNSの助言</h4>
           <div class="en">SNS ADVICE</div>
-          <p>新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。「コンサルという言葉が好きじゃない人」COTOZUTEは「腑に落ちる助言」をします。</p>
+          <p>新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。
+             「コンサルという言葉が胡散臭い」と感じている人。COTOZUTEは「腑に落ちる助言」をします。</p>
         </div>
       </div>
       <div class="card reveal" style="--d:.08s">
@@ -921,33 +891,11 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     }
   }
 
-  /* hero: まず静止画を出し、読み込みが済んでから
-     「風を受けて目を閉じたり開いたり」するアニメWebPへ静かに差し替える。
-     ・prefers-reduced-motion / 通信節約モード / 2G のときは静止画のまま
-     ・アニメの1コマ目は hero.webp と同じ絵なので、切り替わりは見えない */
-  (function(){
-    if(reduce) return;
-    var c = navigator.connection || {};
-    if(c.saveData) return;
-    if(/2g/.test(c.effectiveType || '')) return;
-    var img = document.querySelector('.hero-figure img');
-    if(!img) return;
-    var src = window.matchMedia('(min-width:900px)').matches
-              ? 'assets/hero-anim.webp' : 'assets/hero-anim-sm.webp';
-    var swap = function(){
-      var pre = new Image();
-      pre.onload = function(){
-        img.removeAttribute('srcset'); img.removeAttribute('sizes');
-        img.src = src;
-      };
-      pre.src = src;
-    };
-    if(document.readyState === 'complete'){ setTimeout(swap, 400); }
-    else { window.addEventListener('load', function(){ setTimeout(swap, 400); }); }
-  })();
+  /* トップの挿絵を外したので、静止画→アニメWebPの差し替えは廃止した。
+     挿絵を戻すときはここに復活させる（assets/hero-anim*.webp は残してある）。 */
 
   /* hero parallax (pointer devices only) */
-  if(!reduce && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
+  if(!reduce && document.getElementById('hf') && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
     var hf = document.getElementById('hf'), tx=0, ty=0, cx=0, cy=0, raf=null;
     var loop = function(){
       cx += (tx - cx) * .06; cy += (ty - cy) * .06;
