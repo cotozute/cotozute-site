@@ -389,13 +389,19 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
    絵を負のマージンで文字の下へ潜り込ませることで、
    セクションの高さ＝文字＋絵−重なり ぶんだけになり、間延びしない。
    重なり量は --overlap の1か所で調整できる。 ---------- */
-/* 01 そろばん少年：横長で顔が上寄りなので、スマホだけ絵を文字の上へ出し、
-   重なりをゼロにする。顔に文字が被らないための措置。復活させないこと。 */
+/* 01 そろばん少年：この挿絵だけ横長で顔が上寄りなので、スマホでは
+      01・見出し → 絵 → キャッチ（3行の短い組み）→ 本文（横いっぱい）
+   の順に組み替える。キャッチの白帯だけを絵の下端（机とそろばん）へ軽く重ね、
+   顔には文字を一切乗せない。この1項目だけの特別扱い。復活させないこと。 */
 @media (max-width:899px){
-  #service .scene:first-of-type .stage{order:0;margin-top:0;
-    margin-bottom:clamp(6px,2.4vw,16px);justify-content:center}
-  #service .scene:first-of-type .copy{order:1}
-  #service .scene:first-of-type .art{width:min(100%,430px);margin:0}
+  .scene.s-abacus{--mh:0}
+  .scene.s-abacus .copy-head{order:0}
+  .scene.s-abacus .stage{order:1;position:relative;inset:auto;z-index:0;
+    margin:clamp(4px,1.6vw,12px) 0 0;display:flex;justify-content:center;overflow:visible}
+  .scene.s-abacus .art{position:relative;right:auto;bottom:auto;
+    width:min(100%,430px);margin:0}
+  .scene.s-abacus .copy-body{order:2;margin-top:calc(var(--catch-over,42px) * -1)}
+  .scene.s-abacus .catch{margin-top:0}
 }
 
 @media (max-width:899px){
@@ -587,7 +593,11 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       </p>
     </div>
 
-    <article class="scene wide" style="--ax:-9%;--aw:86%">
+    <article class="scene wide s-abacus" style="--ax:-9%;--aw:86%">
+      <div class="copy copy-head">
+        <div class="num">01</div>
+        <h3>AI活用の相談<small>AI SUPPORT</small></h3>
+      </div>
       <div class="stage">
         <div class="art">
           <picture>
@@ -601,10 +611,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         <span class="spark s2"></span>
         <span class="spark s3"></span>
       </div>
-      <div class="copy">
-        <div class="num">01</div>
-        <h3>AI活用の相談<small>AI SUPPORT</small></h3>
-        <p class="catch">AIはあなたから「作業を奪います」「仕事は奪いません」</p>
+      <div class="copy copy-body">
+        <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
         <p class="muted">
           仕事で「時間が足りない」と感じるなら、AIを細部まで活用して、たくさんの時間を手に入れることで、仕事の質がもっと上がります。
         </p>
