@@ -195,7 +195,8 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 #message{background:linear-gradient(180deg,transparent,var(--paper-3) 45%,transparent)}
 .msg-grid{display:grid;gap:clamp(30px,7vw,80px)}
 .origin{padding-left:0}
-.origin .kanji{margin:0 auto 22px;max-width:min(62vw,260px)}
+/* スマホの筆ロゴは 62vw/260px から65%へ（大きすぎたため・2026-09-06） */
+.origin .kanji{margin:0 auto 22px;max-width:min(40vw,169px)}
 
 /* ---------- service scenes ----------
    1シーン＝イラストの舞台。イラストがふわっと登場し、その上に文字が上から重なる。
