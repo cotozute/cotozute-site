@@ -389,6 +389,15 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
    絵を負のマージンで文字の下へ潜り込ませることで、
    セクションの高さ＝文字＋絵−重なり ぶんだけになり、間延びしない。
    重なり量は --overlap の1か所で調整できる。 ---------- */
+/* 01 そろばん少年：横長で顔が上寄りなので、スマホだけ絵を文字の上へ出し、
+   重なりをゼロにする。顔に文字が被らないための措置。復活させないこと。 */
+@media (max-width:899px){
+  #service .scene:first-of-type .stage{order:0;margin-top:0;
+    margin-bottom:clamp(6px,2.4vw,16px);justify-content:center}
+  #service .scene:first-of-type .copy{order:1}
+  #service .scene:first-of-type .art{width:min(100%,430px);margin:0}
+}
+
 @media (max-width:899px){
   .scene{min-height:0;margin:clamp(24px,6vw,44px) 0;
          --overlap:clamp(170px,62vw,300px)}
@@ -404,40 +413,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 }
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
-<script>
-/* 01 AI活用の相談：茶運び人形の顔が見出し「AI活用の相談」の横に来るよう、
-   実測して .stage の margin-top を補正する（900px未満のみ）。
-   reveal の transform に影響されないよう offsetTop で測る。 */
-(function(){
-  var FACE = 105/535;              /* 画像の中で顔の中心が来る縦位置 */
-  function fit(){
-    var sc = document.querySelector('#service .scene');
-    if(!sc) return;
-    var st  = sc.querySelector('.stage'),
-        art = sc.querySelector('.art'),
-        cp  = sc.querySelector('.copy'),
-        h3  = sc.querySelector('h3'),
-        img = sc.querySelector('.art .main');
-    if(!st || !art || !cp || !h3 || !img) return;
-    st.style.marginTop = ''; sc.style.paddingBottom = '';
-    if(window.innerWidth >= 900) return;
-    var ih = img.offsetHeight;
-    if(!ih) return;
-    var h3Mid = cp.getBoundingClientRect().top + h3.offsetTop + h3.offsetHeight / 2;
-    var face  = st.getBoundingClientRect().top + art.offsetTop + ih * FACE;
-    var base  = parseFloat(getComputedStyle(st).marginTop) || 0;
-    st.style.marginTop = (base - (face - h3Mid)) + 'px';
-    var bottom = st.getBoundingClientRect().top + art.offsetTop + img.offsetHeight,
-        over   = bottom - sc.getBoundingClientRect().bottom;
-    if(over > 0) sc.style.paddingBottom = Math.round(over) + 'px';
-  }
-  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fit);
-  else fit();
-  window.addEventListener('load', fit);
-  window.addEventListener('resize', fit);
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-})();
-</script>
 </head>
 <body>
 
@@ -612,11 +587,14 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       </p>
     </div>
 
-    <article class="scene" style="--ax:-9%;--aw:86%">
+    <article class="scene wide" style="--ax:-9%;--aw:86%">
       <div class="stage">
-        <div class="art karakuri">
-          <img class="main" src="assets/svc-ai-anim.webp" alt="AI活用の相談"
-               width="367" height="535" loading="lazy" decoding="async">
+        <div class="art">
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-abacus-anim.webp">
+            <img class="main" src="assets/svc-abacus-anim-sm.webp" alt="AI活用の相談"
+                 width="900" height="676" loading="lazy" decoding="async">
+          </picture>
           <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
         <span class="spark s1"></span>
