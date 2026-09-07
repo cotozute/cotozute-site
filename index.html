@@ -128,13 +128,13 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 
 /* 挿絵はほぼ正方形（本を抱く赤ちゃん・669x595）。高さ基準ではなく幅基準で置く。
    縦長の女性の絵に戻すことはないので、height:92% 方式は復活させないこと。 */
-.hero-figure{position:absolute;right:-6%;top:auto;bottom:0;width:58%;max-width:none;z-index:3;margin:0;
+.hero-figure{position:absolute;right:-1%;top:36%;bottom:auto;width:54%;max-width:none;z-index:3;margin:0;
   opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
 /* 下端のフェード（mask-image）は、画面外へ抜けていく女性の絵のためのものだった。
    いまの絵は空中に浮いている赤ちゃんなので、足がぼけて消えると意図が壊れる。使わない。 */
 .hero-figure img{width:100%;height:auto;display:block}
 @keyframes heroInSm{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:none}}
-@media (max-width:359px){.hero-figure{width:64%;right:-9%}}
+@media (max-width:359px){.hero-figure{width:60%;right:-2%}}
 
 .seal{position:absolute;right:-12%;top:15%;width:64vw;max-width:300px;z-index:1;
   opacity:0;animation:sealIn 2.2s var(--ease) .9s forwards}
@@ -172,8 +172,9 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 /* スマホ：ヒーローが 100svh を確保していたため、文字の下に画面半分ぶんの
    空白ができていた。高さは中身に任せ、MESSAGE の上余白も詰める。 */
 @media (max-width:899px){
-  /* 赤ちゃんの挿絵は本文の「下」に置く（横に逃がす余白がスマホには無い）。
-     文字の下に絵ぶんの帯を作るため、一画面ぶんより少し高くしている。 */
+  /* 赤ちゃんの頭が見出し「心で伝えるコト」の右斜め上に来る位置に置いている（2026-09-07 指定）。
+     top を % で持たせているのは、.hero が align-content:center で本文を縦中央に置くため、
+     本文の位置が hero の高さに比例して動くから。min-height を変えると位置がずれる。 */
   .hero{min-height:100svh;padding:112px var(--gut) 0}
   #message > .wrap{padding-top:clamp(26px,7vw,48px)}
 }
