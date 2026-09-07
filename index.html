@@ -126,15 +126,15 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
   opacity:0;animation:fadeUp 1.1s var(--ease) 1.2s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-/* 挿絵が 4:3 の横長（鳩を放つ少年）になったので、高さ基準ではなく幅基準で置く。
+/* 挿絵はほぼ正方形（本を抱く赤ちゃん・669x595）。高さ基準ではなく幅基準で置く。
    縦長の女性の絵に戻すことはないので、height:92% 方式は復活させないこと。 */
-.hero-figure{position:absolute;right:-20%;top:auto;bottom:0;width:124%;max-width:none;z-index:3;
-  opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform;
-  -webkit-mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.34) 90%,transparent 100%);
-          mask-image:linear-gradient(180deg,#000 72%,rgba(0,0,0,.34) 90%,transparent 100%)}
+.hero-figure{position:absolute;right:-6%;top:auto;bottom:0;width:58%;max-width:none;z-index:3;margin:0;
+  opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
+/* 下端のフェード（mask-image）は、画面外へ抜けていく女性の絵のためのものだった。
+   いまの絵は空中に浮いている赤ちゃんなので、足がぼけて消えると意図が壊れる。使わない。 */
 .hero-figure img{width:100%;height:auto;display:block}
 @keyframes heroInSm{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:none}}
-@media (max-width:359px){.hero-figure{width:132%;right:-26%}}
+@media (max-width:359px){.hero-figure{width:64%;right:-9%}}
 
 .seal{position:absolute;right:-12%;top:15%;width:64vw;max-width:300px;z-index:1;
   opacity:0;animation:sealIn 2.2s var(--ease) .9s forwards}
@@ -172,14 +172,17 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 /* スマホ：ヒーローが 100svh を確保していたため、文字の下に画面半分ぶんの
    空白ができていた。高さは中身に任せ、MESSAGE の上余白も詰める。 */
 @media (max-width:899px){
-  /* 挿絵が無くなり文字だけになったので、スマホでも一画面ぶんの余白を持たせる
-     （挿絵があった頃は絵が高さを作っていたので min-height:auto だった） */
-  .hero{min-height:76svh;padding:112px var(--gut) 40px}
+  /* 赤ちゃんの挿絵は本文の「下」に置く（横に逃がす余白がスマホには無い）。
+     文字の下に絵ぶんの帯を作るため、一画面ぶんより少し高くしている。 */
+  .hero{min-height:100svh;padding:112px var(--gut) 0}
   #message > .wrap{padding-top:clamp(26px,7vw,48px)}
 }
-/* 600px以上では女性の絵の上限幅が380pxに上がるため、
-   中身なりの高さだと絵が下にはみ出して切れる。その分だけ床を張る。 */
-@media (min-width:600px) and (max-width:899px){ .hero{min-height:66svh} }
+/* 600〜899pxは横に余白があるので、絵は右・本文は左の二段組みにする。
+   説明文だけ幅を絞らないと、文末が赤ちゃんの体に潜って読めなくなる。 */
+@media (min-width:600px) and (max-width:899px){
+  .hero{min-height:80svh}
+  .hero .sub{max-width:50%}
+}
 
 /* ---------- shared ---------- */
 section{position:relative;z-index:2}
@@ -312,7 +315,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 @media (min-width:600px){
   .cards{grid-template-columns:1fr 1fr;gap:22px}
   .floatword.b,.floatword.d{display:block}
-  .hero-figure{width:100%;right:-10%}
+  .hero-figure{width:46%;right:-2%}
 }
 
 /* =========================================================
@@ -333,7 +336,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .hero h1{line-height:1.55;letter-spacing:.09em}
   .hero-inner{max-width:var(--max)}
   .hero::after{z-index:4}
-  .hero-figure{width:min(58vw,780px);max-width:none;height:auto;right:-2%;top:auto;bottom:6%;
+  .hero-figure{width:min(40vw,560px);max-width:none;height:auto;right:1.5%;top:auto;bottom:5%;
     -webkit-mask-image:none;mask-image:none;
     animation:heroIn 1.9s var(--ease) .45s forwards}
   .hero-figure img{width:100%;height:auto;object-fit:contain}
@@ -530,9 +533,15 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="top">
-  <!-- トップの挿絵（着物の女性 → 鳩を放つ少年）は 2026-09-06 に外した。
-       いまのトップは文字とテック演出レイヤーだけで、アニメーションは無し。
-       戻すときは .hero-figure のCSSとアニメ差し替えJS・パララックスJSも一緒に復活させること。 -->
+  <!-- トップの挿絵：和綴じの本を抱いて眠る赤ちゃん（2026-09-07）。
+       着物の女性 → 鳩を放つ少年 → 本を抱く赤ちゃん、と差し替えてきた3代目。
+       静止画を先に出し、load後に hero-anim*.webp（4.16秒ループ）へ差し替える。 -->
+  <figure class="hero-figure" id="hf">
+    <img src="assets/hero-sm.webp"
+         srcset="assets/hero-sm.webp 400w, assets/hero.webp 669w"
+         sizes="(min-width:900px) 560px, 58vw"
+         alt="" width="669" height="595" fetchpriority="high" decoding="async">
+  </figure>
 
   <!-- テック演出レイヤー（画像なし・canvas） -->
   <canvas class="cz-tech cz-tech--back"  id="czTechBack"  aria-hidden="true"></canvas>
@@ -891,8 +900,25 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     }
   }
 
-  /* トップの挿絵を外したので、静止画→アニメWebPの差し替えは廃止した。
-     挿絵を戻すときはここに復活させる（assets/hero-anim*.webp は残してある）。 */
+  /* 静止画 → アニメWebP の差し替え（load後・reduce時はしない） */
+  if(!reduce){
+    (function(){
+      var img = document.querySelector('.hero-figure img');
+      if(!img) return;
+      var src = window.matchMedia('(min-width:900px)').matches
+                ? 'assets/hero-anim.webp' : 'assets/hero-anim-sm.webp';
+      var swap = function(){
+        var pre = new Image();
+        pre.onload = function(){
+          img.removeAttribute('srcset'); img.removeAttribute('sizes');
+          img.src = src;
+        };
+        pre.src = src;
+      };
+      if(document.readyState === 'complete'){ setTimeout(swap, 400); }
+      else { window.addEventListener('load', function(){ setTimeout(swap, 400); }); }
+    })();
+  }
 
   /* hero parallax (pointer devices only) */
   if(!reduce && document.getElementById('hf') && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
