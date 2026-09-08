@@ -11,7 +11,12 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cotozute.com/">
 <meta property="og:image" content="https://cotozute.com/assets/logo.webp">
-<link rel="icon" href="assets/logo.webp">
+<!-- ファビコン：筆で書いた漢字だけ（下の COTOZUTE の欧文は外した）。
+     旧ロゴが端末に強く残るので、ファイル名を新しくして取り直させている。 -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
@@ -30,13 +35,17 @@
   --ease:cubic-bezier(.22,.68,.24,1);
   --max:1180px;
   --gut:clamp(20px,5.5vw,40px);
+  /* ★サイト内の最小文字サイズ。トップの「COTOZUTEはあなたの仕事を…」と同値で、
+     ここより小さい文字を本文・ラベルに使わない（2026-09-07 指定）。
+     文字サイズは原則すべてこの値の倍数で書く。値を変えると全体が連動して動く。 */
+  --fs:clamp(15px,4.1vw,27px);
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
 body{
   margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--sans);font-weight:300;line-height:1.95;font-size:15px;
+  font-family:var(--sans);font-weight:300;line-height:1.95;font-size:var(--fs);
   letter-spacing:.045em;-webkit-font-smoothing:antialiased;overflow-x:clip;
 }
 img{max-width:100%;display:block;height:auto}
@@ -99,7 +108,7 @@ nav{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--paper
   display:flex;align-items:center;justify-content:center;box-shadow:-24px 0 70px -50px #000}
 nav.open{transform:none}
 nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:28px;text-align:center}
-nav a{font-family:var(--latin);font-size:17px;letter-spacing:.24em;color:var(--ink-2);position:relative;padding:4px 0}
+nav a{font-family:var(--latin);font-size:calc(var(--fs)*1.1);letter-spacing:.24em;color:var(--ink-2);position:relative;padding:4px 0}
 nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
   transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
 nav a:hover::after{transform:scaleX(1);transform-origin:left}
@@ -111,7 +120,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
   background:linear-gradient(102deg,rgba(247,244,236,.55) 0%,rgba(247,244,236,.34) 30%,rgba(247,244,236,0) 62%)}
 .hero-inner{position:relative;z-index:5;width:100%;max-width:var(--max);margin:0 auto}
 .hero h1{font-family:var(--serif);font-weight:500;margin:0;
-  font-size:clamp(25px,6.6vw,62px);line-height:1.6;letter-spacing:.06em}
+  font-size:calc(var(--fs)*1.85);line-height:1.6;letter-spacing:.06em}
 .brsm{display:block}
 .hero h1 .ln{display:block;overflow:hidden}
 .hero h1 .ln i{display:block;font-style:normal;transform:translateY(110%);animation:riseUp 1.4s var(--ease) forwards}
@@ -121,14 +130,14 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 .rule{width:0;height:1px;background:var(--gold);margin:26px 0 20px;animation:ruleGrow 1.3s var(--ease) .8s forwards}
 @keyframes ruleGrow{to{width:88px}}
 .hero .lead{font-family:var(--serif);color:var(--gold);letter-spacing:.12em;
-  font-size:clamp(14px,3.9vw,20px);margin:0 0 22px;opacity:0;animation:fadeUp 1.1s var(--ease) 1s forwards}
-.hero .sub{color:var(--ink-soft);font-size:clamp(12.5px,3.3vw,15.5px);line-height:2.45;margin:0;
+  font-size:calc(var(--fs)*1.25);margin:0 0 22px;opacity:0;animation:fadeUp 1.1s var(--ease) 1s forwards}
+.hero .sub{color:var(--ink-soft);font-size:var(--fs);line-height:2.45;margin:0;
   opacity:0;animation:fadeUp 1.1s var(--ease) 1.2s forwards}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* 挿絵はほぼ正方形（本を抱く赤ちゃん・669x595）。高さ基準ではなく幅基準で置く。
    縦長の女性の絵に戻すことはないので、height:92% 方式は復活させないこと。 */
-.hero-figure{position:absolute;right:-1%;top:36%;bottom:auto;width:54%;max-width:none;z-index:3;margin:0;
+.hero-figure{position:absolute;right:-1%;top:34%;bottom:auto;width:48%;max-width:none;z-index:3;margin:0;
   opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
 /* 下端のフェード（mask-image）は、画面外へ抜けていく女性の絵のためのものだった。
    いまの絵は空中に浮いている赤ちゃんなので、足がぼけて消えると意図が壊れる。使わない。 */
@@ -153,7 +162,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 @keyframes flowRight{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
 
 .floatword{position:absolute;z-index:4;font-family:var(--serif);color:var(--gold);
-  font-size:clamp(10px,2.6vw,14px);letter-spacing:.5em;opacity:0}
+  font-size:calc(var(--fs)*.85);letter-spacing:.5em;opacity:0}
 .floatword.a{right:5%;top:14%;animation:fw 1.5s var(--ease) 1.6s forwards,bob 7s ease-in-out 3s infinite}
 .floatword.b{right:34%;top:44%;animation:fw 1.5s var(--ease) 1.9s forwards,bob 9s ease-in-out 3s infinite;display:none}
 .floatword.c{right:8%;top:62%;animation:fw 1.5s var(--ease) 2.1s forwards,bob 8s ease-in-out 3s infinite}
@@ -163,7 +172,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 
 .scrollcue{display:none;position:absolute;left:clamp(14px,3vw,34px);bottom:0;z-index:5;
   flex-direction:column;align-items:center;gap:14px;opacity:0;animation:fadeUp 1.1s var(--ease) 2s forwards}
-.scrollcue span{font-family:var(--latin);font-size:11px;letter-spacing:.4em;color:var(--gold);writing-mode:vertical-rl}
+.scrollcue span{font-family:var(--latin);font-size:calc(var(--fs)*.7);letter-spacing:.4em;color:var(--gold);writing-mode:vertical-rl}
 .scrollcue i{display:block;width:1px;height:78px;background:var(--line);position:relative;overflow:hidden}
 .scrollcue i::after{content:"";position:absolute;top:-40%;left:0;width:1px;height:40%;background:var(--gold);
   animation:cue 2.4s ease-in-out infinite}
@@ -188,12 +197,12 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 /* ---------- shared ---------- */
 section{position:relative;z-index:2}
 .wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,13vw,150px) var(--gut)}
-.eyebrow{font-family:var(--latin);font-size:12px;letter-spacing:.4em;color:var(--gold);
+.eyebrow{font-family:var(--latin);font-size:var(--fs);letter-spacing:.4em;color:var(--gold);
   display:flex;align-items:center;gap:14px;margin:0 0 18px}
 .eyebrow::after{content:"";flex:0 0 42px;height:1px;background:var(--line)}
 h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
-  font-size:clamp(21px,5.6vw,38px);line-height:1.7;letter-spacing:.07em}
-.muted{color:var(--ink-soft);font-size:clamp(13.5px,3.5vw,15px);line-height:2.3}
+  font-size:calc(var(--fs)*1.75);line-height:1.7;letter-spacing:.07em}
+.muted{color:var(--ink-soft);font-size:var(--fs);line-height:2.3}
 .reveal{opacity:0;transform:translateY(26px);
   transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
 .reveal.in{opacity:1;transform:none}
@@ -251,13 +260,13 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .scene.in .copy > *:nth-child(2){transition-delay:.44s}
 .scene.in .copy > *:nth-child(3){transition-delay:.58s}
 .scene.in .copy > *:nth-child(4){transition-delay:.72s}
-.num{font-family:var(--latin);font-size:12px;letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
+.num{font-family:var(--latin);font-size:var(--fs);letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
 .scene h3{font-family:var(--serif);font-weight:500;margin:0;
-  font-size:clamp(20px,5.6vw,31px);letter-spacing:.07em}
-.scene h3 small{display:block;font-family:var(--latin);font-size:11.5px;letter-spacing:.3em;
+  font-size:calc(var(--fs)*1.5);letter-spacing:.07em}
+.scene h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spacing:.3em;
   color:var(--gold);margin-top:9px;font-weight:400}
 .scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;
-  font-size:clamp(14.5px,3.9vw,18px);margin:16px 0 12px}
+  font-size:calc(var(--fs)*1.1);margin:16px 0 12px}
 
 .cards{display:grid;gap:18px;margin-top:14px}
 .card{background:var(--paper-2);border:1px solid var(--line-2);padding:0 0 26px;overflow:hidden;
@@ -268,9 +277,9 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 .card .strip img.deco{width:170%;height:auto;object-fit:cover}
 .card:hover .strip img{transform:scale(1.07)}
 .card .body{padding:22px clamp(18px,5vw,28px) 0}
-.card h4{font-family:var(--serif);font-weight:500;font-size:17px;letter-spacing:.07em;margin:0 0 5px}
-.card .en{font-family:var(--latin);font-size:11px;letter-spacing:.26em;color:var(--gold);margin-bottom:12px}
-.card p{font-size:13.5px;line-height:2.1;color:var(--ink-soft);margin:0}
+.card h4{font-family:var(--serif);font-weight:500;font-size:calc(var(--fs)*1.2);letter-spacing:.07em;margin:0 0 5px}
+.card .en{font-family:var(--latin);font-size:var(--fs);letter-spacing:.26em;color:var(--gold);margin-bottom:12px}
+.card p{font-size:var(--fs);line-height:2.1;color:var(--ink-soft);margin:0}
 
 /* ---------- 02 業務自動化相談（鹿威し）----------
    この項目だけ挿絵が横長なので、縦長前提の寸法だと小さく沈み、
@@ -283,7 +292,7 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
 /* ---------- about ---------- */
 #about{background:var(--paper-3)}
 .about-grid{display:grid;gap:clamp(28px,7vw,80px)}
-table.info{width:100%;border-collapse:collapse;font-size:13.5px}
+table.info{width:100%;border-collapse:collapse;font-size:var(--fs)}
 table.info th,table.info td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
 table.info th{font-weight:400;color:var(--gold);font-family:var(--serif);letter-spacing:.1em;
   width:6.5em;padding-right:14px}
@@ -295,7 +304,7 @@ table.info td{color:var(--ink-2);line-height:2.05}
 #contact .eyebrow{justify-content:center}
 .contact-seal{width:min(82vw,400px);margin:0 auto 14px}
 .mail{display:inline-flex;align-items:center;font-family:var(--latin);
-  font-size:clamp(17px,5.2vw,30px);letter-spacing:.1em;word-break:break-all;
+  font-size:calc(var(--fs)*1.25);letter-spacing:.1em;word-break:break-all;
   border-bottom:1px solid var(--line);padding:9px 4px;
   transition:color .5s var(--ease),border-color .5s var(--ease)}
 .mail:hover{color:var(--gold);border-color:var(--gold)}
@@ -303,10 +312,10 @@ table.info td{color:var(--ink-2);line-height:2.05}
 /* ---------- footer ---------- */
 footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;position:relative;z-index:2}
 .foot-in{max-width:var(--max);margin:0 auto;display:grid;gap:26px}
-.fl{font-family:var(--latin);letter-spacing:.3em;font-size:15px}
-.fr{font-size:11.5px;letter-spacing:.1em;color:rgba(247,244,236,.6)}
+.fl{font-family:var(--latin);letter-spacing:.3em;font-size:var(--fs)}
+.fr{font-size:var(--fs);letter-spacing:.1em;color:rgba(247,244,236,.6)}
 .foot-nav{display:flex;flex-wrap:wrap;gap:18px;list-style:none;margin:0;padding:0;
-  font-size:12px;letter-spacing:.16em}
+  font-size:var(--fs);letter-spacing:.16em}
 .foot-nav a{color:rgba(247,244,236,.78);transition:color .4s}
 .foot-nav a:hover{color:var(--gold-2)}
 
@@ -314,7 +323,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
    ≥ 600px
    ========================================================= */
 @media (min-width:600px){
-  .cards{grid-template-columns:1fr 1fr;gap:22px}
+  /* 600〜899pxは1列のまま。基準文字が27pxなので2列だと1行10文字しか入らない（2026-09-07） */
   .floatword.b,.floatword.d{display:block}
   .hero-figure{width:46%;right:-2%}
 }
@@ -323,7 +332,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
    ≥ 900px  (desktop)
    ========================================================= */
 @media (min-width:900px){
-  body{font-size:15.5px}
   header{padding:22px var(--gut)}
   header.scrolled{padding:12px var(--gut)}
   .brand .brandmark{width:82px}
@@ -331,11 +339,12 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .menu-btn{display:none}
   nav{position:static;width:auto;background:none;transform:none;box-shadow:none;display:block}
   nav ul{flex-direction:row;gap:clamp(18px,2.6vw,40px)}
-  nav a{font-size:14px;letter-spacing:.22em}
+  nav a{font-size:calc(var(--fs)*.8);letter-spacing:.22em}
 
   .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
-  .hero h1{line-height:1.55;letter-spacing:.09em}
+  .hero h1{font-size:calc(var(--fs)*2.2);line-height:1.55;letter-spacing:.09em}
   .hero-inner{max-width:var(--max)}
+  .hero .sub{max-width:52%}
   .hero::after{z-index:4}
   .hero-figure{width:min(40vw,560px);max-width:none;height:auto;right:1.5%;top:auto;bottom:5%;
     -webkit-mask-image:none;mask-image:none;
@@ -354,7 +363,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .origin{border-left:1px solid var(--line);padding-left:clamp(18px,4.5vw,36px)}
   .origin .kanji{margin:0 0 20px;max-width:min(54vw,240px)}
   .about-grid{grid-template-columns:1fr 1fr}
-  table.info{font-size:14.5px}
   table.info th{width:9em}
 
   .scene{min-height:clamp(620px,62vw,840px);align-content:center;padding-top:0}
@@ -374,7 +382,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
    ≥ 1200px
    ========================================================= */
 @media (min-width:1200px){
-  .cards{grid-template-columns:repeat(4,1fr)}
+  /* 最小文字が27pxになったので4列だと1行8文字しか入らない。2列で組む（2026-09-07） */
+  .cards{grid-template-columns:1fr 1fr;gap:clamp(22px,2.4vw,34px)}
 }
 
 @media (prefers-reduced-motion:reduce){
