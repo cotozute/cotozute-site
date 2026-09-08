@@ -137,7 +137,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
 
 /* 挿絵はほぼ正方形（本を抱く赤ちゃん・669x595）。高さ基準ではなく幅基準で置く。
    縦長の女性の絵に戻すことはないので、height:92% 方式は復活させないこと。 */
-.hero-figure{position:absolute;right:-1%;top:34%;bottom:auto;width:48%;max-width:none;z-index:3;margin:0;
+.hero-figure{position:absolute;right:-1%;top:29%;bottom:auto;width:48%;max-width:none;z-index:3;margin:0;
   opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
 /* 下端のフェード（mask-image）は、画面外へ抜けていく女性の絵のためのものだった。
    いまの絵は空中に浮いている赤ちゃんなので、足がぼけて消えると意図が壊れる。使わない。 */
@@ -184,8 +184,9 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
   /* 赤ちゃんの頭が見出し「心で伝えるコト」の右斜め上に来る位置に置いている（2026-09-07 指定）。
      top を % で持たせているのは、.hero が align-content:center で本文を縦中央に置くため、
      本文の位置が hero の高さに比例して動くから。min-height を変えると位置がずれる。 */
-  .hero{min-height:100svh;padding:112px var(--gut) 0}
+  .hero{min-height:78svh;padding:104px var(--gut) 0}
   #message > .wrap{padding-top:clamp(26px,7vw,48px)}
+  #service > .wrap{padding-top:clamp(26px,7vw,48px)}
 }
 /* 600〜899pxは横に余白があるので、絵は右・本文は左の二段組みにする。
    説明文だけ幅を絞らないと、文末が赤ちゃんの体に潜って読めなくなる。 */
