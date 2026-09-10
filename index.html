@@ -203,7 +203,7 @@ nav a:hover::after{transform:scaleX(1);transform-origin:left}
    説明文だけ幅を絞らないと、文末が赤ちゃんの体に潜って読めなくなる。 */
 @media (min-width:600px) and (max-width:899px){
   .hero{min-height:80svh}
-  .hero .sub{max-width:50%}
+  /* .hero .sub{max-width:50%}  ← 挿絵を戻すとき一緒に戻す（2026-09-10 に外した） */
 }
 
 /* ---------- shared ---------- */
@@ -356,7 +356,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
   .hero h1{font-size:calc(var(--fs)*2.2);line-height:1.55;letter-spacing:.09em}
   .hero-inner{max-width:var(--max)}
-  .hero .sub{max-width:52%}
+  /* .hero .sub{max-width:52%}  ← 挿絵を戻すとき一緒に戻す（2026-09-10 に外した） */
   .hero::after{z-index:4}
   .hero-figure{width:min(40vw,560px);max-width:none;height:auto;right:1.5%;top:auto;bottom:5%;
     -webkit-mask-image:none;mask-image:none;
@@ -555,15 +555,20 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 
 <!-- ==================== HERO ==================== -->
 <section class="hero" id="top">
-  <!-- トップの挿絵：和綴じの本を抱いて眠る赤ちゃん（2026-09-07）。
-       着物の女性 → 鳩を放つ少年 → 本を抱く赤ちゃん、と差し替えてきた3代目。
-       静止画を先に出し、load後に hero-anim*.webp（4.16秒ループ）へ差し替える。 -->
+  <!-- ★トップの挿絵（本を抱いて眠る赤ちゃん）は 2026-09-10 に外した。「また戻すかもしれない」との事。
+       戻すときはこの4点セットを復活させる：
+         (1) 下の <figure> をコメント解除
+         (2) 「静止画→アニメWebP差し替え」のJS（inline script 内。同じ日付のコメントで場所を残してある）
+         (3) .hero .sub の max-width（600〜899px と 900px以上。赤ちゃんの下へ文が潜るのを防ぐためのもの）
+         (4) パララックスJSは #hf の存在ガード付きなので、markupを戻せば自動で効く
+       .hero-figure のCSSと assets/hero*.webp はそのまま残してある。
   <figure class="hero-figure" id="hf">
     <img src="assets/hero-sm.webp"
          srcset="assets/hero-sm.webp 400w, assets/hero.webp 669w"
          sizes="(min-width:900px) 560px, 58vw"
          alt="" width="669" height="595" fetchpriority="high" decoding="async">
   </figure>
+  -->
 
   <!-- テック演出レイヤー（画像なし・canvas） -->
   <canvas class="cz-tech cz-tech--back"  id="czTechBack"  aria-hidden="true"></canvas>
@@ -922,7 +927,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     }
   }
 
-  /* 静止画 → アニメWebP の差し替え（load後・reduce時はしない） */
+  /* ★静止画→アニメWebPの差し替えは 2026-09-10 に停止（トップの挿絵を外したため）。
+     挿絵を戻すときはこのブロックのコメントを解除する。assets/hero-anim*.webp は残してある。
   if(!reduce){
     (function(){
       var img = document.querySelector('.hero-figure img');
@@ -941,6 +947,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
       else { window.addEventListener('load', function(){ setTimeout(swap, 400); }); }
     })();
   }
+  */
 
   /* hero parallax (pointer devices only) */
   if(!reduce && document.getElementById('hf') && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
