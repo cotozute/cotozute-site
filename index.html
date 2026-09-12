@@ -298,7 +298,7 @@ h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
    スマホでは --overlap に飲み込まれて文字の下へ完全に隠れる。
    この項目にだけ寸法と重なり量を持たせる。 ---------- */
 .scene.wide{--overlap:clamp(56px,16vw,96px)}
-@media(min-width:900px){ .scene.wide .art{--aw:clamp(340px,52vw,560px);--ax:4%} }
+@media(min-width:900px){ .scene.wide{--art-w:clamp(340px,52vw,560px);--art-off:4%} }
 @media(max-width:899px){ .scene.wide .art{width:min(96%,380px);margin:0 0 0 -6%} }
 
 /* ---------- about ---------- */
@@ -377,10 +377,15 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .about-grid{grid-template-columns:1fr 1fr}
   table.info th{width:9em}
 
-  .scene{min-height:clamp(620px,62vw,840px);align-content:center;padding-top:0}
-  .art{--aw:clamp(300px,44vw,540px);--ax:7%}
+  /* PCは「文字の段」と「挿絵の段」を分ける。挿絵の幅と位置を --art-w / --art-off の
+     1か所で持ち、.art と .copy の両方がそれを見る。文字は挿絵の手前で必ず折り返すので、
+     どのセクションでも文字がキャラクターの顔に重ならない（2026-09-12） */
+  .scene{min-height:clamp(620px,62vw,840px);align-content:center;padding-top:0;
+    --art-w:clamp(300px,44vw,540px);--art-off:7%;--art-gap:clamp(20px,3vw,48px)}
+  .art{--aw:var(--art-w);--ax:var(--art-off)}
   .scene.alt .art{right:auto;left:var(--ax)}
-  .copy{--cw:41em}
+  .copy{--cw:41em;
+    max-width:min(var(--cw),calc(100% - var(--art-off) - var(--art-w) - var(--art-gap)))}
   .scene.alt .copy{margin-left:auto}
   .spark.s1{right:10%;top:12%}
   .spark.s3{right:24%;bottom:18%}
