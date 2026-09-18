@@ -51,8 +51,14 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;op
   font-size:12px;letter-spacing:.14em;padding:4px 12px calc(4px + env(safe-area-inset-bottom,0px));border-top-right-radius:6px;pointer-events:none}
 
 /* ---------- header ---------- */
+/* ★backdrop-filter を header 本体に付けると、中の固定配置メニュー（nav）の基準が header の高さに
+   閉じ込められてスマホのメニューが潰れる。ぼかしは ::before に逃がす。 */
 header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:calc(10px + env(safe-area-inset-top,0px)) var(--gut) 10px;background:rgba(247,244,236,.86);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line-2)}
+  padding:calc(10px + env(safe-area-inset-top,0px)) var(--gut) 10px}
+header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(247,244,236,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line-2)}
+.nav-shade{position:fixed;inset:0;z-index:99;background:rgba(30,42,68,.28);opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
+.nav-shade.on{opacity:1;pointer-events:auto}
+@media (min-width:900px){.nav-shade{display:none}}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .brand svg{width:40px;height:auto;display:block}
 .brand b{font-family:var(--latin);font-weight:500;letter-spacing:.3em;font-size:var(--fs);color:var(--ink-2)}
@@ -405,6 +411,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
     <feComposite id="skMix" in="SourceGraphic" in2="pencilA" operator="arithmetic" k1="0" k2="1" k3="0" k4="0"/>
   </filter>
 </svg>
+<div class="nav-shade" id="navShade" aria-hidden="true"></div>
 <div id="butai" aria-hidden="true"><div class="dai" id="dai"></div></div>
 
 <main id="pages">
@@ -679,8 +686,14 @@ var skMix=document.getElementById('skMix'), skT=document.getElementById('skT');
 var mb=document.getElementById('mb'), nv=document.getElementById('nv');
 function routeOf(){ var h=location.hash.replace(/^#/,''); return pages[h]?h:'/'; }
 function markNav(r){ document.querySelectorAll('nav a').forEach(function(a){ if(a.dataset.route===r) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
-function closeNav(){ nv.classList.remove('open'); mb.classList.remove('open'); mb.setAttribute('aria-expanded','false'); }
-mb.addEventListener('click',function(){ var o=nv.classList.toggle('open'); mb.classList.toggle('open',o); mb.setAttribute('aria-expanded',o); });
+var shade=document.getElementById('navShade');
+function closeNav(){ nv.classList.remove('open'); mb.classList.remove('open'); mb.setAttribute('aria-expanded','false'); shade.classList.remove('on'); }
+mb.addEventListener('click',function(){ var o=nv.classList.toggle('open'); mb.classList.toggle('open',o); mb.setAttribute('aria-expanded',o); shade.classList.toggle('on',o); });
+shade.addEventListener('click',closeNav);
+addEventListener('keydown',function(e){ if(e.key==='Escape') closeNav(); });
+if('scrollRestoration' in history) history.scrollRestoration='manual';
+var pending=null; /* 遷移中に「戻る／進む」が来たら、終わってから追いかける */
+function settle(){ busy=false; var r=pending; pending=null; if(r!==null && pages[r]!==cur) show(r,true); }
 
 function sketch(a){ /* 0=元の絵 1=鉛筆の線画 */
   skMix.setAttribute('k2',(1-a).toFixed(3)); skMix.setAttribute('k3',a.toFixed(3));
@@ -702,38 +715,37 @@ function show(r, animate){
   if(reduce){ TA=150; TB=420; TC=200; }
   old.classList.add('sk'); next.classList.add('sk');
   butai.classList.add('on'); washi.classList.add('on');
-  var t0=performance.now(), slid=false;
+  var t0=performance.now(), slid=false, cleaned=false;
+  function slideStart(){ slid=true; sketch(1); washi.style.opacity='1';
+    old.classList.add('leaving'); old.style.top=(-y)+'px';
+    next.hidden=false; window.scrollTo(0,0); onPageShown(next); rustle(TB/1000); }
+  function cleanup(){ cleaned=true; old.hidden=true; old.classList.remove('leaving','sk'); old.style.top=''; old.style.transform=''; }
+  /* ★1コマが重くて段階を飛び越えても、必ず「抜き始め」「後片付け」を通す（通らないと古いページが画面に残る） */
   (function f(now){
     now=now||performance.now(); var t=now-t0; boilTick(now);
-    if(t<TA){ var a=ease3(t/TA); sketch(a); washi.style.opacity=a.toFixed(3); }
-    else if(t<TA+TB){
-      if(!slid){ slid=true; sketch(1); washi.style.opacity='1';
-        old.classList.add('leaving'); old.style.top=(-y)+'px';
-        next.hidden=false; window.scrollTo(0,0); onPageShown(next); rustle(TB/1000);
-      }
+    if(t<TA){ var a=ease3(t/TA); sketch(a); washi.style.opacity=a.toFixed(3); requestAnimationFrame(f); return; }
+    if(!slid) slideStart();
+    if(t<TA+TB){
       /* 紙芝居の抜き方：ためて、すっと抜いて、最後は手が止まる */
       var k=(t-TA)/TB, e=k<.18? .02*(k/.18) : .02+.98*ease3((k-.18)/.82);
       old.style.transform='translate3d('+(e*108).toFixed(2)+'%,0,0) rotate('+(e*.6).toFixed(3)+'deg)';
+      requestAnimationFrame(f); return;
     }
-    else if(t<TA+TB+TC){
-      if(old.classList.contains('leaving')){ old.hidden=true; old.classList.remove('leaving','sk'); old.style.top=''; old.style.transform=''; }
-      var c=1-ease3((t-TA-TB)/TC); sketch(c); washi.style.opacity=c.toFixed(3);
-    }
-    else{
-      sketch(0); washi.style.opacity='0'; washi.classList.remove('on'); next.classList.remove('sk');
-      butai.classList.remove('on'); busy=false; return;
-    }
-    requestAnimationFrame(f);
+    if(!cleaned) cleanup();
+    if(t<TA+TB+TC){ var c=1-ease3((t-TA-TB)/TC); sketch(c); washi.style.opacity=c.toFixed(3); requestAnimationFrame(f); return; }
+    sketch(0); washi.style.opacity='0'; washi.classList.remove('on'); next.classList.remove('sk');
+    butai.classList.remove('on'); settle();
   })();
 }
 document.addEventListener('click',function(e){
   var a=e.target.closest('a[data-route]'); if(!a) return;
-  e.preventDefault(); closeNav(); if(busy) return;
+  e.preventDefault(); closeNav();
   var r=a.dataset.route;
+  if(busy){ if(pages[r]!==cur){ history.pushState(null,'','#'+r); pending=r; } return; }
   if(pages[r]===cur){ window.scrollTo({top:0,behavior:'smooth'}); return; }
   history.pushState(null,'','#'+r); show(r,true);
 });
-addEventListener('popstate',function(){ if(!busy) show(routeOf(),true); });
+addEventListener('popstate',function(){ if(busy){ pending=routeOf(); return; } show(routeOf(),true); });
 
 /* ================= G3 綴じ糸（筆ロゴの紫） =================
    ・端に着いた点では必ず縦向きに折り返す（＝画面の外へ膨らまず、端で「クッ」と折れない）
@@ -975,6 +987,8 @@ function observeNj(p){ p.querySelectorAll('.nj').forEach(function(n){ if(n.datas
 /* ================= 本番と同じ：イントロと本文ロゴの筆書き ================= */
   /* intro : ロゴを筆で書き上げてから閉じる（描画3.5秒＋英字0.8秒＋余韻） */
   var intro = document.getElementById('intro');
+  /* イントロはトップを開いたときだけ。ほかのページを直接開いたときは出さない */
+  if(location.hash && location.hash!=='#/' && location.hash!=='#'){ intro.classList.add('done'); intro.style.display='none'; }
   var closeIntro = function(){ intro.classList.add('done'); };
   var start = function(){
     var a = document.getElementById('czlogo-a');
