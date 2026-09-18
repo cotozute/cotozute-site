@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>COTOZUTE（ステージング）</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="言伝心　ことづて「心で伝えるコト」（ステージング・確認用）">
+<meta name="theme-color" content="#F7F4EC">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/cz-tech.css">
+<style>
+/* =========================================================
+   COTOZUTE ステージング — mobile first
+   文言はすべて本番 cotozute.com（GitHub HEAD 49a41e1）からそのまま転記。
+   ギミック：G1 墨流し / G2 にじみ / G3 綴じ糸 / G7 鹿威し / G10 紙芝居（めくり）
+   ========================================================= */
+:root{
+  --paper:#F7F4EC; --paper-2:#FCFAF6; --paper-3:#F1ECE1; --paper-back:#EDE4D1;
+  --ink:#1E2A44; --ink-2:#2E3B58; --ink-soft:#5A6580;
+  --gold:#AE8742; --gold-2:#C9A868; --gold-3:#E4D3AC;
+  --wood:#6B4A2E; --wood-2:#8C6440;
+  --shi-1:#7A5FAE; --shi-2:#A88FD6; --shi-3:#E6A9CB;   /* 筆ロゴの紫 */
+  --line:rgba(174,135,66,.30); --line-2:rgba(30,42,68,.10);
+  --serif:"Shippori Mincho B1",'Hiragino Mincho ProN','Yu Mincho',serif;
+  --latin:"Cormorant Garamond","Shippori Mincho B1",serif;
+  --sans:"Zen Kaku Gothic New",'Hiragino Sans','Yu Gothic',sans-serif;
+  --ease:cubic-bezier(.22,.68,.24,1);
+  --max:1180px;
+  --gut:clamp(20px,5.5vw,40px);
+  --fs:clamp(15px,4.1vw,27px);
+  color-scheme:light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
+  line-height:1.95;font-size:var(--fs);letter-spacing:.045em;-webkit-font-smoothing:antialiased;overflow-x:clip}
+img{max-width:100%;display:block;height:auto}
+a{color:inherit}
+p{margin:0 0 1.15em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.3;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply}
+
+.stg{position:fixed;left:0;bottom:0;z-index:150;background:var(--ink);color:var(--paper);
+  font-size:12px;letter-spacing:.14em;padding:4px 12px calc(4px + env(safe-area-inset-bottom,0px));border-top-right-radius:6px;pointer-events:none}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:calc(10px + env(safe-area-inset-top,0px)) var(--gut) 10px;background:rgba(247,244,236,.86);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line-2)}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand svg{width:40px;height:auto;display:block}
+.brand b{font-family:var(--latin);font-weight:500;letter-spacing:.3em;font-size:var(--fs);color:var(--ink-2)}
+.hd-r{display:flex;align-items:center;gap:6px}
+.snd{background:none;border:1px solid var(--line);padding:4px 10px;font-size:13px;letter-spacing:.1em;cursor:pointer;color:var(--ink-2);line-height:1.6}
+.snd[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.menu-btn{background:none;border:0;padding:10px;cursor:pointer;position:relative;z-index:110}
+.menu-btn span{display:block;width:24px;height:1px;background:var(--ink);margin:6px 0;transition:.4s var(--ease)}
+.menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+nav{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--paper-2);transform:translateX(100%);
+  transition:transform .6s var(--ease);display:flex;align-items:center;justify-content:center;box-shadow:-24px 0 70px -50px #000;z-index:105}
+nav.open{transform:none}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:28px;text-align:center}
+nav a{text-decoration:none;font-family:var(--latin);font-size:calc(var(--fs)*1.1);letter-spacing:.24em;color:var(--ink-2);display:block}
+nav a[aria-current="page"]{color:var(--gold)}
+@media (min-width:900px){
+  .menu-btn{display:none}
+  nav{position:static;transform:none;width:auto;background:none;box-shadow:none;display:block}
+  nav ul{flex-direction:row;gap:30px}
+  nav a{font-size:16px}
+}
+
+/* ---------- G10 紙芝居：めくり ---------- */
+#pages{position:relative}
+.page{position:relative;background:var(--paper);min-height:100svh}
+.page[hidden]{display:none!important}
+.page.leaving{position:fixed;left:0;right:0;z-index:120;will-change:clip-path}
+#butai{position:fixed;inset:0;z-index:130;pointer-events:none;opacity:0;transition:opacity .3s ease}
+#butai.on{opacity:1}
+#butai::before{content:"";position:absolute;inset:0;border:clamp(10px,2.4vw,22px) solid var(--wood);
+  box-shadow:inset 0 0 0 2px var(--wood-2),inset 0 0 30px rgba(40,20,5,.45)}
+#butai::after{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:min(40vw,220px);height:clamp(16px,3vw,28px);
+  background:var(--wood);border-radius:0 0 50% 50%/0 0 100% 100%}
+#butai .dai{position:absolute;left:50%;top:clamp(26px,4.5vw,40px);transform:translateX(-50%);font-family:var(--latin);
+  background:var(--paper-2);padding:4px 22px;border:1px solid var(--gold);letter-spacing:.34em;color:var(--ink-2);font-size:var(--fs);white-space:nowrap}
+
+/* ---------- shared ---------- */
+.wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,12vw,130px) var(--gut);position:relative;z-index:2}
+.page-top{padding-top:calc(110px + env(safe-area-inset-top,0px))}
+.eyebrow{font-family:var(--latin);font-size:var(--fs);letter-spacing:.4em;color:var(--gold);display:flex;align-items:center;gap:14px;margin:0 0 18px}
+.eyebrow::after{content:"";flex:0 0 42px;height:1px;background:var(--line)}
+h1,h2,h3,h4{text-wrap:balance}
+h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;font-size:calc(var(--fs)*1.75);line-height:1.7;letter-spacing:.07em}
+h3{font-family:var(--serif);font-weight:500;font-size:calc(var(--fs)*1.35);line-height:1.6;letter-spacing:.06em;margin:0 0 10px}
+h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spacing:.3em;color:var(--gold);margin-top:2px}
+.muted{color:var(--ink-soft);line-height:2.3}
+.next{display:inline-flex;align-items:center;gap:14px;text-decoration:none;font-family:var(--latin);letter-spacing:.3em;
+  border:1px solid var(--ink-2);padding:12px 26px;color:var(--ink);background:var(--paper-2);transition:background .4s var(--ease),color .4s var(--ease),box-shadow .8s var(--ease)}
+.next:hover{background:var(--ink);color:var(--paper)}
+.next::after{content:"";width:28px;height:1px;background:currentColor}
+.next.tied{box-shadow:0 0 0 5px rgba(168,143,214,.22),0 0 24px rgba(168,143,214,.35)}
+.page-end{margin-top:clamp(40px,8vw,80px)}
+
+/* ---------- G3 綴じ糸（筆ロゴの紫） ---------- */
+.thread{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:1;overflow:visible}
+.thread .t-glow{fill:none;stroke-width:6;stroke-linecap:round;opacity:.12;filter:blur(1.5px)}
+.thread .t-main{fill:none;stroke-width:1.7;stroke-linecap:round;opacity:.72}
+
+/* ---------- 本番と同じ：筆ロゴ・イントロ・ヒーロー（cotozute.com から転記） ---------- */
+/* ---------- 筆ロゴアニメーション ---------- */
+.cz-logo{display:block;width:100%;height:auto}
+.cz-logo .cz-s{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--l);stroke-dashoffset:var(--l)}
+.cz-logo .cz-word{opacity:0;transform-box:fill-box;transform-origin:center}
+.cz-logo.go .cz-s{animation:czDraw calc(var(--d)*var(--speed,1)) cubic-bezier(.42,.02,.52,1) calc(var(--t)*var(--speed,1)) forwards}
+.cz-logo.go .cz-word{animation:czFade calc(.8s*var(--speed,1)) ease-out calc(3.6s*var(--speed,1)) forwards}
+.cz-logo.done .cz-s{stroke-dashoffset:0}
+.cz-logo.done .cz-word{opacity:1}
+@keyframes czDraw{to{stroke-dashoffset:0}}
+@keyframes czFade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.cz-R1{--l:66;--d:0.089s;--t:0.000s;stroke-width:36}
+.cz-R2{--l:219;--d:0.187s;--t:0.117s;stroke-width:37}
+.cz-R3{--l:1042;--d:0.492s;--t:0.331s;stroke-width:39}
+.cz-R4{--l:106;--d:0.119s;--t:0.851s;stroke-width:41}
+.cz-B0{--l:40;--d:0.065s;--t:1.045s;stroke-width:55}
+.cz-B1{--l:327;--d:0.240s;--t:1.110s;stroke-width:45}
+.cz-B2{--l:243;--d:0.200s;--t:1.425s;stroke-width:39}
+.cz-Y1{--l:111;--d:0.123s;--t:1.709s;stroke-width:41}
+.cz-M1{--l:285;--d:0.220s;--t:1.902s;stroke-width:42}
+.cz-O1{--l:368;--d:0.258s;--t:2.197s;stroke-width:42}
+.cz-O2{--l:197;--d:0.175s;--t:2.483s;stroke-width:44}
+.cz-P1{--l:752;--d:0.402s;--t:2.738s;stroke-width:54}
+.cz-T1{--l:421;--d:0.280s;--t:3.220s;stroke-width:49}
+
+/* ---------- intro ---------- */
+#intro{position:fixed;inset:0;z-index:200;background:var(--paper);display:grid;place-items:center;
+  transition:opacity .9s var(--ease),visibility .9s;cursor:pointer}
+#intro .cz-logo{width:min(42vw,175px)}
+#intro.done{opacity:0;visibility:hidden}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:100svh;display:grid;align-content:center;
+  padding:112px var(--gut) 110px;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(102deg,rgba(247,244,236,.55) 0%,rgba(247,244,236,.34) 30%,rgba(247,244,236,0) 62%)}
+.hero-inner{position:relative;z-index:5;width:100%;max-width:var(--max);margin:0 auto}
+.hero h1{font-family:var(--serif);font-weight:500;margin:0;
+  font-size:calc(var(--fs)*1.85);line-height:1.6;letter-spacing:.06em}
+.brsm{display:block}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln i{display:block;font-style:normal;transform:translateY(110%);animation:riseUp 1.4s var(--ease) forwards}
+.hero h1 .ln:nth-child(2) i{animation-delay:.16s}
+.hero h1 .ln.s2{font-size:clamp(15px,4.1vw,27px);letter-spacing:.09em;line-height:1.95;margin-top:.55em}
+@keyframes riseUp{to{transform:translateY(0)}}
+.rule{width:0;height:1px;background:var(--gold);margin:26px 0 20px;animation:ruleGrow 1.3s var(--ease) .8s forwards}
+@keyframes ruleGrow{to{width:88px}}
+.hero .lead{font-family:var(--serif);color:var(--gold);letter-spacing:.12em;
+  font-size:calc(var(--fs)*1.25);margin:0 0 22px;opacity:0;animation:fadeUp 1.1s var(--ease) 1s forwards}
+.hero .sub{color:var(--ink-soft);font-size:var(--fs);line-height:2.45;margin:0;
+  opacity:0;animation:fadeUp 1.1s var(--ease) 1.2s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+
+/* 挿絵はほぼ正方形（本を抱く赤ちゃん・669x595）。高さ基準ではなく幅基準で置く。
+   縦長の女性の絵に戻すことはないので、height:92% 方式は復活させないこと。 */
+.hero-figure{position:absolute;right:-1%;top:29%;bottom:auto;width:48%;max-width:none;z-index:3;margin:0;
+  opacity:0;animation:heroInSm 1.8s var(--ease) .5s forwards;will-change:transform}
+/* 下端のフェード（mask-image）は、画面外へ抜けていく女性の絵のためのものだった。
+   いまの絵は空中に浮いている赤ちゃんなので、足がぼけて消えると意図が壊れる。使わない。 */
+.hero-figure img{width:100%;height:auto;display:block}
+@keyframes heroInSm{from{opacity:0;transform:translateX(38px)}to{opacity:1;transform:none}}
+@media (max-width:359px){.hero-figure{width:60%;right:-2%}}
+
+.seal{position:absolute;right:-12%;top:15%;width:64vw;max-width:300px;z-index:1;
+  opacity:0;animation:sealIn 2.2s var(--ease) .9s forwards}
+.seal img{animation:spinSlow 100s linear infinite}
+@keyframes sealIn{to{opacity:.7}}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+.wave{position:absolute;pointer-events:none;z-index:1;opacity:0;overflow:hidden}
+.wave .wtrack{display:flex;width:200%;will-change:transform}
+.wave .wtrack img{flex:0 0 50%;width:50%}
+.wave.w1{left:-16%;width:132%;bottom:4%;animation:waveIn 1.8s var(--ease) 1.1s forwards}
+.wave.w1 .wtrack{animation:flowRight 15s linear infinite}
+.wave.w2{left:-24%;width:140%;bottom:26%;animation:waveIn 1.8s var(--ease) 1.35s forwards}
+.wave.w2 .wtrack{animation:flowRight 24s linear infinite}
+@keyframes waveIn{to{opacity:.85}}
+@keyframes flowRight{from{transform:translate3d(-50%,0,0)}to{transform:translate3d(0,0,0)}}
+
+.floatword{position:absolute;z-index:4;font-family:var(--serif);color:var(--gold);
+  font-size:calc(var(--fs)*.85);letter-spacing:.5em;opacity:0}
+.floatword.a{right:5%;top:14%;animation:fw 1.5s var(--ease) 1.6s forwards,bob 7s ease-in-out 3s infinite}
+.floatword.b{right:34%;top:44%;animation:fw 1.5s var(--ease) 1.9s forwards,bob 9s ease-in-out 3s infinite;display:none}
+.floatword.c{right:8%;top:62%;animation:fw 1.5s var(--ease) 2.1s forwards,bob 8s ease-in-out 3s infinite}
+.floatword.d{right:40%;top:78%;animation:fw 1.5s var(--ease) 2.4s forwards,bob 10s ease-in-out 3s infinite;display:none}
+@keyframes fw{to{opacity:.72}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+.scrollcue{display:none;position:absolute;left:clamp(14px,3vw,34px);bottom:0;z-index:5;
+  flex-direction:column;align-items:center;gap:14px;opacity:0;animation:fadeUp 1.1s var(--ease) 2s forwards}
+.scrollcue span{font-family:var(--latin);font-size:calc(var(--fs)*.7);letter-spacing:.4em;color:var(--gold);writing-mode:vertical-rl}
+.scrollcue i{display:block;width:1px;height:78px;background:var(--line);position:relative;overflow:hidden}
+.scrollcue i::after{content:"";position:absolute;top:-40%;left:0;width:1px;height:40%;background:var(--gold);
+  animation:cue 2.4s ease-in-out infinite}
+@keyframes cue{0%{top:-40%}70%,100%{top:100%}}
+
+/* スマホ：ヒーローが 100svh を確保していたため、文字の下に画面半分ぶんの
+   空白ができていた。高さは中身に任せ、MESSAGE の上余白も詰める。 */
+@media (max-width:899px){
+  /* 赤ちゃんの頭が見出し「心で伝えるコト」の右斜め上に来る位置に置いている（2026-09-07 指定）。
+     top を % で持たせているのは、.hero が align-content:center で本文を縦中央に置くため、
+     本文の位置が hero の高さに比例して動くから。min-height を変えると位置がずれる。 */
+  .hero{min-height:78svh;padding:104px var(--gut) 0}
+  #message > .wrap{padding-top:clamp(26px,7vw,48px)}
+  #service > .wrap{padding-top:clamp(26px,7vw,48px)}
+}
+/* 600〜899pxは横に余白があるので、絵は右・本文は左の二段組みにする。
+   説明文だけ幅を絞らないと、文末が赤ちゃんの体に潜って読めなくなる。 */
+@media (min-width:600px) and (max-width:899px){
+  .hero{min-height:80svh}
+  /* .hero .sub{max-width:50%}  ← 挿絵を戻すとき一緒に戻す（2026-09-10 に外した） */
+}
+
+@media (min-width:900px){
+  .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
+  .hero h1{font-size:calc(var(--fs)*2.2);line-height:1.55;letter-spacing:.09em}
+  .hero-inner{max-width:var(--max)}
+  .hero::after{z-index:4}
+  .scrollcue{display:flex}
+  .brsm{display:none}
+  .rule{margin:38px 0 26px}
+  @keyframes ruleGrow{to{width:110px}}
+}
+@media (prefers-reduced-motion:reduce){
+  .hero h1 .ln i{transform:none!important;animation:none!important}
+  .rule{width:88px;animation:none!important}
+  .hero .lead,.hero .sub,.scrollcue{opacity:1!important;animation:none!important}
+}
+
+/* ---------- message ---------- */
+.msg{display:grid;gap:clamp(30px,7vw,80px)}
+.msg .kanji{max-width:min(40vw,169px);margin:0 auto 22px}
+@media (min-width:900px){.msg{grid-template-columns:1.3fr 1fr;align-items:center}}
+
+/* ---------- G2 にじみ ---------- */
+.nj{position:relative;width:100%}
+.nj .box{position:relative;width:100%;aspect-ratio:var(--ar,4/3)}
+.nj canvas,.nj .anim{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.nj .anim{opacity:0;transition:opacity .9s ease}
+.nj.done .anim{opacity:1}
+.nj.done canvas{opacity:0;transition:opacity .9s ease .2s}
+.nj.fallback .box{-webkit-mask-image:radial-gradient(circle at var(--ox,30%) var(--oy,60%),#000 0,#000 var(--r,0%),transparent calc(var(--r,0%) + 12%));
+  mask-image:radial-gradient(circle at var(--ox,30%) var(--oy,60%),#000 0,#000 var(--r,0%),transparent calc(var(--r,0%) + 12%))}
+.nj.fallback .fb{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+
+.scenes{display:grid;gap:clamp(64px,11vw,120px);margin-top:clamp(40px,7vw,70px)}
+.scene{display:grid;gap:20px;align-items:center}
+.scene .num{font-family:var(--latin);letter-spacing:.32em;color:var(--gold)}
+.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;font-size:calc(var(--fs)*1.12)}
+.scene .copy .muted{color:var(--ink-2)}
+.art-wrap{position:relative}
+/* 本番と同じ：そろばんの読み上げ（周期15.2秒＝アニメWebPと同じ）。にじみ終わってアニメが始まった瞬間から回す */
+.art-wrap{container-type:inline-size}
+.chant{position:absolute;top:5%;right:2.5%;z-index:2;pointer-events:none;writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--serif);color:var(--ink-2);font-size:13px;font-size:3.5cqw;line-height:1.5;letter-spacing:.05em}
+.chant > span{display:block;margin-left:.55em;opacity:0;white-space:nowrap}
+.chant .tcy{display:inline;text-combine-upright:all}
+.art-wrap.go .chant > span:nth-child(1){animation:chant1 15.2s linear infinite}
+.art-wrap.go .chant > span:nth-child(2){animation:chant2 15.2s linear infinite}
+.art-wrap.go .chant > span:nth-child(3){animation:chant3 15.2s linear infinite}
+@keyframes chant1{0%{opacity:0;transform:translateY(-6px)}5.3%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant2{0%,23.7%{opacity:0;transform:translateY(-6px)}28.9%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant3{0%,47.4%{opacity:0;transform:translateY(-6px)}52.6%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@media (prefers-reduced-motion:reduce){ .art-wrap.go .chant > span{opacity:1!important;transform:none!important} }
+@media (min-width:900px){
+  .scene{grid-template-columns:1.15fr 1fr;gap:clamp(30px,5vw,70px)}
+  .scene.alt .art-wrap{order:2}
+}
+.cards{display:grid;gap:22px;margin-top:clamp(56px,9vw,100px)}
+.card{background:var(--paper-2);border:1px solid var(--line-2);overflow:hidden;position:relative;z-index:2}
+.card .nj .box{--ar:496/372;background:var(--paper-3)}
+.card .body{padding:20px 22px 24px}
+.card h4{font-family:var(--serif);font-weight:500;font-size:calc(var(--fs)*1.15);letter-spacing:.06em;margin:0}
+.card .en{font-family:var(--latin);letter-spacing:.24em;color:var(--gold);margin:0 0 8px}
+.card p{color:var(--ink-soft);line-height:2.1;margin:0}
+@media (min-width:700px){.cards{grid-template-columns:1fr 1fr}}
+
+/* ---------- G7 鹿威し（本番の挿絵をそのまま操作） ---------- */
+.shishi{position:relative}
+.shishi .box{position:relative;width:100%;aspect-ratio:560/364;cursor:pointer;touch-action:manipulation}
+.shishi canvas{position:absolute;inset:0;width:100%;height:100%}
+.shishi .kon{position:absolute;left:18%;top:52%;font-family:var(--serif);color:var(--ink-2);font-size:calc(var(--fs)*1.5);letter-spacing:.3em;opacity:0;pointer-events:none}
+.shishi .kon.go{animation:kon 1.2s ease-out}
+@keyframes kon{0%{opacity:0;transform:translateY(8px)}18%{opacity:.9;transform:none}100%{opacity:0;transform:translateY(-14px)}}
+.shishi .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:6px;font-size:14px;color:var(--ink-soft);letter-spacing:.08em}
+.shishi .ctl label{font-family:var(--serif);color:var(--ink-2)}
+.shishi input[type=range]{flex:1 1 160px;accent-color:var(--shi-1);height:28px;min-width:0}
+.shishi .cnt{font-variant-numeric:tabular-nums}
+
+/* ---------- about / contact ---------- */
+.about{display:grid;gap:clamp(30px,6vw,70px)}
+@media (min-width:900px){.about{grid-template-columns:1fr 1.5fr}}
+table.info{width:100%;border-collapse:collapse}
+table.info th,table.info td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.info th{font-weight:400;color:var(--gold);font-family:var(--serif);letter-spacing:.1em;width:7.5em;padding-right:1em}
+table.info td{color:var(--ink-2);line-height:2.05}
+.contact{display:grid;gap:30px;align-items:center}
+.contact .seal{width:min(82vw,400px);margin:0 auto}
+@media (min-width:900px){.contact{grid-template-columns:1fr 1.2fr}}
+.mail{display:inline-flex;align-items:center;font-family:var(--latin);font-size:calc(var(--fs)*1.2);letter-spacing:.08em;color:var(--ink);
+  border-bottom:1px solid var(--gold);padding-bottom:4px;text-decoration:none;word-break:break-all}
+
+footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;position:relative;z-index:2}
+.foot-in{max-width:var(--max);margin:0 auto;display:grid;gap:18px}
+.foot-in .fl{font-family:var(--latin);letter-spacing:.3em}
+.foot-in .fr{color:rgba(247,244,236,.6);letter-spacing:.1em}
+
+/* ---------- G10：紙の質感・鉛筆の線画・抜かれる紙の厚み ---------- */
+#washi{position:fixed;inset:0;z-index:125;pointer-events:none;opacity:0;display:none;mix-blend-mode:multiply;
+  background:url(assets/washi.webp) 0 0/512px 512px repeat #F4ECDD}
+#washi.on{display:block}
+.sk img,.sk .nj canvas,.sk .shishi canvas,.sk .kanji svg,.sk .seal img{filter:url(#sk)}
+.page.leaving{position:fixed;left:0;right:0;z-index:124;will-change:transform;transform-origin:0 100%;
+  box-shadow:-2px 0 0 #E9DFC8,-3px 0 0 #D2C4A2,-4px 0 0 #E6DBC2,-5px 0 0 #C7B793,-22px 0 36px -10px rgba(40,25,5,.38)}
+.thread .t-tip{fill:none;stroke-width:1.7;stroke-linecap:round}
+</style>
+</head>
+<body>
+
+
+<div class="stg">STAGING ・ 確認用（検索に出ない設定）</div>
+
+<div id="intro">
+  <svg class="cz-logo" id="czlogo-a" viewBox="358 301 559 648" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="合同会社COTOZUTE">
+    <defs>
+      <clipPath id="czc1-a"><path d="M 636.9000000000001,320.4 C 631.0,322.19999999999993 629.0,324.5999999999999 629.0,329.9 C 629.0,333.29999999999995 629.8000000000001,335.5999999999999 632.0,338.9 C 636.1,344.9 636.2,348.0999999999999 632.9000000000001,363.79999999999995 C 627.7,389.29999999999995 602.5,469.79999999999995 589.2,503.5 C 579.1,529.0 574.4,539.9 563.8000000000001,562.0 C 553.9,582.8 549.4,588.5999999999999 538.7,594.0 C 531.0,597.9 529.3000000000001,602.5999999999999 532.8000000000001,609.8 C 539.7,623.9 545.3000000000001,628.9 554.0,629.0 C 557.0,629.0 560.1,628.5999999999999 560.7,628.1999999999999 C 561.4,627.8 563.9,622.9 566.3000000000001,617.5 C 570.1,608.8 571.1,607.1999999999999 574.6,605.3 C 584.0,599.9 593.5,604.5 598.6,616.8 C 602.4,625.8 602.6,640.6999999999999 599.2,651.6 C 596.0,661.9 596.3000000000001,664.9 600.8000000000001,670.4 C 607.1,678.1999999999999 612.0,681.0 619.0,681.0 C 627.0,681.0 627.6,679.9 628.4000000000001,664.5 C 629.3000000000001,649.6 632.0,633.5 636.6,616.0 C 640.8000000000001,600.0999999999999 643.2,593.6999999999999 649.4000000000001,580.9 C 652.4000000000001,574.8 654.0,570.0999999999999 654.0,567.5999999999999 C 654.0,563.9 654.0,563.9 650.3000000000001,564.1999999999999 C 647.2,564.5 646.0,565.3 642.7,569.5 C 640.6,572.1999999999999 638.0,576.0999999999999 636.9000000000001,578.0 C 635.8000000000001,579.9 634.2,582.5999999999999 633.4000000000001,584.0 C 632.7,585.4 628.8000000000001,592.6999999999999 624.8000000000001,600.4 L 617.7,614.3 L 615.6,610.1999999999999 C 610.4,600.0 599.4,590.5 590.0,588.0999999999999 C 587.5,587.4 584.3000000000001,586.4 582.8000000000001,585.9 L 580.2,584.8 L 584.2,575.1999999999999 C 586.4,569.9 590.2,561.3 592.7,556.0999999999999 C 599.1,542.5 610.9,515.3 612.7,510.19999999999993 C 615.0,503.4 628.4000000000001,471.4 637.7,450.5 C 658.4000000000001,404.19999999999993 674.8000000000001,358.29999999999995 675.7,344.5 L 676.2,336.5 L 672.3000000000001,331.0 C 666.7,323.0999999999999 658.5,319.0 648.0,319.0999999999999 C 643.9000000000001,319.19999999999993 638.9000000000001,319.69999999999993 636.9000000000001,320.4"/></clipPath>
+      <clipPath id="czc2-a"><path d="M 471.5,332.5999999999999 C 465.6,334.0999999999999 462.70000000000005,335.4 460.0,337.69999999999993 C 457.40000000000003,339.9 457.0,340.79999999999995 457.0,345.29999999999995 L 457.1,350.5 L 463.0,353.19999999999993 C 469.90000000000003,356.29999999999995 474.20000000000005,361.5999999999999 476.6,369.79999999999995 C 478.70000000000005,376.9 477.8,382.5 473.3,392.0 C 466.90000000000003,405.19999999999993 442.0,428.19999999999993 417.90000000000003,443.0999999999999 C 412.8,446.29999999999995 408.0,448.9 407.5,449.0 C 406.90000000000003,449.0 405.90000000000003,448.0999999999999 405.20000000000005,447.0 C 402.5,442.5999999999999 392.90000000000003,445.0 385.70000000000005,451.9 C 380.1,457.19999999999993 379.0,459.79999999999995 379.0,468.5 C 379.0,475.5999999999999 379.20000000000005,476.4 381.90000000000003,479.0999999999999 C 384.5,481.69999999999993 385.5,482.0 391.0,482.0 L 397.20000000000005,482.0 L 404.3,475.19999999999993 C 408.20000000000005,471.5 412.0,467.79999999999995 412.70000000000005,466.79999999999995 C 414.0,465.0999999999999 434.90000000000003,448.69999999999993 443.5,442.69999999999993 C 449.40000000000003,438.5 460.5,431.5 470.90000000000003,425.29999999999995 L 478.3,420.9 L 475.40000000000003,424.29999999999995 C 469.3,431.29999999999995 453.3,455.0999999999999 450.40000000000003,461.5 C 447.5,467.5999999999999 447.20000000000005,476.79999999999995 449.70000000000005,481.0 C 452.5,485.79999999999995 455.0,486.5 470.0,486.5 L 483.8,486.5 L 481.3,489.5 C 480.0,491.0999999999999 474.70000000000005,497.69999999999993 469.6,504.0 C 464.5,510.29999999999995 457.70000000000005,519.0999999999999 454.40000000000003,523.5 C 448.70000000000005,531.3 448.5,531.6999999999999 448.20000000000005,538.6999999999999 C 447.8,545.5999999999999 447.90000000000003,546.0999999999999 450.70000000000005,548.9 C 454.70000000000005,552.9 459.5,554.0 473.3,554.0 C 479.70000000000005,554.0 485.0,554.1999999999999 485.0,554.5 C 485.0,556.9 471.1,574.8 459.90000000000003,587.0 C 438.5,610.0999999999999 431.8,616.3 426.70000000000005,617.5 C 422.70000000000005,618.5999999999999 421.0,621.5999999999999 421.0,628.0999999999999 C 421.0,632.1999999999999 421.5,634.4 423.0,636.3 C 426.5,640.6999999999999 430.40000000000003,641.3 446.5,640.0 C 462.5,638.5999999999999 464.8,639.0999999999999 469.40000000000003,645.3 C 472.3,649.1999999999999 472.20000000000005,661.0 469.20000000000005,669.6999999999999 C 465.20000000000005,681.1999999999999 466.6,687.8 474.90000000000003,696.0 C 479.6,700.6 480.3,701.0 484.90000000000003,701.0 C 487.6,701.0 490.6,700.6999999999999 491.5,700.4 C 493.8,699.5 496.3,694.1 500.0,682.0 C 501.8,676.1999999999999 504.6,667.1999999999999 506.20000000000005,662.0 C 510.20000000000005,649.6 525.2,611.6999999999999 530.1,601.5999999999999 C 532.3000000000001,597.1999999999999 534.0,592.3 534.0,590.4 C 534.0,587.0999999999999 533.9,587.0 530.1,587.0 C 526.3000000000001,587.0 525.9,587.3 519.4,596.1999999999999 C 515.7,601.1999999999999 507.20000000000005,613.5999999999999 500.5,623.6999999999999 L 488.20000000000005,642.1 L 485.70000000000005,637.8 C 482.3,632.0 479.70000000000005,629.6999999999999 471.5,625.5 C 459.6,619.3 459.40000000000003,618.8 464.0,608.8 C 471.6,591.9 505.0,561.5 529.5,548.9 L 536.5,545.3 L 536.8000000000001,540.1999999999999 C 537.6,527.1999999999999 523.0,520.9 503.90000000000003,526.0 C 481.5,531.9 476.0,532.5999999999999 476.0,529.5999999999999 C 476.0,526.8 488.3,511.9 498.20000000000005,502.69999999999993 C 509.20000000000005,492.4 518.1,486.0 528.4,480.5999999999999 L 534.5,477.4 L 534.5,471.0999999999999 C 534.5,465.0 534.4,464.69999999999993 530.5,461.4 C 521.3000000000001,453.5999999999999 511.8,453.29999999999995 490.8,460.0 C 479.5,463.5999999999999 476.5,464.19999999999993 474.3,463.4 C 470.6,462.0999999999999 470.90000000000003,460.5 476.1,451.69999999999993 C 499.90000000000003,411.9 532.7,390.19999999999993 557.8000000000001,397.9 C 561.7,399.0 566.7,400.0 568.9,400.0 L 573.0,400.0 L 573.0,396.0 C 573.0,390.5999999999999 568.4,385.5 560.0,381.69999999999993 C 554.0,378.9 552.6,378.5999999999999 542.0,378.5999999999999 C 530.0,378.5 520.9,380.5 511.70000000000005,385.0999999999999 L 507.90000000000003,387.0999999999999 L 508.70000000000005,384.29999999999995 C 509.20000000000005,382.79999999999995 509.40000000000003,376.19999999999993 509.3,369.69999999999993 C 509.0,359.79999999999995 508.6,357.0 506.5,351.79999999999995 C 503.40000000000003,344.19999999999993 497.5,337.9 490.8,335.0 C 486.0,332.9 475.40000000000003,331.5999999999999 471.5,332.5999999999999"/></clipPath>
+      <clipPath id="czc3-a"><path d="M 798.5,353.4 C 780.6,371.9 761.9000000000001,380.29999999999995 738.5,380.4 L 727.5,380.5 L 727.2,385.19999999999993 C 726.8000000000001,390.69999999999993 727.7,391.4 738.1,395.5 C 757.3000000000001,403.0999999999999 783.8000000000001,402.4 802.8000000000001,393.9 C 809.6,390.9 824.0,381.79999999999995 830.8000000000001,376.29999999999995 C 834.8000000000001,373.0 835.0,372.5999999999999 835.0,367.4 C 835.0,360.4 833.4000000000001,357.5 826.6,351.5999999999999 C 819.5,345.5999999999999 816.4000000000001,344.0 811.5,344.0 C 807.8000000000001,344.0 806.9000000000001,344.5999999999999 798.5,353.4"/></clipPath>
+      <clipPath id="czc4-a"><path d="M 836.5,431.5999999999999 C 827.2,433.29999999999995 808.2,440.0999999999999 788.4000000000001,448.79999999999995 C 770.6,456.5999999999999 768.4000000000001,457.9 746.6,471.79999999999995 C 731.5,481.5 724.4000000000001,486.29999999999995 698.8000000000001,504.19999999999993 C 670.4000000000001,524.1999999999999 667.2,525.3 661.7,516.6999999999999 C 660.3000000000001,514.5999999999999 659.2,514.0 656.5,514.0 C 649.8000000000001,514.0 647.0,519.6999999999999 647.0,533.9 C 647.0,545.3 648.4000000000001,549.5 654.1,555.0 C 659.6,560.3 666.3000000000001,563.0 673.6,563.0 C 679.4000000000001,563.0 682.6,560.4 685.4000000000001,553.5999999999999 C 689.6,543.5 707.5,526.9 730.0,512.0999999999999 C 771.8000000000001,484.79999999999995 800.2,472.0999999999999 836.0,464.5999999999999 C 850.0,461.69999999999993 859.6,461.19999999999993 868.5,463.0 C 876.7,464.5999999999999 880.1,464.0999999999999 881.8000000000001,461.0 C 883.5,457.69999999999993 882.6,448.0999999999999 880.1,443.19999999999993 C 877.4000000000001,438.0999999999999 871.1,432.19999999999993 866.9000000000001,431.0 C 862.2,429.5999999999999 844.9000000000001,429.9 836.5,431.5999999999999"/></clipPath>
+      <clipPath id="czc5-a"><path d="M 732.3000000000001,514.9 C 728.0,517.5999999999999 727.7,522.6999999999999 731.5,527.1999999999999 C 734.7,531.0 734.8000000000001,535.8 731.7,547.0 C 727.4000000000001,562.1999999999999 714.0,592.3 706.5,603.4 C 705.1,605.4 703.3000000000001,608.5 702.4000000000001,610.3 C 701.5,612.0 697.1,619.0999999999999 692.6,626.0 C 679.2,646.4 679.0,646.9 679.0,654.9 C 679.0,663.6 679.6,665.1999999999999 685.9000000000001,672.1999999999999 C 692.8000000000001,679.8 701.1,684.0 709.3000000000001,684.0 L 715.2,684.0 L 726.4000000000001,673.1999999999999 C 732.5,667.1999999999999 741.8000000000001,659.0 747.0,654.9 C 761.5,643.5 771.8000000000001,635.6999999999999 774.4000000000001,634.0 C 775.8000000000001,633.0999999999999 779.7,629.9 783.2,626.8 C 795.6,615.6999999999999 817.6,597.8 821.7,595.3 C 824.6,593.5999999999999 826.7,593.0999999999999 828.2,593.5 C 834.4000000000001,595.4 844.0,609.3 847.4000000000001,621.3 C 849.0,626.6999999999999 849.0,627.5999999999999 847.5,632.3 C 844.2,643.1999999999999 839.2,649.0 826.3000000000001,657.1999999999999 C 821.5,660.1999999999999 821.1,660.8 821.0,664.1999999999999 C 821.0,667.6999999999999 821.2,668.0 823.9000000000001,668.0 C 825.5,668.0 831.7,666.8 837.7,665.4 C 853.6,661.6 859.8000000000001,662.5 870.9000000000001,670.5 C 874.9000000000001,673.4 883.2,673.9 886.7,671.5 C 890.0,669.1999999999999 892.0,661.8 892.0,651.8 C 892.0,642.5 892.2,643.1 882.8000000000001,618.5 C 873.9000000000001,595.0999999999999 854.1,568.9 836.3000000000001,557.0 C 829.7,552.5999999999999 828.2,552.0 823.6,552.0 C 816.0,552.0 813.0,554.5 813.0,560.9 C 813.0,564.6999999999999 813.5,566.0999999999999 815.5,568.0 C 818.1,570.4 818.1,572.8 815.5,578.0 C 811.9000000000001,585.0 788.0,605.8 772.3000000000001,615.4 C 769.6,617.0 765.3000000000001,619.8 762.5,621.5999999999999 C 749.2,630.1999999999999 717.2,644.5 715.3000000000001,642.6999999999999 C 714.3000000000001,641.6 729.6,613.9 749.5,581.0 C 754.0,573.5999999999999 759.8000000000001,563.4 762.4000000000001,558.5 C 765.1,553.5 768.8000000000001,546.9 770.7,543.8 C 773.9000000000001,538.5999999999999 774.2,537.5 773.8000000000001,532.8 C 773.3000000000001,528.0 772.8000000000001,527.0999999999999 768.2,522.9 C 760.3000000000001,515.6999999999999 755.2,513.5999999999999 744.5,513.1999999999999 C 736.9000000000001,513.0 735.0,513.1999999999999 732.3000000000001,514.9"/></clipPath>
+      <clipPath id="czc6-a"><path d="M 579.4,678.3 C 571.6,682.3 564.0,686.6 562.4,687.9 C 560.8000000000001,689.1 555.2,693.1 550.0,696.8 C 528.6,711.6999999999999 515.2,723.0 485.0,752.0 C 460.70000000000005,775.3 454.20000000000005,781.2 440.8,792.2 C 423.3,806.5 424.70000000000005,804.9 424.20000000000005,812.2 C 423.70000000000005,820.5999999999999 425.40000000000003,823.9 432.8,828.5999999999999 C 445.90000000000003,837.0999999999999 457.6,840.2 462.40000000000003,836.7 C 463.40000000000003,836.0 464.8,832.5999999999999 465.70000000000005,829.0 C 467.70000000000005,820.3 472.6,809.9 479.3,800.4 C 484.8,792.5 494.6,780.8 496.1,780.2 C 496.5,780.0 497.6,781.0999999999999 498.40000000000003,782.7 C 502.3,790.0999999999999 513.4,798.0 531.0,806.0 C 553.1,816.0999999999999 602.4,831.0 633.0,836.9 C 673.9000000000001,844.7 682.6,845.5 725.5,845.5 C 764.9000000000001,845.4 770.9000000000001,844.8 798.2,838.0 C 813.8000000000001,834.0999999999999 827.8000000000001,827.0 830.9000000000001,821.3 C 832.7,817.9 832.2,806.0999999999999 830.1,802.0999999999999 C 825.5,793.5 796.8000000000001,772.9 771.5,760.0 C 745.9000000000001,746.9 717.1,737.0 704.9000000000001,737.0 L 699.9000000000001,737.0 L 700.2,740.6999999999999 C 700.5,744.3 700.6,744.3 708.5,747.0 C 741.7,758.0999999999999 770.9000000000001,778.5 771.2,790.8 C 771.3000000000001,793.7 768.0,800.0999999999999 764.7,803.8 C 754.8000000000001,814.5999999999999 720.4000000000001,823.0 686.7,823.0 C 638.8000000000001,823.0 577.5,809.9 540.1,791.8 C 524.2,784.0 518.2,779.2 514.2,770.8 C 512.0,766.3 512.0,766.0 513.5,760.8 C 515.9,752.5999999999999 518.9,748.5999999999999 538.8000000000001,728.1999999999999 C 550.5,716.0 564.6,703.6 572.7,698.1 C 574.8000000000001,696.6 579.0,693.6 582.0,691.4 C 585.0,689.1 590.8000000000001,685.3 594.7,682.9 C 601.7,678.6999999999999 602.0,678.3 602.0,674.6999999999999 L 602.0,671.0 L 597.8000000000001,671.0 C 594.5,671.1 590.3000000000001,672.6999999999999 579.4,678.3"/></clipPath>
+      <clipPath id="czc7-a"><path d="M 815.5,680.1 C 812.2,680.6 805.8000000000001,681.4 801.3000000000001,682.0 C 784.1,684.1999999999999 752.6,693.1 720.5,704.8 C 706.7,709.8 676.8000000000001,720.9 667.5,724.4 C 645.1,732.8 613.4,741.1999999999999 583.8000000000001,746.4 C 580.2,747.0999999999999 580.0,747.3 580.0,750.9 C 580.0,756.3 580.2,756.5 599.0,764.5 C 623.5,775.0999999999999 646.0,778.7 655.6,773.7 C 658.3000000000001,772.3 658.8000000000001,771.4 659.3000000000001,767.5 C 660.6,755.4 674.1,743.9 706.5,727.1 C 718.0,721.1999999999999 741.7,712.6 761.5,707.1 C 783.7,701.1 790.9000000000001,699.8 807.1,699.3 C 821.1,698.8 823.5,699.0 829.7,700.8 C 833.5,702.0 837.5,703.9 838.5,705.0 C 840.3000000000001,707.0 840.4000000000001,707.1999999999999 838.6,710.5 C 835.5,716.1 817.3000000000001,730.6999999999999 802.8000000000001,739.1999999999999 C 797.2,742.4 797.0,742.5999999999999 797.0,746.7 C 797.0,750.7 797.2,751.0 799.7,751.0 C 805.4000000000001,751.0 855.0,731.1 877.2,719.9 C 895.7,710.5 898.5,708.1999999999999 899.5,701.6999999999999 C 900.6,694.4 899.0,691.8 890.9000000000001,687.5 C 879.6,681.6 864.2,679.0 840.5,679.1 C 830.1,679.1999999999999 818.8000000000001,679.6 815.5,680.1"/></clipPath>
+      <mask id="czm-a" maskUnits="userSpaceOnUse" x="330" y="280" width="620" height="620">
+        <g clip-path="url(#czc1-a)">
+          <path class="cz-s cz-B0" d="M644.0,322.0C644.4,323.1 645.3,326.7 646.4,328.5C647.4,330.4 648.8,331.9 650.1,332.9C651.4,333.8 652.6,334.3 654.0,334.3C655.5,334.2 657.9,332.3 658.9,332.7C659.8,333.0 659.2,335.4 659.7,336.4C660.3,337.4 661.3,338.1 662.4,338.6C663.4,339.2 664.5,339.6 666.1,339.7C667.7,339.7 671.0,339.1 672.0,339.0"/>
+          <path class="cz-s cz-B1" d="M652.0,327.0C651.6,329.7 649.8,338.0 649.7,343.1C649.6,348.3 651.3,354.0 651.5,357.7C651.7,361.3 652.2,359.7 650.8,364.9C649.5,370.2 646.3,383.2 643.4,389.2C640.4,395.2 634.5,397.1 633.0,401.1C631.5,405.0 634.5,410.0 634.5,413.1C634.5,416.3 635.8,412.4 633.2,420.1C630.5,427.8 622.0,451.1 618.4,459.1C614.9,467.2 613.3,465.9 611.8,468.3C610.4,470.7 610.3,470.5 609.7,473.5C609.1,476.5 609.9,480.1 608.0,486.5C606.1,492.8 601.3,504.4 598.5,511.5C595.6,518.7 593.1,525.0 590.9,529.3C588.6,533.7 586.5,535.1 584.9,537.7C583.3,540.3 582.5,542.0 581.5,545.0C580.5,548.1 581.4,549.5 579.0,555.9C576.7,562.3 570.2,577.3 567.4,583.3C564.6,589.3 564.6,589.1 562.2,592.1C559.7,595.0 555.1,596.6 552.6,601.1C550.1,605.6 547.9,615.5 547.1,619.2C546.3,622.8 547.9,622.4 548.0,623.0"/>
+          <path class="cz-s cz-B2" d="M553.0,611.0C553.1,610.4 552.6,609.3 553.5,607.4C554.4,605.5 556.7,601.5 558.2,599.6C559.7,597.7 561.1,597.0 562.7,596.1C564.4,595.3 563.8,594.2 568.0,594.3C572.2,594.3 583.1,595.1 588.1,596.5C593.1,597.8 595.6,600.4 598.0,602.3C600.4,604.2 600.4,603.9 602.5,608.0C604.7,612.1 608.9,621.9 610.7,627.0C612.5,632.2 612.9,635.2 613.4,638.8C614.0,642.4 614.6,644.1 614.0,648.5C613.3,652.9 609.7,661.2 609.6,664.9C609.5,668.7 612.1,669.8 613.2,670.8C614.2,671.9 615.0,671.8 615.9,671.2C616.7,670.6 618.3,670.3 618.1,667.0C617.8,663.6 614.6,655.9 614.3,651.3C614.1,646.7 614.5,644.3 616.4,639.5C618.3,634.7 623.5,627.7 625.7,622.5C627.9,617.3 627.5,613.9 629.6,608.2C631.7,602.4 635.5,593.8 638.5,588.0C641.6,582.1 646.4,575.5 648.0,573.0"/>
+        </g>
+        <g clip-path="url(#czc2-a)">
+          <path class="cz-s cz-R1" d="M476.0,335.0C476.6,336.1 477.3,340.1 479.3,341.8C481.4,343.5 485.5,343.2 488.2,345.3C491.0,347.4 494.3,350.7 496.0,354.3C497.7,357.9 499.3,362.1 498.2,367.0C497.1,371.8 491.4,380.4 489.6,383.6C487.7,386.8 487.4,385.6 487.0,386.0"/>
+          <path class="cz-s cz-R2" d="M384.0,470.0C388.6,467.5 403.2,460.3 411.8,455.1C420.4,450.0 424.9,447.0 435.7,439.1C446.5,431.2 467.9,414.8 476.5,407.6C485.1,400.4 484.2,397.1 487.5,395.9C490.9,394.7 494.4,399.6 496.8,400.4C499.1,401.1 495.9,402.8 501.8,400.6C507.7,398.3 525.4,389.6 532.1,387.1C538.7,384.6 537.5,385.4 541.6,385.6C545.7,385.8 552.2,386.7 556.7,388.3C561.3,389.9 567.0,393.9 569.0,395.0"/>
+          <path class="cz-s cz-R3" d="M487.0,390.0C488.5,392.8 494.3,403.1 495.9,406.6C497.4,410.0 499.1,406.1 496.1,410.7C493.0,415.2 482.5,427.3 477.6,433.9C472.7,440.4 469.3,445.7 466.8,450.2C464.2,454.7 462.9,458.0 462.3,461.0C461.7,464.0 462.4,466.6 463.1,468.4C463.7,470.3 464.8,471.0 466.1,472.0C467.4,472.9 466.3,473.7 470.9,474.1C475.6,474.4 488.2,474.6 494.0,474.2C499.7,473.9 502.9,472.7 505.4,472.0C507.9,471.3 507.5,471.3 508.8,470.0C510.2,468.7 512.2,465.5 513.6,464.5C514.9,463.4 515.3,463.2 516.9,463.7C518.5,464.2 521.9,466.2 523.4,467.4C524.9,468.6 526.2,470.2 526.2,471.2C526.2,472.2 526.6,473.1 523.3,473.6C519.9,474.2 510.7,473.2 506.3,474.6C501.9,476.0 499.0,479.8 497.0,481.8C495.0,483.8 494.6,486.8 494.4,486.5C494.3,486.2 496.0,481.5 496.0,480.0C496.0,478.4 495.3,478.2 494.4,477.4C493.4,476.6 492.7,475.5 490.3,475.0C487.8,474.5 483.2,474.1 479.9,474.5C476.5,474.9 469.7,477.4 469.9,477.5C470.2,477.5 477.8,475.1 481.2,474.7C484.5,474.4 487.7,474.5 490.1,475.2C492.5,475.9 494.5,477.4 495.6,478.9C496.6,480.3 496.9,481.8 496.2,484.1C495.5,486.5 495.2,488.5 491.5,493.0C487.8,497.5 479.0,505.3 474.1,511.1C469.1,516.9 464.6,523.4 461.8,527.7C458.9,531.9 457.8,534.4 456.9,536.4C456.1,538.5 456.0,538.8 456.6,539.8C457.1,540.8 458.4,541.9 460.2,542.7C462.0,543.4 464.1,544.6 467.3,544.5C470.6,544.4 475.2,542.3 479.5,542.1C483.9,541.8 490.0,542.5 493.5,543.1C496.9,543.7 498.3,544.6 500.2,545.8C502.1,547.0 504.0,550.6 505.0,550.4C506.0,550.3 505.3,546.6 506.2,545.0C507.1,543.4 508.7,542.0 510.6,541.0C512.5,540.0 515.0,539.4 517.6,539.1C520.2,538.8 527.2,539.0 526.3,539.2C525.5,539.4 516.3,538.9 512.4,540.0C508.6,541.2 507.0,542.3 503.1,546.3C499.3,550.3 497.1,554.9 489.5,564.2C481.8,573.5 463.5,594.0 457.1,602.0C450.7,610.1 452.2,609.3 451.0,612.3C449.7,615.3 449.1,617.5 449.6,619.8C450.1,622.2 451.0,624.3 453.9,626.5C456.7,628.7 463.7,631.1 466.8,632.9C469.9,634.7 469.7,633.8 472.5,637.3C475.4,640.8 481.3,650.7 483.8,653.8C486.3,656.9 486.3,655.5 487.3,655.8C488.4,656.2 488.6,656.7 490.1,655.7C491.6,654.8 490.4,660.1 496.4,650.1C502.4,640.0 525.9,595.7 526.0,595.6C526.2,595.4 502.6,639.4 497.2,649.1C491.8,658.7 495.0,652.5 493.9,653.7C492.7,654.9 491.5,655.8 490.2,656.3C489.0,656.7 487.7,656.6 486.7,656.3C485.6,656.0 486.4,657.7 484.1,654.6C481.9,651.6 476.3,641.7 473.3,638.1C470.4,634.4 469.5,634.7 466.4,632.9C463.2,631.1 457.3,629.2 454.6,627.2C451.8,625.2 450.5,622.8 449.7,620.7C449.0,618.6 449.3,616.9 450.0,614.6C450.7,612.2 451.7,610.0 453.9,606.6C456.0,603.3 459.9,597.9 462.8,594.3C465.7,590.7 471.6,584.9 471.5,585.1C471.3,585.3 465.1,591.7 462.0,595.7C458.8,599.8 454.4,606.1 452.5,609.4C450.7,612.7 451.0,612.9 450.9,615.4C450.9,617.8 454.2,621.9 452.0,624.0C449.8,626.1 441.8,626.4 437.8,627.8C433.9,629.2 427.9,632.5 428.6,632.4C429.2,632.3 438.0,628.0 441.6,627.1C445.2,626.2 446.3,626.2 450.0,627.0C453.8,627.7 460.1,629.6 464.0,631.4C467.9,633.3 470.5,634.7 473.4,638.2C476.4,641.6 479.7,647.6 481.7,652.0C483.6,656.3 484.7,661.1 485.0,664.4C485.3,667.7 485.0,669.4 483.6,671.8C482.1,674.3 476.5,676.3 476.4,679.1C476.3,681.8 481.5,685.8 482.9,688.3C484.3,690.9 484.1,692.9 484.8,694.3C485.5,695.8 486.6,696.6 487.0,697.0"/>
+          <path class="cz-s cz-R4" d="M486.0,690.0C485.8,689.1 484.8,686.6 484.6,684.4C484.3,682.2 484.2,679.9 484.6,676.9C485.0,674.0 486.0,669.9 487.1,666.9C488.3,663.9 489.5,661.7 491.5,659.1C493.4,656.4 496.4,655.7 499.0,651.0C501.5,646.3 502.9,638.7 506.7,630.7C510.6,622.6 518.8,608.5 522.2,602.9C525.6,597.2 526.2,598.0 527.0,597.0"/>
+        </g>
+        <g clip-path="url(#czc3-a)">
+          <path class="cz-s cz-Y1" d="M 730.0,386.0 C 732.5,386.4 739.9,388.5 745.3,388.5 C 750.6,388.5 757.8,386.3 762.2,386.0 C 766.6,385.7 768.9,387.0 771.7,386.8 C 774.5,386.6 775.8,386.3 779.0,385.1 C 782.2,383.9 788.5,381.1 791.0,379.6 C 793.4,378.0 793.1,377.4 793.9,375.8 C 794.8,374.2 794.6,371.0 796.0,370.0 C 797.5,369.1 800.7,370.3 802.5,369.9 C 804.4,369.5 804.9,370.3 807.0,367.9 C 809.1,365.6 812.8,357.8 815.2,355.9 C 817.5,354.0 819.7,356.7 821.1,356.5 C 822.6,356.4 823.5,355.3 824.0,355.0"/>
+        </g>
+        <g clip-path="url(#czc4-a)">
+          <path class="cz-s cz-M1" d="M653.0,519.0C653.5,520.2 655.4,523.7 655.8,526.3C656.2,529.0 655.2,532.2 655.6,534.7C655.9,537.2 657.2,539.6 657.9,541.4C658.7,543.3 658.9,545.0 660.0,545.8C661.1,546.6 662.5,547.0 664.5,546.3C666.6,545.5 669.8,543.5 672.2,541.5C674.6,539.4 675.7,537.1 679.1,534.1C682.4,531.1 683.9,530.0 692.5,523.7C701.0,517.4 717.2,505.1 730.4,496.4C743.6,487.8 759.7,477.9 771.5,471.6C783.3,465.3 792.8,461.9 801.0,458.6C809.2,455.3 812.8,454.0 820.8,451.8C828.7,449.6 842.6,447.1 848.8,445.4C854.9,443.8 854.3,441.8 857.6,441.9C860.9,441.9 866.1,444.4 868.6,445.6C871.2,446.8 871.9,447.8 873.0,449.2C874.2,450.5 874.6,452.6 875.6,453.5C876.6,454.5 878.4,454.8 879.0,455.0"/>
+        </g>
+        <g clip-path="url(#czc5-a)">
+          <path class="cz-s cz-O1" d="M751.0,517.0C750.7,519.5 750.2,528.0 749.0,532.2C747.9,536.4 744.9,538.6 744.3,542.2C743.7,545.7 745.9,549.8 745.3,553.5C744.8,557.2 742.6,560.9 740.9,564.5C739.3,568.1 737.9,571.3 735.4,575.0C733.0,578.7 728.2,582.5 726.1,586.6C723.9,590.7 724.0,595.8 722.5,599.7C720.9,603.6 719.9,605.7 716.7,610.2C713.6,614.6 706.6,620.8 703.8,626.2C700.9,631.6 700.8,639.0 699.4,642.5C698.0,646.1 697.2,646.0 695.3,647.5C693.4,649.0 688.5,650.1 688.1,651.8C687.7,653.5 692.0,655.7 692.8,657.7C693.6,659.7 692.1,663.0 693.1,663.8C694.0,664.7 696.8,662.8 698.4,662.8C699.9,662.8 701.2,663.1 702.3,663.8C703.5,664.6 704.4,665.9 705.2,667.5C706.0,669.1 706.3,673.9 707.4,673.3C708.4,672.7 710.1,666.4 711.6,664.0C713.1,661.6 714.0,660.7 716.3,659.0C718.6,657.4 722.4,655.2 725.3,653.9C728.2,652.7 731.1,652.5 733.5,651.6C735.9,650.6 737.4,649.9 739.7,648.1C742.0,646.4 740.2,646.0 747.1,641.0C754.0,636.1 768.5,628.0 781.1,618.5C793.7,609.1 814.5,590.7 822.8,584.4C831.0,578.1 826.3,581.2 830.5,580.6C834.8,580.1 845.1,580.9 848.0,581.0"/>
+          <path class="cz-s cz-O2" d="M822.0,555.0C822.8,556.3 824.5,560.7 826.5,562.8C828.6,565.0 832.6,565.5 834.5,568.0C836.5,570.6 835.7,575.3 838.4,578.2C841.2,581.1 848.3,582.2 851.0,585.4C853.7,588.7 852.3,594.0 854.7,597.7C857.0,601.3 863.5,603.4 865.3,607.4C867.0,611.4 863.8,617.0 865.2,621.9C866.5,626.7 871.6,629.9 873.5,636.6C875.3,643.2 876.1,658.9 876.3,661.8C876.5,664.7 875.3,656.0 874.7,654.2C874.1,652.4 873.7,651.9 872.6,650.9C871.6,649.9 869.9,648.6 868.4,648.0C866.8,647.4 865.0,647.2 863.3,647.2C861.6,647.3 861.0,647.2 858.2,648.5C855.4,649.9 849.8,653.9 846.3,655.4C842.9,657.0 841.2,656.3 837.5,657.8C833.8,659.2 826.2,663.0 824.0,664.0"/>
+        </g>
+        <g clip-path="url(#czc6-a)">
+          <path class="cz-s cz-P1" d="M575.0,690.0C574.0,690.3 571.6,690.7 569.1,692.0C566.5,693.3 567.6,691.7 559.8,697.7C552.0,703.7 529.9,721.4 522.2,727.8C514.6,734.2 516.8,732.7 513.9,736.2C511.0,739.7 507.8,745.7 504.8,748.8C501.8,751.8 498.5,751.5 495.8,754.5C493.1,757.5 492.1,763.4 488.6,766.9C485.0,770.5 477.2,773.7 474.4,775.8C471.6,777.9 472.5,777.6 471.5,779.5C470.5,781.4 469.6,785.2 468.4,787.3C467.2,789.4 466.1,790.6 464.5,792.0C462.9,793.4 461.0,795.0 458.7,795.8C456.5,796.7 452.3,795.8 451.0,797.0C449.7,798.2 451.4,800.3 450.9,803.1C450.5,805.9 448.0,811.0 448.3,813.9C448.5,816.8 451.5,820.4 452.5,820.5C453.4,820.6 452.7,816.7 454.2,814.6C455.7,812.5 460.0,811.1 461.5,808.1C462.9,805.2 461.9,799.7 462.7,796.8C463.5,793.8 462.4,795.1 466.2,790.6C469.9,786.1 481.4,773.9 485.4,769.9C489.4,765.9 488.6,767.4 490.2,766.7C491.8,766.0 493.5,765.7 494.8,765.7C496.1,765.7 496.7,765.9 497.9,766.5C499.0,767.2 500.0,767.2 501.6,769.6C503.2,771.9 505.9,778.0 507.7,780.7C509.5,783.5 509.1,783.7 512.4,785.9C515.6,788.2 521.2,791.3 527.1,794.3C533.1,797.3 540.5,800.9 548.0,803.9C555.4,806.9 560.5,809.0 571.8,812.3C583.0,815.5 601.9,820.6 615.4,823.6C628.9,826.6 638.3,828.5 652.7,830.2C667.2,831.8 690.7,833.1 702.0,833.6C713.3,834.0 715.4,833.9 720.7,833.1C725.9,832.3 728.3,829.4 733.3,828.8C738.4,828.1 746.0,829.6 751.1,829.2C756.2,828.7 759.9,827.3 764.1,825.9C768.2,824.4 772.2,823.1 776.2,820.6C780.2,818.0 784.2,812.2 787.8,810.5C791.4,808.8 794.9,810.6 797.8,810.2C800.6,809.8 802.8,809.1 804.8,808.1C806.8,807.2 808.5,805.9 809.8,804.5C811.2,803.2 813.3,801.0 812.8,800.0C812.3,799.0 808.4,800.0 807.0,798.7C805.5,797.4 805.8,793.6 804.2,792.2C802.6,790.8 799.4,791.9 797.4,790.4C795.3,788.8 794.8,785.2 791.9,783.2C789.0,781.2 784.5,781.4 780.1,778.5C775.6,775.6 769.3,769.0 765.0,765.8C760.8,762.6 761.0,762.5 754.5,759.4C748.0,756.3 734.5,750.4 725.9,747.2C717.3,743.9 706.8,741.2 703.0,740.0"/>
+        </g>
+        <g clip-path="url(#czc7-a)">
+          <path class="cz-s cz-T1" d="M583.0,751.0C588.7,751.7 607.9,754.2 617.0,754.9C626.2,755.6 633.4,755.6 637.9,755.2C642.4,754.8 641.1,754.6 644.1,752.6C647.1,750.6 650.4,746.7 655.9,743.1C661.3,739.5 665.0,736.7 676.7,731.2C688.4,725.7 708.5,716.4 726.1,710.1C743.8,703.8 766.7,696.9 782.6,693.4C798.5,689.8 812.1,689.4 821.7,689.0C831.3,688.6 833.4,689.2 840.2,690.9C847.0,692.5 855.2,697.2 862.5,699.0C869.7,700.8 881.6,701.0 883.9,701.7C886.3,702.4 879.0,701.6 876.5,703.3C874.0,704.9 872.0,710.0 869.1,711.4C866.2,712.8 861.5,711.3 859.0,711.7C856.5,712.1 857.9,710.9 854.1,713.5C850.4,716.2 845.6,722.1 836.6,727.7C827.6,733.2 806.1,743.8 800.0,747.0"/>
+        </g>
+      </mask>
+    </defs>
+    <image mask="url(#czm-a)" x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/>
+    <image class="cz-word" x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/>
+  </svg>
+</div>
+
+<header id="hd">
+  <a class="brand" href="#/" data-route="/">
+    <svg viewBox="358 301 559 648" aria-hidden="true"><image x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/><image x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/></svg>
+    <b>COTOZUTE</b>
+  </a>
+  <div class="hd-r">
+    <button class="snd" id="snd" type="button" aria-pressed="false">音 なし</button>
+    <button class="menu-btn" id="mb" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="nv"><span></span><span></span><span></span></button>
+  </div>
+  <nav id="nv">
+    <ul>
+      <li><a href="#/" data-route="/">TOP</a></li>
+      <li><a href="#/service" data-route="/service">SERVICE</a></li>
+      <li><a href="#/about" data-route="/about">ABOUT</a></li>
+      <li><a href="#/contact" data-route="/contact">CONTACT</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div id="washi" aria-hidden="true"></div>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <filter id="sk" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
+    <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
+    <feColorMatrix in="e" type="matrix" values="-2.6 0 0 0 1  -2.6 0 0 0 1  -2.6 0 0 0 1  0 0 0 1 0" result="lines"/>
+    <feTurbulence id="skT" type="fractalNoise" baseFrequency=".75" numOctaves="1" seed="1" result="n"/>
+    <feDisplacementMap in="lines" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="wob"/>
+    <feComponentTransfer in="g" result="shade"><feFuncR type="linear" slope=".42" intercept=".6"/><feFuncG type="linear" slope=".42" intercept=".58"/><feFuncB type="linear" slope=".42" intercept=".54"/></feComponentTransfer>
+    <feBlend in="wob" in2="shade" mode="multiply" result="pencil"/>
+    <feComposite in="pencil" in2="SourceGraphic" operator="in" result="pencilA"/>
+    <feComposite id="skMix" in="SourceGraphic" in2="pencilA" operator="arithmetic" k1="0" k2="1" k3="0" k4="0"/>
+  </filter>
+</svg>
+<div id="butai" aria-hidden="true"><div class="dai" id="dai"></div></div>
+
+<main id="pages">
+
+<!-- ======================= TOP ======================= -->
+<div class="page" data-page="/" data-title="TOP">
+  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
+
+<section class="hero" id="hero">
+  <!-- ★トップの挿絵（本を抱いて眠る赤ちゃん）は 2026-09-10 に外した。「また戻すかもしれない」との事。
+       戻すときはこの4点セットを復活させる：
+         (1) 下の <figure> をコメント解除
+         (2) 「静止画→アニメWebP差し替え」のJS（inline script 内。同じ日付のコメントで場所を残してある）
+         (3) .hero .sub の max-width（600〜899px と 900px以上。赤ちゃんの下へ文が潜るのを防ぐためのもの）
+         (4) パララックスJSは #hf の存在ガード付きなので、markupを戻せば自動で効く
+       .hero-figure のCSSと assets/hero*.webp はそのまま残してある。
+  <figure class="hero-figure" id="hf">
+    <img src="assets/hero-sm.webp"
+         srcset="assets/hero-sm.webp 400w, assets/hero.webp 669w"
+         sizes="(min-width:900px) 560px, 58vw"
+         alt="" width="669" height="595" fetchpriority="high" decoding="async">
+  </figure>
+  -->
+
+  <!-- テック演出レイヤー（画像なし・canvas） -->
+  <canvas class="cz-tech cz-tech--back"  id="czTechBack"  aria-hidden="true"></canvas>
+  <canvas class="cz-tech cz-tech--front" id="czTechFront" aria-hidden="true"></canvas>
+
+  <div class="hero-inner">
+    <h1>
+      <span class="ln"><i>ことづて<br>「心で伝えるコト」</i></span>
+      <span class="ln s2"><i>COTOZUTEはあなたの仕事を<br class="brsm">素敵に伝えるITの会社です</i></span>
+    </h1>
+    <div class="rule"></div>
+    <p class="lead">伝える手段より目的<br>伝える内容より人</p>
+    <p class="sub">
+      「よろしくお伝えください」と気持ちを預かるように、あなたの想いを大切に運びます。
+    </p>
+  </div>
+
+  <div class="scrollcue"><span>SCROLL</span><i></i></div>
+</section>
+
+  <section id="message">
+    <div class="wrap">
+      <div class="msg">
+        <div>
+          <p class="eyebrow" data-knot>MESSAGE</p>
+          <h2>結局「ひと」</h2>
+          <p class="muted">「時代が大きく変わる」と、ITに騒ぎ、AIに騒ぎ、ひととおり大騒ぎしても、結局最後は人でした。売るのも買うのも人だから「人となりが見える人」を大切に、COTOZUTEはあなたと良い仕事をします。</p>
+        </div>
+        <div data-knot>
+          <div class="kanji">
+  <svg class="cz-logo" id="czlogo-b" viewBox="358 301 559 648" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="合同会社COTOZUTE">
+    <defs>
+      <clipPath id="czc1-b"><path d="M 636.9000000000001,320.4 C 631.0,322.19999999999993 629.0,324.5999999999999 629.0,329.9 C 629.0,333.29999999999995 629.8000000000001,335.5999999999999 632.0,338.9 C 636.1,344.9 636.2,348.0999999999999 632.9000000000001,363.79999999999995 C 627.7,389.29999999999995 602.5,469.79999999999995 589.2,503.5 C 579.1,529.0 574.4,539.9 563.8000000000001,562.0 C 553.9,582.8 549.4,588.5999999999999 538.7,594.0 C 531.0,597.9 529.3000000000001,602.5999999999999 532.8000000000001,609.8 C 539.7,623.9 545.3000000000001,628.9 554.0,629.0 C 557.0,629.0 560.1,628.5999999999999 560.7,628.1999999999999 C 561.4,627.8 563.9,622.9 566.3000000000001,617.5 C 570.1,608.8 571.1,607.1999999999999 574.6,605.3 C 584.0,599.9 593.5,604.5 598.6,616.8 C 602.4,625.8 602.6,640.6999999999999 599.2,651.6 C 596.0,661.9 596.3000000000001,664.9 600.8000000000001,670.4 C 607.1,678.1999999999999 612.0,681.0 619.0,681.0 C 627.0,681.0 627.6,679.9 628.4000000000001,664.5 C 629.3000000000001,649.6 632.0,633.5 636.6,616.0 C 640.8000000000001,600.0999999999999 643.2,593.6999999999999 649.4000000000001,580.9 C 652.4000000000001,574.8 654.0,570.0999999999999 654.0,567.5999999999999 C 654.0,563.9 654.0,563.9 650.3000000000001,564.1999999999999 C 647.2,564.5 646.0,565.3 642.7,569.5 C 640.6,572.1999999999999 638.0,576.0999999999999 636.9000000000001,578.0 C 635.8000000000001,579.9 634.2,582.5999999999999 633.4000000000001,584.0 C 632.7,585.4 628.8000000000001,592.6999999999999 624.8000000000001,600.4 L 617.7,614.3 L 615.6,610.1999999999999 C 610.4,600.0 599.4,590.5 590.0,588.0999999999999 C 587.5,587.4 584.3000000000001,586.4 582.8000000000001,585.9 L 580.2,584.8 L 584.2,575.1999999999999 C 586.4,569.9 590.2,561.3 592.7,556.0999999999999 C 599.1,542.5 610.9,515.3 612.7,510.19999999999993 C 615.0,503.4 628.4000000000001,471.4 637.7,450.5 C 658.4000000000001,404.19999999999993 674.8000000000001,358.29999999999995 675.7,344.5 L 676.2,336.5 L 672.3000000000001,331.0 C 666.7,323.0999999999999 658.5,319.0 648.0,319.0999999999999 C 643.9000000000001,319.19999999999993 638.9000000000001,319.69999999999993 636.9000000000001,320.4"/></clipPath>
+      <clipPath id="czc2-b"><path d="M 471.5,332.5999999999999 C 465.6,334.0999999999999 462.70000000000005,335.4 460.0,337.69999999999993 C 457.40000000000003,339.9 457.0,340.79999999999995 457.0,345.29999999999995 L 457.1,350.5 L 463.0,353.19999999999993 C 469.90000000000003,356.29999999999995 474.20000000000005,361.5999999999999 476.6,369.79999999999995 C 478.70000000000005,376.9 477.8,382.5 473.3,392.0 C 466.90000000000003,405.19999999999993 442.0,428.19999999999993 417.90000000000003,443.0999999999999 C 412.8,446.29999999999995 408.0,448.9 407.5,449.0 C 406.90000000000003,449.0 405.90000000000003,448.0999999999999 405.20000000000005,447.0 C 402.5,442.5999999999999 392.90000000000003,445.0 385.70000000000005,451.9 C 380.1,457.19999999999993 379.0,459.79999999999995 379.0,468.5 C 379.0,475.5999999999999 379.20000000000005,476.4 381.90000000000003,479.0999999999999 C 384.5,481.69999999999993 385.5,482.0 391.0,482.0 L 397.20000000000005,482.0 L 404.3,475.19999999999993 C 408.20000000000005,471.5 412.0,467.79999999999995 412.70000000000005,466.79999999999995 C 414.0,465.0999999999999 434.90000000000003,448.69999999999993 443.5,442.69999999999993 C 449.40000000000003,438.5 460.5,431.5 470.90000000000003,425.29999999999995 L 478.3,420.9 L 475.40000000000003,424.29999999999995 C 469.3,431.29999999999995 453.3,455.0999999999999 450.40000000000003,461.5 C 447.5,467.5999999999999 447.20000000000005,476.79999999999995 449.70000000000005,481.0 C 452.5,485.79999999999995 455.0,486.5 470.0,486.5 L 483.8,486.5 L 481.3,489.5 C 480.0,491.0999999999999 474.70000000000005,497.69999999999993 469.6,504.0 C 464.5,510.29999999999995 457.70000000000005,519.0999999999999 454.40000000000003,523.5 C 448.70000000000005,531.3 448.5,531.6999999999999 448.20000000000005,538.6999999999999 C 447.8,545.5999999999999 447.90000000000003,546.0999999999999 450.70000000000005,548.9 C 454.70000000000005,552.9 459.5,554.0 473.3,554.0 C 479.70000000000005,554.0 485.0,554.1999999999999 485.0,554.5 C 485.0,556.9 471.1,574.8 459.90000000000003,587.0 C 438.5,610.0999999999999 431.8,616.3 426.70000000000005,617.5 C 422.70000000000005,618.5999999999999 421.0,621.5999999999999 421.0,628.0999999999999 C 421.0,632.1999999999999 421.5,634.4 423.0,636.3 C 426.5,640.6999999999999 430.40000000000003,641.3 446.5,640.0 C 462.5,638.5999999999999 464.8,639.0999999999999 469.40000000000003,645.3 C 472.3,649.1999999999999 472.20000000000005,661.0 469.20000000000005,669.6999999999999 C 465.20000000000005,681.1999999999999 466.6,687.8 474.90000000000003,696.0 C 479.6,700.6 480.3,701.0 484.90000000000003,701.0 C 487.6,701.0 490.6,700.6999999999999 491.5,700.4 C 493.8,699.5 496.3,694.1 500.0,682.0 C 501.8,676.1999999999999 504.6,667.1999999999999 506.20000000000005,662.0 C 510.20000000000005,649.6 525.2,611.6999999999999 530.1,601.5999999999999 C 532.3000000000001,597.1999999999999 534.0,592.3 534.0,590.4 C 534.0,587.0999999999999 533.9,587.0 530.1,587.0 C 526.3000000000001,587.0 525.9,587.3 519.4,596.1999999999999 C 515.7,601.1999999999999 507.20000000000005,613.5999999999999 500.5,623.6999999999999 L 488.20000000000005,642.1 L 485.70000000000005,637.8 C 482.3,632.0 479.70000000000005,629.6999999999999 471.5,625.5 C 459.6,619.3 459.40000000000003,618.8 464.0,608.8 C 471.6,591.9 505.0,561.5 529.5,548.9 L 536.5,545.3 L 536.8000000000001,540.1999999999999 C 537.6,527.1999999999999 523.0,520.9 503.90000000000003,526.0 C 481.5,531.9 476.0,532.5999999999999 476.0,529.5999999999999 C 476.0,526.8 488.3,511.9 498.20000000000005,502.69999999999993 C 509.20000000000005,492.4 518.1,486.0 528.4,480.5999999999999 L 534.5,477.4 L 534.5,471.0999999999999 C 534.5,465.0 534.4,464.69999999999993 530.5,461.4 C 521.3000000000001,453.5999999999999 511.8,453.29999999999995 490.8,460.0 C 479.5,463.5999999999999 476.5,464.19999999999993 474.3,463.4 C 470.6,462.0999999999999 470.90000000000003,460.5 476.1,451.69999999999993 C 499.90000000000003,411.9 532.7,390.19999999999993 557.8000000000001,397.9 C 561.7,399.0 566.7,400.0 568.9,400.0 L 573.0,400.0 L 573.0,396.0 C 573.0,390.5999999999999 568.4,385.5 560.0,381.69999999999993 C 554.0,378.9 552.6,378.5999999999999 542.0,378.5999999999999 C 530.0,378.5 520.9,380.5 511.70000000000005,385.0999999999999 L 507.90000000000003,387.0999999999999 L 508.70000000000005,384.29999999999995 C 509.20000000000005,382.79999999999995 509.40000000000003,376.19999999999993 509.3,369.69999999999993 C 509.0,359.79999999999995 508.6,357.0 506.5,351.79999999999995 C 503.40000000000003,344.19999999999993 497.5,337.9 490.8,335.0 C 486.0,332.9 475.40000000000003,331.5999999999999 471.5,332.5999999999999"/></clipPath>
+      <clipPath id="czc3-b"><path d="M 798.5,353.4 C 780.6,371.9 761.9000000000001,380.29999999999995 738.5,380.4 L 727.5,380.5 L 727.2,385.19999999999993 C 726.8000000000001,390.69999999999993 727.7,391.4 738.1,395.5 C 757.3000000000001,403.0999999999999 783.8000000000001,402.4 802.8000000000001,393.9 C 809.6,390.9 824.0,381.79999999999995 830.8000000000001,376.29999999999995 C 834.8000000000001,373.0 835.0,372.5999999999999 835.0,367.4 C 835.0,360.4 833.4000000000001,357.5 826.6,351.5999999999999 C 819.5,345.5999999999999 816.4000000000001,344.0 811.5,344.0 C 807.8000000000001,344.0 806.9000000000001,344.5999999999999 798.5,353.4"/></clipPath>
+      <clipPath id="czc4-b"><path d="M 836.5,431.5999999999999 C 827.2,433.29999999999995 808.2,440.0999999999999 788.4000000000001,448.79999999999995 C 770.6,456.5999999999999 768.4000000000001,457.9 746.6,471.79999999999995 C 731.5,481.5 724.4000000000001,486.29999999999995 698.8000000000001,504.19999999999993 C 670.4000000000001,524.1999999999999 667.2,525.3 661.7,516.6999999999999 C 660.3000000000001,514.5999999999999 659.2,514.0 656.5,514.0 C 649.8000000000001,514.0 647.0,519.6999999999999 647.0,533.9 C 647.0,545.3 648.4000000000001,549.5 654.1,555.0 C 659.6,560.3 666.3000000000001,563.0 673.6,563.0 C 679.4000000000001,563.0 682.6,560.4 685.4000000000001,553.5999999999999 C 689.6,543.5 707.5,526.9 730.0,512.0999999999999 C 771.8000000000001,484.79999999999995 800.2,472.0999999999999 836.0,464.5999999999999 C 850.0,461.69999999999993 859.6,461.19999999999993 868.5,463.0 C 876.7,464.5999999999999 880.1,464.0999999999999 881.8000000000001,461.0 C 883.5,457.69999999999993 882.6,448.0999999999999 880.1,443.19999999999993 C 877.4000000000001,438.0999999999999 871.1,432.19999999999993 866.9000000000001,431.0 C 862.2,429.5999999999999 844.9000000000001,429.9 836.5,431.5999999999999"/></clipPath>
+      <clipPath id="czc5-b"><path d="M 732.3000000000001,514.9 C 728.0,517.5999999999999 727.7,522.6999999999999 731.5,527.1999999999999 C 734.7,531.0 734.8000000000001,535.8 731.7,547.0 C 727.4000000000001,562.1999999999999 714.0,592.3 706.5,603.4 C 705.1,605.4 703.3000000000001,608.5 702.4000000000001,610.3 C 701.5,612.0 697.1,619.0999999999999 692.6,626.0 C 679.2,646.4 679.0,646.9 679.0,654.9 C 679.0,663.6 679.6,665.1999999999999 685.9000000000001,672.1999999999999 C 692.8000000000001,679.8 701.1,684.0 709.3000000000001,684.0 L 715.2,684.0 L 726.4000000000001,673.1999999999999 C 732.5,667.1999999999999 741.8000000000001,659.0 747.0,654.9 C 761.5,643.5 771.8000000000001,635.6999999999999 774.4000000000001,634.0 C 775.8000000000001,633.0999999999999 779.7,629.9 783.2,626.8 C 795.6,615.6999999999999 817.6,597.8 821.7,595.3 C 824.6,593.5999999999999 826.7,593.0999999999999 828.2,593.5 C 834.4000000000001,595.4 844.0,609.3 847.4000000000001,621.3 C 849.0,626.6999999999999 849.0,627.5999999999999 847.5,632.3 C 844.2,643.1999999999999 839.2,649.0 826.3000000000001,657.1999999999999 C 821.5,660.1999999999999 821.1,660.8 821.0,664.1999999999999 C 821.0,667.6999999999999 821.2,668.0 823.9000000000001,668.0 C 825.5,668.0 831.7,666.8 837.7,665.4 C 853.6,661.6 859.8000000000001,662.5 870.9000000000001,670.5 C 874.9000000000001,673.4 883.2,673.9 886.7,671.5 C 890.0,669.1999999999999 892.0,661.8 892.0,651.8 C 892.0,642.5 892.2,643.1 882.8000000000001,618.5 C 873.9000000000001,595.0999999999999 854.1,568.9 836.3000000000001,557.0 C 829.7,552.5999999999999 828.2,552.0 823.6,552.0 C 816.0,552.0 813.0,554.5 813.0,560.9 C 813.0,564.6999999999999 813.5,566.0999999999999 815.5,568.0 C 818.1,570.4 818.1,572.8 815.5,578.0 C 811.9000000000001,585.0 788.0,605.8 772.3000000000001,615.4 C 769.6,617.0 765.3000000000001,619.8 762.5,621.5999999999999 C 749.2,630.1999999999999 717.2,644.5 715.3000000000001,642.6999999999999 C 714.3000000000001,641.6 729.6,613.9 749.5,581.0 C 754.0,573.5999999999999 759.8000000000001,563.4 762.4000000000001,558.5 C 765.1,553.5 768.8000000000001,546.9 770.7,543.8 C 773.9000000000001,538.5999999999999 774.2,537.5 773.8000000000001,532.8 C 773.3000000000001,528.0 772.8000000000001,527.0999999999999 768.2,522.9 C 760.3000000000001,515.6999999999999 755.2,513.5999999999999 744.5,513.1999999999999 C 736.9000000000001,513.0 735.0,513.1999999999999 732.3000000000001,514.9"/></clipPath>
+      <clipPath id="czc6-b"><path d="M 579.4,678.3 C 571.6,682.3 564.0,686.6 562.4,687.9 C 560.8000000000001,689.1 555.2,693.1 550.0,696.8 C 528.6,711.6999999999999 515.2,723.0 485.0,752.0 C 460.70000000000005,775.3 454.20000000000005,781.2 440.8,792.2 C 423.3,806.5 424.70000000000005,804.9 424.20000000000005,812.2 C 423.70000000000005,820.5999999999999 425.40000000000003,823.9 432.8,828.5999999999999 C 445.90000000000003,837.0999999999999 457.6,840.2 462.40000000000003,836.7 C 463.40000000000003,836.0 464.8,832.5999999999999 465.70000000000005,829.0 C 467.70000000000005,820.3 472.6,809.9 479.3,800.4 C 484.8,792.5 494.6,780.8 496.1,780.2 C 496.5,780.0 497.6,781.0999999999999 498.40000000000003,782.7 C 502.3,790.0999999999999 513.4,798.0 531.0,806.0 C 553.1,816.0999999999999 602.4,831.0 633.0,836.9 C 673.9000000000001,844.7 682.6,845.5 725.5,845.5 C 764.9000000000001,845.4 770.9000000000001,844.8 798.2,838.0 C 813.8000000000001,834.0999999999999 827.8000000000001,827.0 830.9000000000001,821.3 C 832.7,817.9 832.2,806.0999999999999 830.1,802.0999999999999 C 825.5,793.5 796.8000000000001,772.9 771.5,760.0 C 745.9000000000001,746.9 717.1,737.0 704.9000000000001,737.0 L 699.9000000000001,737.0 L 700.2,740.6999999999999 C 700.5,744.3 700.6,744.3 708.5,747.0 C 741.7,758.0999999999999 770.9000000000001,778.5 771.2,790.8 C 771.3000000000001,793.7 768.0,800.0999999999999 764.7,803.8 C 754.8000000000001,814.5999999999999 720.4000000000001,823.0 686.7,823.0 C 638.8000000000001,823.0 577.5,809.9 540.1,791.8 C 524.2,784.0 518.2,779.2 514.2,770.8 C 512.0,766.3 512.0,766.0 513.5,760.8 C 515.9,752.5999999999999 518.9,748.5999999999999 538.8000000000001,728.1999999999999 C 550.5,716.0 564.6,703.6 572.7,698.1 C 574.8000000000001,696.6 579.0,693.6 582.0,691.4 C 585.0,689.1 590.8000000000001,685.3 594.7,682.9 C 601.7,678.6999999999999 602.0,678.3 602.0,674.6999999999999 L 602.0,671.0 L 597.8000000000001,671.0 C 594.5,671.1 590.3000000000001,672.6999999999999 579.4,678.3"/></clipPath>
+      <clipPath id="czc7-b"><path d="M 815.5,680.1 C 812.2,680.6 805.8000000000001,681.4 801.3000000000001,682.0 C 784.1,684.1999999999999 752.6,693.1 720.5,704.8 C 706.7,709.8 676.8000000000001,720.9 667.5,724.4 C 645.1,732.8 613.4,741.1999999999999 583.8000000000001,746.4 C 580.2,747.0999999999999 580.0,747.3 580.0,750.9 C 580.0,756.3 580.2,756.5 599.0,764.5 C 623.5,775.0999999999999 646.0,778.7 655.6,773.7 C 658.3000000000001,772.3 658.8000000000001,771.4 659.3000000000001,767.5 C 660.6,755.4 674.1,743.9 706.5,727.1 C 718.0,721.1999999999999 741.7,712.6 761.5,707.1 C 783.7,701.1 790.9000000000001,699.8 807.1,699.3 C 821.1,698.8 823.5,699.0 829.7,700.8 C 833.5,702.0 837.5,703.9 838.5,705.0 C 840.3000000000001,707.0 840.4000000000001,707.1999999999999 838.6,710.5 C 835.5,716.1 817.3000000000001,730.6999999999999 802.8000000000001,739.1999999999999 C 797.2,742.4 797.0,742.5999999999999 797.0,746.7 C 797.0,750.7 797.2,751.0 799.7,751.0 C 805.4000000000001,751.0 855.0,731.1 877.2,719.9 C 895.7,710.5 898.5,708.1999999999999 899.5,701.6999999999999 C 900.6,694.4 899.0,691.8 890.9000000000001,687.5 C 879.6,681.6 864.2,679.0 840.5,679.1 C 830.1,679.1999999999999 818.8000000000001,679.6 815.5,680.1"/></clipPath>
+      <mask id="czm-b" maskUnits="userSpaceOnUse" x="330" y="280" width="620" height="620">
+        <g clip-path="url(#czc1-b)">
+          <path class="cz-s cz-B0" d="M644.0,322.0C644.4,323.1 645.3,326.7 646.4,328.5C647.4,330.4 648.8,331.9 650.1,332.9C651.4,333.8 652.6,334.3 654.0,334.3C655.5,334.2 657.9,332.3 658.9,332.7C659.8,333.0 659.2,335.4 659.7,336.4C660.3,337.4 661.3,338.1 662.4,338.6C663.4,339.2 664.5,339.6 666.1,339.7C667.7,339.7 671.0,339.1 672.0,339.0"/>
+          <path class="cz-s cz-B1" d="M652.0,327.0C651.6,329.7 649.8,338.0 649.7,343.1C649.6,348.3 651.3,354.0 651.5,357.7C651.7,361.3 652.2,359.7 650.8,364.9C649.5,370.2 646.3,383.2 643.4,389.2C640.4,395.2 634.5,397.1 633.0,401.1C631.5,405.0 634.5,410.0 634.5,413.1C634.5,416.3 635.8,412.4 633.2,420.1C630.5,427.8 622.0,451.1 618.4,459.1C614.9,467.2 613.3,465.9 611.8,468.3C610.4,470.7 610.3,470.5 609.7,473.5C609.1,476.5 609.9,480.1 608.0,486.5C606.1,492.8 601.3,504.4 598.5,511.5C595.6,518.7 593.1,525.0 590.9,529.3C588.6,533.7 586.5,535.1 584.9,537.7C583.3,540.3 582.5,542.0 581.5,545.0C580.5,548.1 581.4,549.5 579.0,555.9C576.7,562.3 570.2,577.3 567.4,583.3C564.6,589.3 564.6,589.1 562.2,592.1C559.7,595.0 555.1,596.6 552.6,601.1C550.1,605.6 547.9,615.5 547.1,619.2C546.3,622.8 547.9,622.4 548.0,623.0"/>
+          <path class="cz-s cz-B2" d="M553.0,611.0C553.1,610.4 552.6,609.3 553.5,607.4C554.4,605.5 556.7,601.5 558.2,599.6C559.7,597.7 561.1,597.0 562.7,596.1C564.4,595.3 563.8,594.2 568.0,594.3C572.2,594.3 583.1,595.1 588.1,596.5C593.1,597.8 595.6,600.4 598.0,602.3C600.4,604.2 600.4,603.9 602.5,608.0C604.7,612.1 608.9,621.9 610.7,627.0C612.5,632.2 612.9,635.2 613.4,638.8C614.0,642.4 614.6,644.1 614.0,648.5C613.3,652.9 609.7,661.2 609.6,664.9C609.5,668.7 612.1,669.8 613.2,670.8C614.2,671.9 615.0,671.8 615.9,671.2C616.7,670.6 618.3,670.3 618.1,667.0C617.8,663.6 614.6,655.9 614.3,651.3C614.1,646.7 614.5,644.3 616.4,639.5C618.3,634.7 623.5,627.7 625.7,622.5C627.9,617.3 627.5,613.9 629.6,608.2C631.7,602.4 635.5,593.8 638.5,588.0C641.6,582.1 646.4,575.5 648.0,573.0"/>
+        </g>
+        <g clip-path="url(#czc2-b)">
+          <path class="cz-s cz-R1" d="M476.0,335.0C476.6,336.1 477.3,340.1 479.3,341.8C481.4,343.5 485.5,343.2 488.2,345.3C491.0,347.4 494.3,350.7 496.0,354.3C497.7,357.9 499.3,362.1 498.2,367.0C497.1,371.8 491.4,380.4 489.6,383.6C487.7,386.8 487.4,385.6 487.0,386.0"/>
+          <path class="cz-s cz-R2" d="M384.0,470.0C388.6,467.5 403.2,460.3 411.8,455.1C420.4,450.0 424.9,447.0 435.7,439.1C446.5,431.2 467.9,414.8 476.5,407.6C485.1,400.4 484.2,397.1 487.5,395.9C490.9,394.7 494.4,399.6 496.8,400.4C499.1,401.1 495.9,402.8 501.8,400.6C507.7,398.3 525.4,389.6 532.1,387.1C538.7,384.6 537.5,385.4 541.6,385.6C545.7,385.8 552.2,386.7 556.7,388.3C561.3,389.9 567.0,393.9 569.0,395.0"/>
+          <path class="cz-s cz-R3" d="M487.0,390.0C488.5,392.8 494.3,403.1 495.9,406.6C497.4,410.0 499.1,406.1 496.1,410.7C493.0,415.2 482.5,427.3 477.6,433.9C472.7,440.4 469.3,445.7 466.8,450.2C464.2,454.7 462.9,458.0 462.3,461.0C461.7,464.0 462.4,466.6 463.1,468.4C463.7,470.3 464.8,471.0 466.1,472.0C467.4,472.9 466.3,473.7 470.9,474.1C475.6,474.4 488.2,474.6 494.0,474.2C499.7,473.9 502.9,472.7 505.4,472.0C507.9,471.3 507.5,471.3 508.8,470.0C510.2,468.7 512.2,465.5 513.6,464.5C514.9,463.4 515.3,463.2 516.9,463.7C518.5,464.2 521.9,466.2 523.4,467.4C524.9,468.6 526.2,470.2 526.2,471.2C526.2,472.2 526.6,473.1 523.3,473.6C519.9,474.2 510.7,473.2 506.3,474.6C501.9,476.0 499.0,479.8 497.0,481.8C495.0,483.8 494.6,486.8 494.4,486.5C494.3,486.2 496.0,481.5 496.0,480.0C496.0,478.4 495.3,478.2 494.4,477.4C493.4,476.6 492.7,475.5 490.3,475.0C487.8,474.5 483.2,474.1 479.9,474.5C476.5,474.9 469.7,477.4 469.9,477.5C470.2,477.5 477.8,475.1 481.2,474.7C484.5,474.4 487.7,474.5 490.1,475.2C492.5,475.9 494.5,477.4 495.6,478.9C496.6,480.3 496.9,481.8 496.2,484.1C495.5,486.5 495.2,488.5 491.5,493.0C487.8,497.5 479.0,505.3 474.1,511.1C469.1,516.9 464.6,523.4 461.8,527.7C458.9,531.9 457.8,534.4 456.9,536.4C456.1,538.5 456.0,538.8 456.6,539.8C457.1,540.8 458.4,541.9 460.2,542.7C462.0,543.4 464.1,544.6 467.3,544.5C470.6,544.4 475.2,542.3 479.5,542.1C483.9,541.8 490.0,542.5 493.5,543.1C496.9,543.7 498.3,544.6 500.2,545.8C502.1,547.0 504.0,550.6 505.0,550.4C506.0,550.3 505.3,546.6 506.2,545.0C507.1,543.4 508.7,542.0 510.6,541.0C512.5,540.0 515.0,539.4 517.6,539.1C520.2,538.8 527.2,539.0 526.3,539.2C525.5,539.4 516.3,538.9 512.4,540.0C508.6,541.2 507.0,542.3 503.1,546.3C499.3,550.3 497.1,554.9 489.5,564.2C481.8,573.5 463.5,594.0 457.1,602.0C450.7,610.1 452.2,609.3 451.0,612.3C449.7,615.3 449.1,617.5 449.6,619.8C450.1,622.2 451.0,624.3 453.9,626.5C456.7,628.7 463.7,631.1 466.8,632.9C469.9,634.7 469.7,633.8 472.5,637.3C475.4,640.8 481.3,650.7 483.8,653.8C486.3,656.9 486.3,655.5 487.3,655.8C488.4,656.2 488.6,656.7 490.1,655.7C491.6,654.8 490.4,660.1 496.4,650.1C502.4,640.0 525.9,595.7 526.0,595.6C526.2,595.4 502.6,639.4 497.2,649.1C491.8,658.7 495.0,652.5 493.9,653.7C492.7,654.9 491.5,655.8 490.2,656.3C489.0,656.7 487.7,656.6 486.7,656.3C485.6,656.0 486.4,657.7 484.1,654.6C481.9,651.6 476.3,641.7 473.3,638.1C470.4,634.4 469.5,634.7 466.4,632.9C463.2,631.1 457.3,629.2 454.6,627.2C451.8,625.2 450.5,622.8 449.7,620.7C449.0,618.6 449.3,616.9 450.0,614.6C450.7,612.2 451.7,610.0 453.9,606.6C456.0,603.3 459.9,597.9 462.8,594.3C465.7,590.7 471.6,584.9 471.5,585.1C471.3,585.3 465.1,591.7 462.0,595.7C458.8,599.8 454.4,606.1 452.5,609.4C450.7,612.7 451.0,612.9 450.9,615.4C450.9,617.8 454.2,621.9 452.0,624.0C449.8,626.1 441.8,626.4 437.8,627.8C433.9,629.2 427.9,632.5 428.6,632.4C429.2,632.3 438.0,628.0 441.6,627.1C445.2,626.2 446.3,626.2 450.0,627.0C453.8,627.7 460.1,629.6 464.0,631.4C467.9,633.3 470.5,634.7 473.4,638.2C476.4,641.6 479.7,647.6 481.7,652.0C483.6,656.3 484.7,661.1 485.0,664.4C485.3,667.7 485.0,669.4 483.6,671.8C482.1,674.3 476.5,676.3 476.4,679.1C476.3,681.8 481.5,685.8 482.9,688.3C484.3,690.9 484.1,692.9 484.8,694.3C485.5,695.8 486.6,696.6 487.0,697.0"/>
+          <path class="cz-s cz-R4" d="M486.0,690.0C485.8,689.1 484.8,686.6 484.6,684.4C484.3,682.2 484.2,679.9 484.6,676.9C485.0,674.0 486.0,669.9 487.1,666.9C488.3,663.9 489.5,661.7 491.5,659.1C493.4,656.4 496.4,655.7 499.0,651.0C501.5,646.3 502.9,638.7 506.7,630.7C510.6,622.6 518.8,608.5 522.2,602.9C525.6,597.2 526.2,598.0 527.0,597.0"/>
+        </g>
+        <g clip-path="url(#czc3-b)">
+          <path class="cz-s cz-Y1" d="M 730.0,386.0 C 732.5,386.4 739.9,388.5 745.3,388.5 C 750.6,388.5 757.8,386.3 762.2,386.0 C 766.6,385.7 768.9,387.0 771.7,386.8 C 774.5,386.6 775.8,386.3 779.0,385.1 C 782.2,383.9 788.5,381.1 791.0,379.6 C 793.4,378.0 793.1,377.4 793.9,375.8 C 794.8,374.2 794.6,371.0 796.0,370.0 C 797.5,369.1 800.7,370.3 802.5,369.9 C 804.4,369.5 804.9,370.3 807.0,367.9 C 809.1,365.6 812.8,357.8 815.2,355.9 C 817.5,354.0 819.7,356.7 821.1,356.5 C 822.6,356.4 823.5,355.3 824.0,355.0"/>
+        </g>
+        <g clip-path="url(#czc4-b)">
+          <path class="cz-s cz-M1" d="M653.0,519.0C653.5,520.2 655.4,523.7 655.8,526.3C656.2,529.0 655.2,532.2 655.6,534.7C655.9,537.2 657.2,539.6 657.9,541.4C658.7,543.3 658.9,545.0 660.0,545.8C661.1,546.6 662.5,547.0 664.5,546.3C666.6,545.5 669.8,543.5 672.2,541.5C674.6,539.4 675.7,537.1 679.1,534.1C682.4,531.1 683.9,530.0 692.5,523.7C701.0,517.4 717.2,505.1 730.4,496.4C743.6,487.8 759.7,477.9 771.5,471.6C783.3,465.3 792.8,461.9 801.0,458.6C809.2,455.3 812.8,454.0 820.8,451.8C828.7,449.6 842.6,447.1 848.8,445.4C854.9,443.8 854.3,441.8 857.6,441.9C860.9,441.9 866.1,444.4 868.6,445.6C871.2,446.8 871.9,447.8 873.0,449.2C874.2,450.5 874.6,452.6 875.6,453.5C876.6,454.5 878.4,454.8 879.0,455.0"/>
+        </g>
+        <g clip-path="url(#czc5-b)">
+          <path class="cz-s cz-O1" d="M751.0,517.0C750.7,519.5 750.2,528.0 749.0,532.2C747.9,536.4 744.9,538.6 744.3,542.2C743.7,545.7 745.9,549.8 745.3,553.5C744.8,557.2 742.6,560.9 740.9,564.5C739.3,568.1 737.9,571.3 735.4,575.0C733.0,578.7 728.2,582.5 726.1,586.6C723.9,590.7 724.0,595.8 722.5,599.7C720.9,603.6 719.9,605.7 716.7,610.2C713.6,614.6 706.6,620.8 703.8,626.2C700.9,631.6 700.8,639.0 699.4,642.5C698.0,646.1 697.2,646.0 695.3,647.5C693.4,649.0 688.5,650.1 688.1,651.8C687.7,653.5 692.0,655.7 692.8,657.7C693.6,659.7 692.1,663.0 693.1,663.8C694.0,664.7 696.8,662.8 698.4,662.8C699.9,662.8 701.2,663.1 702.3,663.8C703.5,664.6 704.4,665.9 705.2,667.5C706.0,669.1 706.3,673.9 707.4,673.3C708.4,672.7 710.1,666.4 711.6,664.0C713.1,661.6 714.0,660.7 716.3,659.0C718.6,657.4 722.4,655.2 725.3,653.9C728.2,652.7 731.1,652.5 733.5,651.6C735.9,650.6 737.4,649.9 739.7,648.1C742.0,646.4 740.2,646.0 747.1,641.0C754.0,636.1 768.5,628.0 781.1,618.5C793.7,609.1 814.5,590.7 822.8,584.4C831.0,578.1 826.3,581.2 830.5,580.6C834.8,580.1 845.1,580.9 848.0,581.0"/>
+          <path class="cz-s cz-O2" d="M822.0,555.0C822.8,556.3 824.5,560.7 826.5,562.8C828.6,565.0 832.6,565.5 834.5,568.0C836.5,570.6 835.7,575.3 838.4,578.2C841.2,581.1 848.3,582.2 851.0,585.4C853.7,588.7 852.3,594.0 854.7,597.7C857.0,601.3 863.5,603.4 865.3,607.4C867.0,611.4 863.8,617.0 865.2,621.9C866.5,626.7 871.6,629.9 873.5,636.6C875.3,643.2 876.1,658.9 876.3,661.8C876.5,664.7 875.3,656.0 874.7,654.2C874.1,652.4 873.7,651.9 872.6,650.9C871.6,649.9 869.9,648.6 868.4,648.0C866.8,647.4 865.0,647.2 863.3,647.2C861.6,647.3 861.0,647.2 858.2,648.5C855.4,649.9 849.8,653.9 846.3,655.4C842.9,657.0 841.2,656.3 837.5,657.8C833.8,659.2 826.2,663.0 824.0,664.0"/>
+        </g>
+        <g clip-path="url(#czc6-b)">
+          <path class="cz-s cz-P1" d="M575.0,690.0C574.0,690.3 571.6,690.7 569.1,692.0C566.5,693.3 567.6,691.7 559.8,697.7C552.0,703.7 529.9,721.4 522.2,727.8C514.6,734.2 516.8,732.7 513.9,736.2C511.0,739.7 507.8,745.7 504.8,748.8C501.8,751.8 498.5,751.5 495.8,754.5C493.1,757.5 492.1,763.4 488.6,766.9C485.0,770.5 477.2,773.7 474.4,775.8C471.6,777.9 472.5,777.6 471.5,779.5C470.5,781.4 469.6,785.2 468.4,787.3C467.2,789.4 466.1,790.6 464.5,792.0C462.9,793.4 461.0,795.0 458.7,795.8C456.5,796.7 452.3,795.8 451.0,797.0C449.7,798.2 451.4,800.3 450.9,803.1C450.5,805.9 448.0,811.0 448.3,813.9C448.5,816.8 451.5,820.4 452.5,820.5C453.4,820.6 452.7,816.7 454.2,814.6C455.7,812.5 460.0,811.1 461.5,808.1C462.9,805.2 461.9,799.7 462.7,796.8C463.5,793.8 462.4,795.1 466.2,790.6C469.9,786.1 481.4,773.9 485.4,769.9C489.4,765.9 488.6,767.4 490.2,766.7C491.8,766.0 493.5,765.7 494.8,765.7C496.1,765.7 496.7,765.9 497.9,766.5C499.0,767.2 500.0,767.2 501.6,769.6C503.2,771.9 505.9,778.0 507.7,780.7C509.5,783.5 509.1,783.7 512.4,785.9C515.6,788.2 521.2,791.3 527.1,794.3C533.1,797.3 540.5,800.9 548.0,803.9C555.4,806.9 560.5,809.0 571.8,812.3C583.0,815.5 601.9,820.6 615.4,823.6C628.9,826.6 638.3,828.5 652.7,830.2C667.2,831.8 690.7,833.1 702.0,833.6C713.3,834.0 715.4,833.9 720.7,833.1C725.9,832.3 728.3,829.4 733.3,828.8C738.4,828.1 746.0,829.6 751.1,829.2C756.2,828.7 759.9,827.3 764.1,825.9C768.2,824.4 772.2,823.1 776.2,820.6C780.2,818.0 784.2,812.2 787.8,810.5C791.4,808.8 794.9,810.6 797.8,810.2C800.6,809.8 802.8,809.1 804.8,808.1C806.8,807.2 808.5,805.9 809.8,804.5C811.2,803.2 813.3,801.0 812.8,800.0C812.3,799.0 808.4,800.0 807.0,798.7C805.5,797.4 805.8,793.6 804.2,792.2C802.6,790.8 799.4,791.9 797.4,790.4C795.3,788.8 794.8,785.2 791.9,783.2C789.0,781.2 784.5,781.4 780.1,778.5C775.6,775.6 769.3,769.0 765.0,765.8C760.8,762.6 761.0,762.5 754.5,759.4C748.0,756.3 734.5,750.4 725.9,747.2C717.3,743.9 706.8,741.2 703.0,740.0"/>
+        </g>
+        <g clip-path="url(#czc7-b)">
+          <path class="cz-s cz-T1" d="M583.0,751.0C588.7,751.7 607.9,754.2 617.0,754.9C626.2,755.6 633.4,755.6 637.9,755.2C642.4,754.8 641.1,754.6 644.1,752.6C647.1,750.6 650.4,746.7 655.9,743.1C661.3,739.5 665.0,736.7 676.7,731.2C688.4,725.7 708.5,716.4 726.1,710.1C743.8,703.8 766.7,696.9 782.6,693.4C798.5,689.8 812.1,689.4 821.7,689.0C831.3,688.6 833.4,689.2 840.2,690.9C847.0,692.5 855.2,697.2 862.5,699.0C869.7,700.8 881.6,701.0 883.9,701.7C886.3,702.4 879.0,701.6 876.5,703.3C874.0,704.9 872.0,710.0 869.1,711.4C866.2,712.8 861.5,711.3 859.0,711.7C856.5,712.1 857.9,710.9 854.1,713.5C850.4,716.2 845.6,722.1 836.6,727.7C827.6,733.2 806.1,743.8 800.0,747.0"/>
+        </g>
+      </mask>
+    </defs>
+    <image mask="url(#czm-b)" x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/>
+    <image class="cz-word" x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/>
+  </svg>
+</div>
+          <p class="muted">COTOZUTEのロゴは「言伝（ことづて）」を支える為に「心」を置いた一文字の漢字。ただ伝えるだけのコンテンツではなく、心の乗せ方を常に模索します</p>
+        </div>
+      </div>
+      <p class="page-end"><a class="next" href="#/service" data-route="/service" data-end>SERVICE</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= SERVICE ======================= -->
+<div class="page" data-page="/service" data-title="SERVICE" hidden>
+  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
+  <section id="service">
+    <div class="wrap page-top">
+      <p class="eyebrow" data-knot>SERVICE</p>
+      <h2>事業内容</h2>
+      <p class="muted" style="max-width:38em">あなたがお仕事で困っている事をお伺いし<br>マーケティングとAIを駆使して解決をお手伝いする会社です。</p>
+
+      <div class="scenes">
+        <article class="scene" data-knot>
+          <div class="art-wrap">
+            <div class="nj" data-static="assets/first-abacus.webp" data-anim="assets/svc-abacus-anim.webp" data-anim-sm="assets/svc-abacus-anim-sm.webp" style="--ar:900/676" data-ox=".3" data-oy=".72"><div class="box"><canvas></canvas><img class="anim" alt="AI活用の相談"></div></div>
+            <div class="chant" aria-hidden="true"><span>願いましては<span class="tcy">AI</span>なり</span><span>引いては作業なり</span><span>加えて仕事なり</span></div>
+          </div>
+          <div class="copy">
+            <div class="num">01</div>
+            <h3>AI活用の相談<small>AI SUPPORT</small></h3>
+            <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
+            <p class="muted">「仕事が大変で時間が足りない」と感じるなら、AIを上手に活用し沢山の時間を手に入れましょう。</p>
+          </div>
+        </article>
+
+        <article class="scene alt" data-knot>
+          <div class="art-wrap shishi" id="shishi">
+            <div class="box" role="img" aria-label="業務自動化（鹿威し）。タップすると竹筒に水が溜まります"><canvas></canvas><span class="kon" aria-hidden="true">コン</span></div>
+            <div class="ctl">
+              <label for="flow">水の量</label>
+              <input type="range" id="flow" min="5" max="100" value="45">
+              <span class="cnt">コン ×<b id="cnt">0</b></span>
+            </div>
+          </div>
+          <div class="copy">
+            <div class="num">02</div>
+            <h3>業務自動化<small>AUTOMATION</small></h3>
+            <p class="catch">まごころを自動化しよう。</p>
+            <p class="muted">仕事は面倒なことほど、手抜きが出来ない大切な事です。ですが、まごころを大事にしてる人が、真剣に取り組み過ぎて作業でクタクタになると、ちゃんと真心が届かなくなります。真心を自動化しよう。</p>
+          </div>
+        </article>
+
+        <article class="scene" data-knot>
+          <div class="art-wrap">
+            <div class="nj" data-static="assets/first-video.webp" data-anim="assets/svc-video-anim.webp" data-anim-sm="assets/svc-video-anim-sm.webp" style="--ar:620/465" data-ox=".55" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="動画制作"></div></div>
+          </div>
+          <div class="copy">
+            <div class="num">03</div>
+            <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
+            <p class="catch">動画で伝えられる情報は文字の5000倍</p>
+            <p class="muted">動画は「人間と一緒」企画、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="cards">
+        <div class="card" data-knot>
+          <div class="nj" data-static="assets/first-sns.webp" data-anim="assets/card-sns-anim.webp" data-ox=".35" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="SNSの助言"></div></div>
+          <div class="body"><h4>SNSの助言</h4><div class="en">SNS ADVICE</div><p>新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。COTOZUTEは「腑に落ちる助言」をします。</p></div>
+        </div>
+        <div class="card">
+          <div class="nj" data-static="assets/first-creative.webp" data-anim="assets/card-creative-anim.webp" data-ox=".45" data-oy=".7"><div class="box"><canvas></canvas><img class="anim" alt="コンテンツ制作環境構築"></div></div>
+          <div class="body"><h4>コンテンツ制作環境構築</h4><div class="en">CREATIVE SETUP</div><p>つくる。つくってもらう。もっと大切なのは「つくり続ける」<br><br>仕事が苦じゃなく、楽しくなる環境を共に目指します。</p></div>
+        </div>
+        <div class="card" data-knot>
+          <div class="nj" data-static="assets/first-line.webp" data-anim="assets/card-line-anim.webp" data-ox=".5" data-oy=".45"><div class="box"><canvas></canvas><img class="anim" alt="LINEマーケティング"></div></div>
+          <div class="body"><h4>LINEマーケティング</h4><div class="en">LINE MARKETING</div><p>LTV（顧客生涯価値）を上げる。誠実であること以上に大切なのは「誠実な人だと感じさせる」ことです。誠実さがきちんと伝わり続ける仕組みを作りましょう。</p></div>
+        </div>
+        <div class="card">
+          <div class="nj" data-static="assets/first-sound.webp" data-anim="assets/card-sound-anim.webp" data-ox=".55" data-oy=".55"><div class="box"><canvas></canvas><img class="anim" alt="音声・音楽・演出"></div></div>
+          <div class="body"><h4>音声・音楽・演出</h4><div class="en">SOUND &amp; DIRECTION</div><p>「映像の７割は音で決まる」かつて無声映画は、上映する横で人間がピアノを弾いていました。音楽にこだわらない人が、人の心を動かすのは難しい</p></div>
+        </div>
+      </div>
+      <p class="page-end"><a class="next" href="#/about" data-route="/about" data-end>ABOUT</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= ABOUT ======================= -->
+<div class="page" data-page="/about" data-title="ABOUT" hidden>
+  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
+  <section id="about">
+    <div class="wrap page-top">
+      <div class="about">
+        <div>
+          <p class="eyebrow" data-knot>ABOUT</p>
+          <h2>会社概要</h2>
+          <p class="muted">COTOZUTEは言葉の力を信じ、AIの時代にどんな言葉で物語を残すかを模索します。</p>
+        </div>
+        <div data-knot>
+          <table class="info">
+            <tr><th>商号</th><td>合同会社COTOZUTE</td></tr>
+            <tr><th>本店所在地</th><td>〒103-0026<br>東京都中央区日本橋兜町17-2<br>兜町第6ビル4F</td></tr>
+            <tr><th>設立年月日</th><td>2026年8月7日</td></tr>
+            <tr><th>代表社員</th><td>向後 晋之介</td></tr>
+            <tr><th>資本金</th><td>100,000円</td></tr>
+            <tr><th>法人番号</th><td>3010003052316</td></tr>
+            <tr><th>事業目的</th><td>SNSマーケティングの企画、運用及びコンサルティング業務／AI（人工知能）を活用したシステム及びコンテンツの開発並びに提供業務／Webサイト及びSNSコンテンツの制作並びに運用代行業務／オンライン講座及びデジタルコンテンツの企画、制作並びに販売業務／D2C物販／各種物品の企画、製造及び販売業務／前各号に附帯又は関連する一切の事業</td></tr>
+            <tr><th>連絡先</th><td>kogo.cotozute@gmail.com</td></tr>
+          </table>
+        </div>
+      </div>
+      <p class="page-end"><a class="next" href="#/contact" data-route="/contact" data-end>CONTACT</a></p>
+    </div>
+  </section>
+</div>
+
+<!-- ======================= CONTACT ======================= -->
+<div class="page" data-page="/contact" data-title="CONTACT" hidden>
+  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
+  <section id="contact">
+    <div class="wrap page-top">
+      <div class="contact">
+        <div class="seal" data-knot><img src="assets/contact-post-sm.webp" srcset="assets/contact-post-sm.webp 480w, assets/contact-post.webp 840w" sizes="(min-width:900px) 400px, 82vw" alt="" width="840" height="809" decoding="async"></div>
+        <div>
+          <p class="eyebrow" data-knot>CONTACT</p>
+          <h2>お問い合わせ</h2>
+          <p class="muted">ご相談・お見積り・取材のご依頼は、メールにて承っております。</p>
+          <p style="margin-top:30px"><a class="mail next-mail" href="mailto:kogo.cotozute@gmail.com" data-end>kogo.cotozute@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="foot-in">
+    <div class="fl">COTOZUTE</div>
+    <div class="fr">合同会社COTOZUTE</div>
+    <div class="fr">&copy; COTOZUTE LLC.</div>
+  </div>
+</footer>
+<script src="assets/cz-tech.js" defer></script>
+<script>
+(function(){
+'use strict';
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ================= 音（WebAudio・既定は無音） ================= */
+var AC=null, soundOn=false;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(AC&&AC.state==='suspended') AC.resume(); return AC; }
+var sndBtn=document.getElementById('snd');
+sndBtn.addEventListener('click',function(){ soundOn=!soundOn; if(soundOn) ac(); sndBtn.setAttribute('aria-pressed',soundOn); sndBtn.textContent=soundOn?'音 あり':'音 なし'; });
+function noiseBuf(c,dur,pow){ var n=c.createBuffer(1,Math.max(1,c.sampleRate*dur|0),c.sampleRate), d=n.getChannelData(0); for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,pow); return n; }
+function knock(freq,dur,vol,when){ /* 竹・木を打つ音 */
+  var c=ac(); if(!c||!soundOn) return; var t=c.currentTime+(when||0);
+  var src=c.createBufferSource(); src.buffer=noiseBuf(c,dur,6);
+  var bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=freq; bp.Q.value=9;
+  var o=c.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(freq*.5,t); o.frequency.exponentialRampToValueAtTime(freq*.42,t+dur);
+  var g=c.createGain(); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  var g2=c.createGain(); g2.gain.setValueAtTime(vol*.6,t); g2.gain.exponentialRampToValueAtTime(.0001,t+dur*.8);
+  src.connect(bp).connect(g).connect(c.destination); o.connect(g2).connect(c.destination);
+  src.start(t); o.start(t); o.stop(t+dur);
+}
+function rustle(dur){ /* 紙がめくれる音 */
+  var c=ac(); if(!c||!soundOn) return; var t=c.currentTime;
+  var src=c.createBufferSource(); src.buffer=noiseBuf(c,dur,1.2);
+  var bp=c.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=.8; bp.frequency.setValueAtTime(2600,t); bp.frequency.exponentialRampToValueAtTime(700,t+dur);
+  var g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.22,t+dur*.35); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  src.connect(bp).connect(g).connect(c.destination); src.start(t);
+}
+
+/* ================= G10 紙芝居：紙になり、線画になり、横へ抜かれる ================= */
+var pages={}; document.querySelectorAll('.page').forEach(function(p){pages[p.dataset.page]=p;});
+var cur=null, busy=false;
+var butai=document.getElementById('butai'), dai=document.getElementById('dai'), washi=document.getElementById('washi');
+var skMix=document.getElementById('skMix'), skT=document.getElementById('skT');
+var mb=document.getElementById('mb'), nv=document.getElementById('nv');
+function routeOf(){ var h=location.hash.replace(/^#/,''); return pages[h]?h:'/'; }
+function markNav(r){ document.querySelectorAll('nav a').forEach(function(a){ if(a.dataset.route===r) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
+function closeNav(){ nv.classList.remove('open'); mb.classList.remove('open'); mb.setAttribute('aria-expanded','false'); }
+mb.addEventListener('click',function(){ var o=nv.classList.toggle('open'); mb.classList.toggle('open',o); mb.setAttribute('aria-expanded',o); });
+
+function sketch(a){ /* 0=元の絵 1=鉛筆の線画 */
+  skMix.setAttribute('k2',(1-a).toFixed(3)); skMix.setAttribute('k3',a.toFixed(3));
+}
+var boil=0, boilT=0;
+function boilTick(now){ /* 線をシャシャッと震わせる（コマ撮りのように1/9秒ごと） */
+  if(now-boilT>110){ boilT=now; boil=(boil+1)%7; skT.setAttribute('seed',boil+1); }
+}
+function ease3(k){ return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2; }
+function show(r, animate){
+  var next=pages[r]; if(!next||next===cur){ window.scrollTo(0,0); return; }
+  var old=cur; cur=next; markNav(r); document.title=next.dataset.title+'｜COTOZUTE（ステージング）';
+  if(!old||!animate){
+    Object.keys(pages).forEach(function(k){ pages[k].hidden=(pages[k]!==next); }); window.scrollTo(0,0); onPageShown(next); return;
+  }
+  busy=true; dai.textContent=next.dataset.title;
+  var y=window.scrollY, slow=/slow/.test(location.search)?5:1;
+  var TA=380*slow, TB=900*slow, TC=620*slow; /* 紙になる → 抜く → 色づく */
+  if(reduce){ TA=150; TB=420; TC=200; }
+  old.classList.add('sk'); next.classList.add('sk');
+  butai.classList.add('on'); washi.classList.add('on');
+  var t0=performance.now(), slid=false;
+  (function f(now){
+    now=now||performance.now(); var t=now-t0; boilTick(now);
+    if(t<TA){ var a=ease3(t/TA); sketch(a); washi.style.opacity=a.toFixed(3); }
+    else if(t<TA+TB){
+      if(!slid){ slid=true; sketch(1); washi.style.opacity='1';
+        old.classList.add('leaving'); old.style.top=(-y)+'px';
+        next.hidden=false; window.scrollTo(0,0); onPageShown(next); rustle(TB/1000);
+      }
+      /* 紙芝居の抜き方：ためて、すっと抜いて、最後は手が止まる */
+      var k=(t-TA)/TB, e=k<.18? .02*(k/.18) : .02+.98*ease3((k-.18)/.82);
+      old.style.transform='translate3d('+(e*108).toFixed(2)+'%,0,0) rotate('+(e*.6).toFixed(3)+'deg)';
+    }
+    else if(t<TA+TB+TC){
+      if(old.classList.contains('leaving')){ old.hidden=true; old.classList.remove('leaving','sk'); old.style.top=''; old.style.transform=''; }
+      var c=1-ease3((t-TA-TB)/TC); sketch(c); washi.style.opacity=c.toFixed(3);
+    }
+    else{
+      sketch(0); washi.style.opacity='0'; washi.classList.remove('on'); next.classList.remove('sk');
+      butai.classList.remove('on'); busy=false; return;
+    }
+    requestAnimationFrame(f);
+  })();
+}
+document.addEventListener('click',function(e){
+  var a=e.target.closest('a[data-route]'); if(!a) return;
+  e.preventDefault(); closeNav(); if(busy) return;
+  var r=a.dataset.route;
+  if(pages[r]===cur){ window.scrollTo({top:0,behavior:'smooth'}); return; }
+  history.pushState(null,'','#'+r); show(r,true);
+});
+addEventListener('popstate',function(){ if(!busy) show(routeOf(),true); });
+
+/* ================= G3 綴じ糸（筆ロゴの紫） =================
+   ・端に着いた点では必ず縦向きに折り返す（＝画面の外へ膨らまず、端で「クッ」と折れない）
+   ・スクロールに少し遅れて、やわらかく追いかける
+   ・先端はフェードさせて、ぶつ切りに見せない */
+var tid=0, NS='http://www.w3.org/2000/svg', FADE_N=12;
+function Thread(page){
+  this.page=page; this.svg=page.querySelector('.thread');
+  this.main=this.svg.querySelector('.t-main'); this.glow=this.svg.querySelector('.t-glow');
+  this.end=page.querySelector('[data-end]'); this.samples=[]; this.len=0; this.shown=0; this.target=0;
+  var id='tg'+(tid++), lg=document.createElementNS(NS,'linearGradient');
+  lg.setAttribute('id',id); lg.setAttribute('gradientUnits','userSpaceOnUse'); lg.setAttribute('x1','0'); lg.setAttribute('y1','0'); lg.setAttribute('x2','0'); lg.setAttribute('y2','1400'); lg.setAttribute('spreadMethod','reflect');
+  [['0','#7A5FAE'],['.4','#A88FD6'],['.72','#E6A9CB'],['1','#8D6AB1']].forEach(function(s){ var st=document.createElementNS(NS,'stop'); st.setAttribute('offset',s[0]); st.setAttribute('stop-color',s[1]); lg.appendChild(st); });
+  this.svg.querySelector('defs').appendChild(lg);
+  this.stroke='url(#'+id+')';
+  this.main.setAttribute('stroke',this.stroke); this.glow.setAttribute('stroke',this.stroke);
+  this.tips=[];
+  for(var i=0;i<FADE_N;i++){ var t=document.createElementNS(NS,'path'); t.setAttribute('class','t-tip'); t.setAttribute('stroke',this.stroke); t.style.opacity=(.72*(1-(i+1)/(FADE_N+1))).toFixed(3); this.svg.appendChild(t); this.tips.push(t); }
+}
+Thread.prototype.build=function(){
+  var p=this.page, pr=p.getBoundingClientRect(), W=pr.width, H=p.scrollHeight;
+  if(!W||!H) return;
+  this.svg.setAttribute('width',W); this.svg.setAttribute('height',H); this.svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  var mL=Math.max(10,Math.min(W*.05,64)), mR=W-mL, minDy=Math.max(260,Math.min(W*.85,620));
+  var hero=p.querySelector('.hero'), y0=hero?hero.offsetHeight-30:60;
+  var pts=[[mR,y0]];
+  p.querySelectorAll('[data-knot]').forEach(function(k){
+    var r=k.getBoundingClientRect(), y=r.top-pr.top+10, last=pts[pts.length-1];
+    if(y-last[1]<minDy) return;               /* 近すぎる点では振り返さない＝急角度を作らない */
+    pts.push([last[0]===mR?mL:mR, y]);
+  });
+  if(this.end){
+    var er=this.end.getBoundingClientRect(), ex=er.left-pr.left+Math.min(36,er.width*.25), ey=er.top-pr.top-2;
+    while(pts.length>1 && ey-pts[pts.length-1][1]<minDy*.55) pts.pop();
+    pts.push([ex,ey]);
+  }
+  /* 各点で接線を縦にとるベジェ（S字の連なり） */
+  var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
+  for(var i=0;i<pts.length-1;i++){
+    var a=pts[i], b=pts[i+1], dy=b[1]-a[1], k=.55;
+    d+=' C'+a[0].toFixed(1)+' '+(a[1]+dy*k).toFixed(1)+' '+b[0].toFixed(1)+' '+(b[1]-dy*k).toFixed(1)+' '+b[0].toFixed(1)+' '+b[1].toFixed(1);
+  }
+  this.main.setAttribute('d',d); this.glow.setAttribute('d',d);
+  this.tips.forEach(function(t){ t.setAttribute('d',d); });
+  this.len=this.main.getTotalLength();
+  this.samples=[]; var step=Math.max(6,this.len/1600), maxY=0;
+  for(var s=0;s<=this.len;s+=step){ var q=this.main.getPointAtLength(s); maxY=Math.max(maxY,q.y); this.samples.push([s,maxY]); }
+  this.samples.push([this.len,maxY]);
+  this.measure(); this.shown=Math.min(this.shown,this.target); this.render();
+};
+Thread.prototype.measure=function(){
+  if(!this.len) return;
+  var pr=this.page.getBoundingClientRect(), pen=(-pr.top)+innerHeight*.78, drawn=0;
+  for(var i=0;i<this.samples.length;i++){ if(this.samples[i][1]<=pen) drawn=this.samples[i][0]; else break; }
+  this.target=drawn;
+};
+Thread.prototype.render=function(){
+  var L=this.len, s=this.shown, F=Math.min(170,s), body=Math.max(0,s-F), seg=F/FADE_N;
+  this.main.style.strokeDasharray=body+' '+(L+10); this.glow.style.strokeDasharray=body+' '+(L+10);
+  for(var i=0;i<FADE_N;i++){ var t=this.tips[i]; t.style.strokeDasharray=(seg+.6).toFixed(2)+' '+(L+10); t.style.strokeDashoffset=(-(body+i*seg)).toFixed(2); }
+  if(this.end) this.end.classList.toggle('tied', s>=L-8);
+};
+Thread.prototype.step=function(){ /* やわらかく追いかける */
+  var d=this.target-this.shown; if(Math.abs(d)<.5){ if(d!==0){ this.shown=this.target; this.render(); } return; }
+  this.shown+=d*(reduce?1:.09); this.render();
+};
+var threads={}; Object.keys(pages).forEach(function(k){ threads[k]=new Thread(pages[k]); });
+addEventListener('scroll',function(){ if(cur) threads[cur.dataset.page].measure(); },{passive:true});
+(function loop(){ if(cur) threads[cur.dataset.page].step(); requestAnimationFrame(loop); })();
+var rT; addEventListener('resize',function(){ clearTimeout(rT); rT=setTimeout(function(){ if(cur) threads[cur.dataset.page].build(); },150); });
+function onPageShown(p){
+  var th=threads[p.dataset.page]; th.shown=0;
+  requestAnimationFrame(function(){ th.build(); observeNj(p); if(p.querySelector('#shishi')) shishiStart(); });
+  setTimeout(function(){ th.build(); },900);
+  setTimeout(function(){ th.build(); },2500);
+}
+
+/* ================= G7 鹿威し：本番の挿絵のコマを、水の量と指で動かす ================= */
+var shishiStart=(function(){
+  var root=document.getElementById('shishi'), box=root.querySelector('.box'), cv=box.querySelector('canvas'), ctx=cv.getContext('2d'),
+      kon=root.querySelector('.kon'), range=document.getElementById('flow'), cntEl=document.getElementById('cnt');
+  var REST=[], i; for(i=48;i<=60;i++) REST.push(i); for(i=0;i<=15;i++) REST.push(i); /* 48=戻った瞬間（コン）→15 */
+  var ACT_FROM=16, ACT_TO=47, FPS=9;
+  var sprite=null, fw=0, fh=0, state='rest', fill=0, af=0, cnt=0, visible=false, started=false, last=0, lastFrame=-1;
+  box.style.background='url(assets/first-auto.webp) center/contain no-repeat';
+  function size(){ var dpr=Math.min(devicePixelRatio||1,2), r=box.getBoundingClientRect(); cv.width=Math.max(2,r.width*dpr|0); cv.height=Math.max(2,r.height*dpr|0); lastFrame=-1; }
+  function draw(f){ if(!sprite||f===lastFrame) return; lastFrame=f; ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(sprite,(f%8)*fw,Math.floor(f/8)*fh,fw,fh,0,0,cv.width,cv.height); }
+  function tick(now){
+    var dt=Math.min(.05,(now-last)/1000); last=now;
+    if(visible&&sprite){
+      var flow=range.value/100;
+      if(state==='rest'){
+        fill+=dt*(.05+flow*.55);
+        if(fill>=1){ state='act'; af=0; fill=0; }
+        else draw(REST[Math.min(REST.length-1,Math.floor(fill*REST.length))]);
+      }
+      if(state==='act'){
+        af+=dt*FPS*(.85+flow*.4); var f=ACT_FROM+Math.floor(af);
+        if(f>ACT_TO){ state='rest'; fill=0; draw(48); cnt++; cntEl.textContent=cnt; knock(620,.24,.9,0);
+          kon.classList.remove('go'); void kon.offsetWidth; kon.classList.add('go'); }
+        else draw(f);
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+  box.addEventListener('click',function(){ if(state==='rest') fill=Math.min(.999,fill+.34); ac(); });
+  if('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) load(); },{rootMargin:'200px'}).observe(box);
+  else visible=true;
+  var loading=false;
+  function load(){ if(loading) return; loading=true;
+    var small=innerWidth<900, img=new Image(); img.decoding='async';
+    img.onload=function(){ sprite=img; fw=img.naturalWidth/8; fh=img.naturalHeight/8; size(); box.style.background='none'; draw(REST[0]); };
+    img.src=small?'assets/shishi-sprite-sm.webp':'assets/shishi-sprite.webp';
+  }
+  addEventListener('resize',function(){ if(sprite) size(); });
+  return function(){ if(started) return; started=true; size(); last=performance.now(); requestAnimationFrame(tick); };
+})();
+
+/* ================= G2 和紙ににじむ絵（WebGL） ================= */
+var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+var FS=[
+'precision highp float;varying vec2 v;uniform sampler2D t;uniform float pr;uniform vec2 o;uniform float asp;uniform float sd;',
+'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
+'float fb(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*n(p);p*=2.03;a*=.5;}return s;}',
+'void main(){',
+' vec2 uv=vec2(v.x,1.-v.y);',
+' vec2 q=vec2(uv.x*asp,uv.y);',
+' float big=fb(q*2.2+sd), fine=fb(q*14.+sd*3.);',
+' float field=distance(q,vec2(o.x*asp,o.y))*.85+big*.55+fine*.12;',
+' float th=pr*2.1-.15;',
+' float m=1.-smoothstep(th-.06,th,field);',
+' float rim=smoothstep(th-.16,th-.03,field)*m;',
+' float wash=(1.-smoothstep(th,th+.16,field))*(1.-m);',
+' vec2 w=(vec2(fb(q*6.+1.3),fb(q*6.+7.1))-.5)*.035*(1.-m*.9)*(1.-pr);',
+' vec4 c=texture2D(t,uv+w);',
+' float gran=.88+.24*fine;',
+' vec3 col=c.rgb*mix(1.,gran,.5*(1.-pr));',
+' col=mix(col,col*.72,clamp(rim,0.,1.)*.9);',
+' float a=c.a*m;',
+' vec3 inkc=vec3(.17,.20,.29);',
+' float wa=wash*.16*step(.02,c.a);',
+' gl_FragColor=vec4(col*m+inkc*wa, a+wa);',
+'}'].join('\n');
+function glReveal(nj, img){
+  var cv=nj.querySelector('canvas'), dpr=Math.min(devicePixelRatio||1,2);
+  var r=cv.getBoundingClientRect(); cv.width=Math.max(2,r.width*dpr|0); cv.height=Math.max(2,r.height*dpr|0);
+  var gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true,antialias:false});
+  if(!gl) throw new Error('nogl');
+  function sh(tp,src){var s=gl.createShader(tp);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
+  var pg=gl.createProgram(); gl.attachShader(pg,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(pg,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(pg); gl.useProgram(pg);
+  var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
+  var loc=gl.getAttribLocation(pg,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+  var tx=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tx);
+  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
+  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  var uPr=gl.getUniformLocation(pg,'pr');
+  gl.uniform2f(gl.getUniformLocation(pg,'o'),parseFloat(nj.dataset.ox||.4),parseFloat(nj.dataset.oy||.6));
+  gl.uniform1f(gl.getUniformLocation(pg,'asp'),cv.width/cv.height);
+  gl.uniform1f(gl.getUniformLocation(pg,'sd'),Math.random()*10);
+  gl.viewport(0,0,cv.width,cv.height);
+  var t0=performance.now(), D=(reduce?900:3200)*(/slow/.test(location.search)?8:1);
+  return new Promise(function(res){
+    (function f(){
+      var k=Math.min(1,(performance.now()-t0)/D), e=k*k*(3-2*k);
+      gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT); gl.uniform1f(uPr,e); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
+      if(k<1) requestAnimationFrame(f); else res(gl);
+    })();
+  });
+}
+function cssReveal(nj,img){
+  nj.classList.add('fallback'); var fb=img.cloneNode(); fb.className='fb'; nj.querySelector('.box').appendChild(fb);
+  nj.style.setProperty('--ox',(parseFloat(nj.dataset.ox||.4)*100)+'%'); nj.style.setProperty('--oy',(parseFloat(nj.dataset.oy||.6)*100)+'%');
+  var t0=performance.now(),D=1800;
+  return new Promise(function(res){ (function f(){ var k=Math.min(1,(performance.now()-t0)/D); nj.style.setProperty('--r',(k*130)+'%'); if(k<1) requestAnimationFrame(f); else res(); })(); });
+}
+function revealNj(nj){
+  if(nj.dataset.state) return; nj.dataset.state='run';
+  var img=new Image(); img.decoding='async';
+  img.onload=function(){
+    var p; try{ p=glReveal(nj,img); }catch(e){ p=cssReveal(nj,img); }
+    p.then(function(gl){
+      var a=nj.querySelector('.anim'), src=(innerWidth<900&&nj.dataset.animSm)?nj.dataset.animSm:nj.dataset.anim;
+      var swap=function(){ nj.classList.add('done'); var aw=nj.closest('.art-wrap'); if(aw) aw.classList.add('go'); setTimeout(function(){ if(gl&&gl.getExtension){ var ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); } },1400); };
+      a.onload=swap; a.onerror=swap; a.src=src;
+    });
+  };
+  img.src=nj.dataset.static;
+}
+var njIO=('IntersectionObserver' in window)? new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ revealNj(e.target); njIO.unobserve(e.target); } });
+},{threshold:.3}) : null;
+function observeNj(p){ p.querySelectorAll('.nj').forEach(function(n){ if(n.dataset.state) return; if(njIO) njIO.observe(n); else revealNj(n); }); }
+
+/* ================= 本番と同じ：イントロと本文ロゴの筆書き ================= */
+  /* intro : ロゴを筆で書き上げてから閉じる（描画3.5秒＋英字0.8秒＋余韻） */
+  var intro = document.getElementById('intro');
+  var closeIntro = function(){ intro.classList.add('done'); };
+  var start = function(){
+    var a = document.getElementById('czlogo-a');
+    if(a) a.classList.add(reduce ? 'done' : 'go');
+    setTimeout(closeIntro, 4700);
+  };
+  if(document.readyState === 'complete'){ start(); } else { window.addEventListener('load', start); }
+  setTimeout(closeIntro, 7000);                        /* 保険 */
+  intro.addEventListener('click', closeIntro);         /* タップで飛ばせる */
+  window.addEventListener('wheel', closeIntro, {passive:true, once:true});
+  window.addEventListener('touchstart', closeIntro, {passive:true, once:true});
+
+
+  var b = document.getElementById('czlogo-b');
+  if(b){
+    if(reduce || !('IntersectionObserver' in window)){
+      b.classList.add('done');
+    } else {
+      var drawn = false;
+      var mo = new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(!drawn && e.isIntersecting && e.intersectionRatio >= .4){
+            drawn = true;
+            e.target.classList.add('go');
+          } else if(drawn && !e.isIntersecting){
+            /* 完全に画面外に出たときだけ巻き戻す。
+               go を外したあとレイアウトを強制的に読み直させないと、
+               同じアニメーションが再生されない。 */
+            drawn = false;
+            e.target.classList.remove('go');
+            void e.target.getBoundingClientRect();
+          }
+        });
+      }, {threshold:[0,.4]});
+      mo.observe(b);
+    }
+  }
+
+
+/* ================= 起動 ================= */
+show(routeOf(), false);
+addEventListener('load',function(){ if(cur) threads[cur.dataset.page].build(); });
+})();
+</script>
+
+</body>
+</html>
