@@ -264,39 +264,46 @@ h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spaci
   mask-image:radial-gradient(circle at var(--ox,30%) var(--oy,60%),#000 0,#000 var(--r,0%),transparent calc(var(--r,0%) + 12%))}
 .nj.fallback .fb{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 
-.scenes{display:grid;gap:clamp(48px,12vw,120px);margin-top:clamp(40px,7vw,70px)}
-/* 本番と同じ見せ方：文字の段と挿絵の段を重ねる。文字は白帯（本番の .copy > * と同じ）で挿絵の上でも読める */
-.scene{position:relative;display:grid;--ov:clamp(70px,24vw,150px)}
+.scenes{display:grid;gap:clamp(56px,13vw,120px);margin-top:clamp(40px,7vw,70px)}
+/* 並び：スマホは「番号・タイトル → 挿絵 → キャッチ・本文」。本文の白帯は挿絵の下のほう（体・足元）にだけ重ね、顔には載せない。
+   PCは文字の列と挿絵の列を分ける（重ねない）。 */
+.scene{position:relative;display:grid;--ov:clamp(34px,12vw,80px)}
 .scene .copy{position:relative;z-index:2;max-width:32em}
-.scene .copy > *{background:rgba(255,255,255,.75);border-radius:3px;width:fit-content;max-width:100%;padding:.18em .5em;margin-left:-.5em}
+.scene .copy > *{background:rgba(255,255,255,.78);border-radius:3px;width:fit-content;max-width:100%;padding:.18em .5em;margin-left:-.5em}
 .scene .num{font-family:var(--latin);letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
 .scene h3{font-size:calc(var(--fs)*1.5);letter-spacing:.07em;margin:0}
 .scene h3 small{margin-top:9px}
-.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;font-size:calc(var(--fs)*1.1);margin:16px 0 12px}
-.scene .muted{color:var(--ink-2);margin-top:12px}
-.scene .stage{position:relative;z-index:0;display:flex;justify-content:flex-end;margin-top:calc(var(--ov) * -1)}
-.scene.alt .stage{justify-content:flex-start}
-.scene .art{width:min(96%,460px);margin-right:-5%}
-.scene.alt .art{margin:0 0 0 -5%}
+.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;font-size:calc(var(--fs)*1.1);margin:0 0 12px}
+.scene .muted{color:var(--ink-2);margin:0}
+.scene .stage{position:relative;z-index:0;display:flex;justify-content:center;margin-top:clamp(8px,3vw,20px)}
+.scene .art{width:min(100%,460px);position:relative}
+.scene .copy-body{margin-top:calc(var(--ov) * -1)}
 @media (min-width:900px){
-  .scene{min-height:clamp(520px,48vw,720px);align-content:center}
-  .scene .stage{position:absolute;inset:0;margin:0;align-items:center}
-  .scene .art{width:min(58%,660px);margin:0}
-  .scene.alt .art{margin:0}
-  .scene.small .art{width:min(52%,540px)}
-  .scene .copy{max-width:min(31em,50%)}
-  .scene.alt .copy{margin-left:auto}
+  .scene{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:clamp(32px,4vw,64px);align-items:center;--ov:0px}
+  .scene .copy-head{grid-column:1;grid-row:1;align-self:end}
+  .scene .copy-body{grid-column:1;grid-row:2;align-self:start;margin-top:18px}
+  .scene .stage{grid-column:2;grid-row:1 / span 2;margin:0}
+  .scene.alt .copy-head,.scene.alt .copy-body{grid-column:2}
+  .scene.alt .stage{grid-column:1}
+  .scene .art{width:min(100%,600px)}
+  .scene.small .art{width:min(100%,520px)}
 }
+/* 本番と同じ：そろばんの読み上げ（周期15.2秒＝アニメWebPと同じ）。にじみ終わってアニメが始まった瞬間から回す */
+.scene.abacus .art{container-type:inline-size}
+.chant{position:absolute;top:5%;right:2.5%;z-index:2;pointer-events:none;writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--serif);color:var(--ink-2);font-size:13px;font-size:3.5cqw;line-height:1.5;letter-spacing:.05em}
+.chant > span{display:block;margin-left:.55em;opacity:0;white-space:nowrap}
+.chant .tcy{display:inline;text-combine-upright:all}
+.art.go .chant > span:nth-child(1){animation:chant1 15.2s linear infinite}
+.art.go .chant > span:nth-child(2){animation:chant2 15.2s linear infinite}
+.art.go .chant > span:nth-child(3){animation:chant3 15.2s linear infinite}
+@keyframes chant1{0%{opacity:0;transform:translateY(-6px)}5.3%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant2{0%,23.7%{opacity:0;transform:translateY(-6px)}28.9%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant3{0%,47.4%{opacity:0;transform:translateY(-6px)}52.6%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@media (prefers-reduced-motion:reduce){ .art.go .chant > span{opacity:1!important;transform:none!important} }
 /* ---------- G7 鹿威し（本番の挿絵をそのまま操作） ---------- */
 .shishi{position:relative}
-.shishi .box{cursor:pointer;touch-action:manipulation}
-.shishi .kon{position:absolute;left:18%;top:52%;font-family:var(--serif);color:var(--ink-2);font-size:calc(var(--fs)*1.5);letter-spacing:.3em;opacity:0;pointer-events:none}
-.shishi .kon.go{animation:kon 1.2s ease-out}
-@keyframes kon{0%{opacity:0;transform:translateY(8px)}18%{opacity:.9;transform:none}100%{opacity:0;transform:translateY(-14px)}}
-.shishi .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:6px;font-size:14px;color:var(--ink-soft);letter-spacing:.08em}
-.shishi .ctl label{font-family:var(--serif);color:var(--ink-2)}
-.shishi input[type=range]{flex:1 1 160px;accent-color:var(--shi-1);height:28px;min-width:0}
-.shishi .cnt{font-variant-numeric:tabular-nums}
+.shishi .box{touch-action:manipulation}
 
 /* ---------- about / contact ---------- */
 .about{display:grid;gap:clamp(30px,6vw,70px)}
@@ -325,7 +332,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
   box-shadow:-2px 0 0 #E9DFC8,-3px 0 0 #D2C4A2,-4px 0 0 #E6DBC2,-5px 0 0 #C7B793,-22px 0 36px -10px rgba(40,25,5,.38)}
 .thread .t-tip{fill:none;stroke-width:1.7;stroke-linecap:round}
 #helix{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
-.shishi .ctl{position:relative;z-index:3}
 </style>
 </head>
 <body>
@@ -526,65 +532,78 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
       <p class="muted" style="max-width:38em">あなたがお仕事で困っている事をお伺いし<br>マーケティングとAIを駆使して解決をお手伝いする会社です。</p>
 
       <div class="scenes">
-        <article class="scene" data-knot>
-          <div class="copy">
+        <article class="scene abacus" data-knot>
+          <div class="copy copy-head">
             <div class="num">01</div>
             <h3>AI活用の相談<small>AI SUPPORT</small></h3>
+          </div>
+          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-abacus.webp" data-anim="assets/svc-abacus-anim.webp" data-anim-sm="assets/svc-abacus-anim-sm.webp" style="--ar:900/676" data-ox=".3" data-oy=".72"><div class="box"><canvas></canvas><img class="anim" alt="AI活用の相談"></div></div><div class="chant" aria-hidden="true"><span>願いましては<span class="tcy">AI</span>なり</span><span>引いては作業なり</span><span>加えて仕事なり</span></div></div></div>
+          <div class="copy copy-body">
             <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
             <p class="muted">「仕事が大変で時間が足りない」と感じるなら、AIを上手に活用し沢山の時間を手に入れましょう。</p>
           </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-video.webp" data-anim="assets/svc-video-anim.webp" data-anim-sm="assets/svc-video-anim-sm.webp" style="--ar:620/465" data-ox=".55" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="AI活用の相談"></div></div></div></div>
         </article>
         <article class="scene alt" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">02</div>
             <h3>業務自動化<small>AUTOMATION</small></h3>
+          </div>
+          <div class="stage"><div class="art"><div class="nj shishi" id="shishi" data-static="assets/first-auto.webp" data-sprite="1" style="--ar:560/364" data-ox=".62" data-oy=".45"><div class="box" role="img" aria-label="業務自動化（鹿威し）"><canvas></canvas><canvas class="anim sprite"></canvas></div></div></div></div>
+          <div class="copy copy-body">
             <p class="catch">まごころを自動化しよう。</p>
             <p class="muted">仕事は面倒なことほど、手抜きが出来ない大切な事です。ですが、まごころを大事にしてる人が、真剣に取り組み過ぎて作業でクタクタになると、ちゃんと真心が届かなくなります。真心を自動化しよう。</p>
           </div>
-          <div class="stage"><div class="art"><div class="nj shishi" id="shishi" data-static="assets/first-auto.webp" data-sprite="1" style="--ar:560/364" data-ox=".62" data-oy=".45"><div class="box" role="img" aria-label="業務自動化（鹿威し）。タップすると竹筒に水が溜まります"><canvas></canvas><canvas class="anim sprite"></canvas><span class="kon" aria-hidden="true">コン</span></div>
-            <div class="ctl"><label for="flow">水の量</label><input type="range" id="flow" min="5" max="100" value="45"><span class="cnt">コン ×<b id="cnt">0</b></span></div></div></div></div>
         </article>
         <article class="scene" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">03</div>
             <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
+          </div>
+          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-video.webp" data-anim="assets/svc-video-anim.webp" data-anim-sm="assets/svc-video-anim-sm.webp" style="--ar:620/465" data-ox=".55" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="動画制作"></div></div></div></div>
+          <div class="copy copy-body">
             <p class="catch">動画で伝えられる情報は文字の5000倍</p>
             <p class="muted">動画は「人間と一緒」企画、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。</p>
           </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-abacus.webp" data-anim="assets/svc-abacus-anim.webp" data-anim-sm="assets/svc-abacus-anim-sm.webp" style="--ar:900/676" data-ox=".3" data-oy=".72"><div class="box"><canvas></canvas><img class="anim" alt="動画制作"></div></div></div></div>
         </article>
         <article class="scene alt small" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">04</div>
             <h3>SNSの助言<small>SNS ADVICE</small></h3>
-            <p class="muted">新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。COTOZUTEは「腑に落ちる助言」をします。</p>
           </div>
           <div class="stage"><div class="art"><div class="nj" data-static="assets/first-sns.webp" data-anim="assets/card-sns-anim.webp" style="--ar:496/372" data-ox=".35" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="SNSの助言"></div></div></div></div>
+          <div class="copy copy-body">
+            <p class="muted">新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。COTOZUTEは「腑に落ちる助言」をします。</p>
+          </div>
         </article>
         <article class="scene small" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">05</div>
             <h3>コンテンツ制作環境構築<small>CREATIVE SETUP</small></h3>
-            <p class="muted">つくる。つくってもらう。もっと大切なのは「つくり続ける」<br><br>仕事が苦じゃなく、楽しくなる環境を共に目指します。</p>
           </div>
           <div class="stage"><div class="art"><div class="nj" data-static="assets/first-creative.webp" data-anim="assets/card-creative-anim.webp" style="--ar:496/372" data-ox=".45" data-oy=".7"><div class="box"><canvas></canvas><img class="anim" alt="コンテンツ制作環境構築"></div></div></div></div>
+          <div class="copy copy-body">
+            <p class="muted">つくる。つくってもらう。もっと大切なのは「つくり続ける」<br><br>仕事が苦じゃなく、楽しくなる環境を共に目指します。</p>
+          </div>
         </article>
         <article class="scene alt small" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">06</div>
             <h3>LINEマーケティング<small>LINE MARKETING</small></h3>
-            <p class="muted">LTV（顧客生涯価値）を上げる。誠実であること以上に大切なのは「誠実な人だと感じさせる」ことです。誠実さがきちんと伝わり続ける仕組みを作りましょう。</p>
           </div>
           <div class="stage"><div class="art"><div class="nj" data-static="assets/first-line.webp" data-anim="assets/card-line-anim.webp" style="--ar:496/372" data-ox=".5" data-oy=".45"><div class="box"><canvas></canvas><img class="anim" alt="LINEマーケティング"></div></div></div></div>
+          <div class="copy copy-body">
+            <p class="muted">LTV（顧客生涯価値）を上げる。誠実であること以上に大切なのは「誠実な人だと感じさせる」ことです。誠実さがきちんと伝わり続ける仕組みを作りましょう。</p>
+          </div>
         </article>
         <article class="scene small" data-knot>
-          <div class="copy">
+          <div class="copy copy-head">
             <div class="num">07</div>
             <h3>音声・音楽・演出<small>SOUND &amp; DIRECTION</small></h3>
-            <p class="muted">「映像の７割は音で決まる」かつて無声映画は、上映する横で人間がピアノを弾いていました。音楽にこだわらない人が、人の心を動かすのは難しい</p>
           </div>
           <div class="stage"><div class="art"><div class="nj" data-static="assets/first-sound.webp" data-anim="assets/card-sound-anim.webp" style="--ar:496/372" data-ox=".55" data-oy=".55"><div class="box"><canvas></canvas><img class="anim" alt="音声・音楽・演出"></div></div></div></div>
+          <div class="copy copy-body">
+            <p class="muted">「映像の７割は音で決まる」かつて無声映画は、上映する横で人間がピアノを弾いていました。音楽にこだわらない人が、人の心を動かすのは難しい</p>
+          </div>
         </article>
       </div>
       <p class="page-end"><a class="next" href="#/about" data-route="/about" data-end>ABOUT</a></p>
@@ -866,7 +885,7 @@ function onPageShown(p){
 /* ================= G7 鹿威し：にじんで現れたあと、本番の挿絵のコマを水の量と指で動かす ================= */
 var shishiStart=(function(){
   var root=document.getElementById('shishi'), box=root.querySelector('.box'), cv=box.querySelector('canvas.sprite'), ctx=cv.getContext('2d'),
-      kon=root.querySelector('.kon'), range=document.getElementById('flow'), cntEl=document.getElementById('cnt');
+      FLOW=.45;
   var REST=[], i; for(i=48;i<=60;i++) REST.push(i); for(i=0;i<=15;i++) REST.push(i); /* 48=戻った瞬間（コン）→15 */
   var ACT_FROM=16, ACT_TO=47, FPS=9;
   var sprite=null, fw=0, fh=0, state='rest', fill=0, af=0, cnt=0, visible=false, started=false, revealed=false, last=0, lastFrame=-1;
@@ -876,7 +895,7 @@ var shishiStart=(function(){
   function tick(now){
     var dt=Math.min(.05,(now-last)/1000); last=now;
     if(visible&&sprite&&root.classList.contains('done')){
-      var flow=range.value/100;
+      var flow=FLOW;
       if(state==='rest'){
         fill+=dt*(.05+flow*.55);
         if(fill>=1){ state='act'; af=0; fill=0; }
@@ -884,8 +903,7 @@ var shishiStart=(function(){
       }
       if(state==='act'){
         af+=dt*FPS*(.85+flow*.4); var f=ACT_FROM+Math.floor(af);
-        if(f>ACT_TO){ state='rest'; fill=0; draw(48); cnt++; cntEl.textContent=cnt; knock(620,.24,.9,0);
-          kon.classList.remove('go'); void kon.offsetWidth; kon.classList.add('go'); }
+        if(f>ACT_TO){ state='rest'; fill=0; draw(48); knock(620,.24,.9,0); }
         else draw(f);
       }
     }
@@ -973,7 +991,7 @@ function revealNj(nj){
     p.then(function(gl){
       if(nj.dataset.sprite){ nj.dispatchEvent(new Event('njrevealed')); setTimeout(function(){ if(gl&&gl.getExtension){ var ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); } },1600); return; }
       var a=nj.querySelector('.anim'), src=(innerWidth<900&&nj.dataset.animSm)?nj.dataset.animSm:nj.dataset.anim;
-      var swap=function(){ nj.classList.add('done'); var aw=nj.closest('.art-wrap'); if(aw) aw.classList.add('go'); setTimeout(function(){ if(gl&&gl.getExtension){ var ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); } },1400); };
+      var swap=function(){ nj.classList.add('done'); var aw=nj.closest('.art'); if(aw) aw.classList.add('go'); setTimeout(function(){ if(gl&&gl.getExtension){ var ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); } },1400); };
       a.onload=swap; a.onerror=swap; a.src=src;
     });
   };
