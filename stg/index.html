@@ -302,8 +302,6 @@ h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spaci
 @keyframes chant3{0%,47.4%{opacity:0;transform:translateY(-6px)}52.6%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
 @media (prefers-reduced-motion:reduce){ .art.go .chant > span{opacity:1!important;transform:none!important} }
 /* ---------- G7 鹿威し（本番の挿絵をそのまま操作） ---------- */
-.shishi{position:relative}
-.shishi .box{touch-action:manipulation}
 
 /* ---------- about / contact ---------- */
 .about{display:grid;gap:clamp(30px,6vw,70px)}
@@ -331,7 +329,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
 .page.leaving{position:fixed;left:0;right:0;z-index:124;will-change:transform;transform-origin:0 100%;
   box-shadow:-2px 0 0 #E9DFC8,-3px 0 0 #D2C4A2,-4px 0 0 #E6DBC2,-5px 0 0 #C7B793,-22px 0 36px -10px rgba(40,25,5,.38)}
 .thread .t-tip{fill:none;stroke-width:1.7;stroke-linecap:round}
-#helix{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 </style>
 </head>
 <body>
@@ -548,7 +545,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
             <div class="num">02</div>
             <h3>業務自動化<small>AUTOMATION</small></h3>
           </div>
-          <div class="stage"><div class="art"><div class="nj shishi" id="shishi" data-static="assets/first-auto.webp" data-sprite="1" style="--ar:560/364" data-ox=".62" data-oy=".45"><div class="box" role="img" aria-label="業務自動化（鹿威し）"><canvas></canvas><canvas class="anim sprite"></canvas></div></div></div></div>
+          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-auto.webp" data-anim="assets/svc-auto-anim.webp" data-anim-sm="assets/svc-auto-anim-sm.webp" style="--ar:560/364" data-ox=".62" data-oy=".45"><div class="box"><canvas></canvas><img class="anim" alt="業務自動化"></div></div></div></div>
           <div class="copy copy-body">
             <p class="catch">まごころを自動化しよう。</p>
             <p class="muted">仕事は面倒なことほど、手抜きが出来ない大切な事です。ですが、まごころを大事にしてる人が、真剣に取り組み過ぎて作業でクタクタになると、ちゃんと真心が届かなくなります。真心を自動化しよう。</p>
@@ -659,7 +656,6 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
 </div>
 
 </main>
-<canvas id="helix" aria-hidden="true"></canvas>
 
 <footer>
   <div class="foot-in">
@@ -766,23 +762,49 @@ document.addEventListener('click',function(e){
 });
 addEventListener('popstate',function(){ if(busy){ pending=routeOf(); return; } show(routeOf(),true); });
 
-/* ================= G3 綴じ糸（筆ロゴの紫） =================
+/* ================= G3 綴じ糸（筆ロゴの紫系・3本） =================
    ・端に着いた点では必ず縦向きに折り返す（＝画面の外へ膨らまず、端で「クッ」と折れない）
-   ・スクロールに少し遅れて、やわらかく追いかける
-   ・先端はフェードさせて、ぶつ切りに見せない */
-var tid=0, NS='http://www.w3.org/2000/svg', FADE_N=12;
+   ・3本は折り返しの深さと曲がり具合を少しずつ変え、ほどけるように離れて、着地点で1本に結ばれる
+   ・スクロールに少し遅れて、やわらかく追いかける／先端はフェード
+   ・描き直しは発生しない（最初に引いた線を、見せる長さだけ変える）ので軽い */
+var tid=0, NS='http://www.w3.org/2000/svg', FADE_N=10;
+var STRANDS=[
+  {off:0,  k:.55, w:1.7, o:.72, per:1400, stops:[['0','#7A5FAE'],['.4','#A88FD6'],['.72','#E6A9CB'],['1','#8D6AB1']], glow:true},
+  {off:16, k:.48, w:1.1, o:.55, per:1100, stops:[['0','#E6A9CB'],['.5','#C3A6E6'],['1','#F0C7DC']]},
+  {off:30, k:.62, w:1.0, o:.5,  per:1700, stops:[['0','#6F7FC4'],['.55','#9B87D4'],['1','#B7C3EC']]}
+];
+function Strand(svg,cfg){
+  this.cfg=cfg; var id='tg'+(tid++), lg=document.createElementNS(NS,'linearGradient');
+  lg.setAttribute('id',id); lg.setAttribute('gradientUnits','userSpaceOnUse'); lg.setAttribute('x1','0'); lg.setAttribute('y1','0'); lg.setAttribute('x2','0'); lg.setAttribute('y2',String(cfg.per)); lg.setAttribute('spreadMethod','reflect');
+  cfg.stops.forEach(function(s){ var st=document.createElementNS(NS,'stop'); st.setAttribute('offset',s[0]); st.setAttribute('stop-color',s[1]); lg.appendChild(st); });
+  svg.querySelector('defs').appendChild(lg);
+  var mk=function(cls,w,o){ var p=document.createElementNS(NS,'path'); p.setAttribute('class',cls); p.setAttribute('stroke','url(#'+id+')'); p.style.strokeWidth=w; p.style.opacity=o; svg.appendChild(p); return p; };
+  this.glow=cfg.glow?mk('t-glow',6,.12):null;
+  this.main=mk('t-main',cfg.w,cfg.o);
+  this.tips=[]; for(var i=0;i<FADE_N;i++) this.tips.push(mk('t-tip',cfg.w,(cfg.o*(1-(i+1)/(FADE_N+1))).toFixed(3)));
+  this.len=0; this.samples=[]; this.shown=0; this.target=0;
+}
+Strand.prototype.build=function(d){
+  var all=[this.main].concat(this.tips); if(this.glow) all.push(this.glow);
+  all.forEach(function(p){ p.setAttribute('d',d); });
+  this.len=this.main.getTotalLength();
+  this.samples=[]; var step=Math.max(6,this.len/1600), maxY=0;
+  for(var s=0;s<=this.len;s+=step){ var q=this.main.getPointAtLength(s); maxY=Math.max(maxY,q.y); this.samples.push([s,maxY]); }
+  this.samples.push([this.len,maxY]);
+};
+Strand.prototype.measure=function(pen){ var drawn=0; for(var i=0;i<this.samples.length;i++){ if(this.samples[i][1]<=pen) drawn=this.samples[i][0]; else break; } this.target=drawn; };
+Strand.prototype.render=function(){
+  var L=this.len, s=this.shown, F=Math.min(170,s), body=Math.max(0,s-F), seg=F/FADE_N;
+  this.main.style.strokeDasharray=body+' '+(L+10); if(this.glow) this.glow.style.strokeDasharray=body+' '+(L+10);
+  for(var i=0;i<FADE_N;i++){ var t=this.tips[i]; t.style.strokeDasharray=(seg+.6).toFixed(2)+' '+(L+10); t.style.strokeDashoffset=(-(body+i*seg)).toFixed(2); }
+};
+Strand.prototype.step=function(){ var d=this.target-this.shown; if(Math.abs(d)<.5){ if(d!==0){ this.shown=this.target; this.render(); } return false; } this.shown+=d*(reduce?1:.09); this.render(); return true; };
+
 function Thread(page){
   this.page=page; this.svg=page.querySelector('.thread');
-  this.main=this.svg.querySelector('.t-main'); this.glow=this.svg.querySelector('.t-glow');
-  this.end=page.querySelector('[data-end]'); this.samples=[]; this.len=0; this.shown=0; this.target=0;
-  var id='tg'+(tid++), lg=document.createElementNS(NS,'linearGradient');
-  lg.setAttribute('id',id); lg.setAttribute('gradientUnits','userSpaceOnUse'); lg.setAttribute('x1','0'); lg.setAttribute('y1','0'); lg.setAttribute('x2','0'); lg.setAttribute('y2','1400'); lg.setAttribute('spreadMethod','reflect');
-  [['0','#7A5FAE'],['.4','#A88FD6'],['.72','#E6A9CB'],['1','#8D6AB1']].forEach(function(s){ var st=document.createElementNS(NS,'stop'); st.setAttribute('offset',s[0]); st.setAttribute('stop-color',s[1]); lg.appendChild(st); });
-  this.svg.querySelector('defs').appendChild(lg);
-  this.stroke='url(#'+id+')';
-  this.main.setAttribute('stroke',this.stroke); this.glow.setAttribute('stroke',this.stroke);
-  this.tips=[];
-  for(var i=0;i<FADE_N;i++){ var t=document.createElementNS(NS,'path'); t.setAttribute('class','t-tip'); t.setAttribute('stroke',this.stroke); t.style.opacity=(.72*(1-(i+1)/(FADE_N+1))).toFixed(3); this.svg.appendChild(t); this.tips.push(t); }
+  this.svg.querySelectorAll('path').forEach(function(p){ p.remove(); });
+  this.end=page.querySelector('[data-end]'); var svg=this.svg;
+  this.strands=STRANDS.map(function(c){ return new Strand(svg,c); });
 }
 Thread.prototype.build=function(){
   var p=this.page, pr=p.getBoundingClientRect(), W=pr.width, H=p.scrollHeight;
@@ -796,138 +818,42 @@ Thread.prototype.build=function(){
     if(y-last[1]<minDy) return;               /* 近すぎる点では振り返さない＝急角度を作らない */
     pts.push([last[0]===mR?mL:mR, y]);
   });
+  var ex=null;
   if(this.end){
-    var er=this.end.getBoundingClientRect(), ex=er.left-pr.left+Math.min(36,er.width*.25), ey=er.top-pr.top-2;
-    while(pts.length>1 && ey-pts[pts.length-1][1]<minDy*.55) pts.pop();
-    pts.push([ex,ey]);
+    var er=this.end.getBoundingClientRect(); ex=[er.left-pr.left+Math.min(36,er.width*.25), er.top-pr.top-2];
+    while(pts.length>1 && ex[1]-pts[pts.length-1][1]<minDy*.55) pts.pop();
+    pts.push(ex);
   }
-  /* 各点で接線を縦にとるベジェ（S字の連なり） */
-  var d='M'+pts[0][0].toFixed(1)+' '+pts[0][1].toFixed(1);
-  for(var i=0;i<pts.length-1;i++){
-    var a=pts[i], b=pts[i+1], dy=b[1]-a[1], k=.55;
-    d+=' C'+a[0].toFixed(1)+' '+(a[1]+dy*k).toFixed(1)+' '+b[0].toFixed(1)+' '+(b[1]-dy*k).toFixed(1)+' '+b[0].toFixed(1)+' '+b[1].toFixed(1);
-  }
-  this.main.setAttribute('d',d); this.glow.setAttribute('d',d);
-  this.tips.forEach(function(t){ t.setAttribute('d',d); });
-  this.len=this.main.getTotalLength();
-  this.samples=[]; var step=Math.max(6,this.len/1600), maxY=0;
-  for(var s=0;s<=this.len;s+=step){ var q=this.main.getPointAtLength(s); maxY=Math.max(maxY,q.y); this.samples.push([s,maxY]); }
-  this.samples.push([this.len,maxY]);
-  /* DNA用：4pxごとの位置と法線 */
-  this.hp=[]; var prev=this.main.getPointAtLength(0);
-  for(var u=0;u<=this.len;u+=4){ var q2=this.main.getPointAtLength(u), q3=this.main.getPointAtLength(Math.min(this.len,u+2)), tx=q3.x-q2.x, ty=q3.y-q2.y, tl=Math.hypot(tx,ty)||1; this.hp.push([u,q2.x,q2.y,-ty/tl,tx/tl]); }
-  this.measure(); this.shown=Math.min(this.shown,this.target); this.render();
+  var n=pts.length, scale=Math.min(1,W/700)*.6+.4;
+  this.strands.forEach(function(st){
+    var c=st.cfg, q=pts.map(function(pt,i){
+      if(i===0||i===n-1) return pt;                       /* 出発点と着地点は3本とも同じ＝結ばれる */
+      var inward=pt[0]<W/2?1:-1; return [pt[0]+inward*c.off*scale, pt[1]];
+    });
+    var d='M'+q[0][0].toFixed(1)+' '+q[0][1].toFixed(1);
+    for(var i=0;i<q.length-1;i++){ var a=q[i], b=q[i+1], dy=b[1]-a[1];
+      d+=' C'+a[0].toFixed(1)+' '+(a[1]+dy*c.k).toFixed(1)+' '+b[0].toFixed(1)+' '+(b[1]-dy*c.k).toFixed(1)+' '+b[0].toFixed(1)+' '+b[1].toFixed(1); }
+    st.build(d);
+  });
+  this.measure(); this.strands.forEach(function(st){ st.shown=Math.min(st.shown,st.target); st.render(); }); this.tie();
 };
 Thread.prototype.measure=function(){
-  if(!this.len) return;
-  var pr=this.page.getBoundingClientRect(), pen=(-pr.top)+innerHeight*.78, drawn=0;
-  for(var i=0;i<this.samples.length;i++){ if(this.samples[i][1]<=pen) drawn=this.samples[i][0]; else break; }
-  this.target=drawn;
+  var pr=this.page.getBoundingClientRect(), pen=(-pr.top)+innerHeight*.78;
+  this.strands.forEach(function(st){ if(st.len) st.measure(pen); });
 };
-Thread.prototype.render=function(){
-  var L=this.len, s=this.shown, F=Math.min(170,s), body=Math.max(0,s-F), seg=F/FADE_N;
-  this.main.style.strokeDasharray=body+' '+(L+10); this.glow.style.strokeDasharray=body+' '+(L+10);
-  for(var i=0;i<FADE_N;i++){ var t=this.tips[i]; t.style.strokeDasharray=(seg+.6).toFixed(2)+' '+(L+10); t.style.strokeDashoffset=(-(body+i*seg)).toFixed(2); }
-  if(this.end) this.end.classList.toggle('tied', s>=L-8);
-};
-Thread.prototype.step=function(){ /* やわらかく追いかける */
-  var d=this.target-this.shown; if(Math.abs(d)<.5){ if(d!==0){ this.shown=this.target; this.render(); } return; }
-  this.shown+=d*(reduce?1:.09); this.render();
-};
+Thread.prototype.tie=function(){ var m=this.strands[0]; if(this.end) this.end.classList.toggle('tied', m.len>0 && m.shown>=m.len-8); };
+Thread.prototype.step=function(){ var moved=false; this.strands.forEach(function(st){ if(st.step()) moved=true; }); if(moved) this.tie(); };
+Thread.prototype.reset=function(){ this.strands.forEach(function(st){ st.shown=0; }); };
 var threads={}; Object.keys(pages).forEach(function(k){ threads[k]=new Thread(pages[k]); });
 addEventListener('scroll',function(){ if(cur) threads[cur.dataset.page].measure(); },{passive:true});
-/* ---- 綴じ糸のまわりを、紫の二重螺旋（DNA）がねじれながら昇っていく ---- */
-var hx=document.getElementById('helix'), hctx=hx.getContext('2d'), hW=0, hH=0, hDpr=1, hDirty=true, hLast=0;
-function hSize(){ hDpr=Math.min(devicePixelRatio||1,1.25); hW=innerWidth; hH=innerHeight; hx.width=hW*hDpr|0; hx.height=hH*hDpr|0; hDirty=true; }
-hSize(); addEventListener('resize',hSize);
-var STOPS=[[0,[122,95,174]],[.4,[168,143,214]],[.72,[230,169,203]],[1,[141,106,177]]];
-function colAt(y){ var t=((y%2800)+2800)%2800; if(t>1400) t=2800-t; var u=t/1400;
-  for(var i=1;i<STOPS.length;i++){ if(u<=STOPS[i][0]){ var a=STOPS[i-1], b=STOPS[i], k=(u-a[0])/(b[0]-a[0]); return [a[1][0]+(b[1][0]-a[1][0])*k|0, a[1][1]+(b[1][1]-a[1][1])*k|0, a[1][2]+(b[1][2]-a[1][2])*k|0]; } }
-  return STOPS[STOPS.length-1][1]; }
-/* ★軽量化：①30コマ/秒 ②線を「奥行き5段階」にまとめて一筆で描く（1コマ数十回の描画命令で済む）
-   ③線が画面に無いときは描かない ④色は画面の縦方向のグラデーション1本で塗る */
-var NB=5, bucketsB=[], bucketsF=[];
-function drawHelix(th,now){
-  if(now-hLast<40) return; hLast=now;
-  var top=th&&th.hp&&!busy ? th.page.getBoundingClientRect().top : null;
-  hctx.setTransform(hDpr,0,0,hDpr,0,0);
-  if(top===null){ if(hDirty){ hctx.clearRect(0,0,hW,hH); hDirty=false; } return; }
-  var hp=th.hp, shown=th.shown, i0=-1, i1=-1;
-  for(var i=0;i<hp.length && hp[i][0]<=shown;i++){ var y=hp[i][2]+top; if(y>=-40&&y<=hH+40){ if(i0<0) i0=i; i1=i; } }
-  hctx.clearRect(0,0,hW,hH); hDirty=true;
-  if(i0<0) return;
-  var A=Math.max(5,Math.min(11,hW*.012)), ph=reduce?0:now*.0014;
-  var gr=hctx.createLinearGradient(0,0,0,hH);
-  for(var g=0;g<=6;g++){ var c=colAt(g/6*hH-top); gr.addColorStop(g/6,'rgb('+c[0]+','+c[1]+','+c[2]+')'); }
-  hctx.strokeStyle=gr; hctx.fillStyle=gr; hctx.lineCap='round';
-  for(var k=0;k<NB;k++){ bucketsB[k]=new Path2D(); bucketsF[k]=new Path2D(); }
-  var rung=new Path2D(), dots=new Path2D(), prev1=null, prev2=null, fadeAt=[];
-  for(var j=i0;j<=i1;j++){
-    var p=hp[j], y2=p[2]+top, ramp=Math.min(1,p[0]/220), fade=Math.min(1,(shown-p[0])/170), amp=A*ramp*(.35+.65*fade);
-    var t=p[0]*.05+ph, o=Math.sin(t)*amp, z=Math.cos(t);
-    var a1=[p[1]+p[3]*o, y2+p[4]*o, z, fade], a2=[p[1]-p[3]*o, y2-p[4]*o, -z, fade];
-    [[prev1,a1],[prev2,a2]].forEach(function(pr){ var a=pr[0], b=pr[1]; if(!a) return;
-      var zz=(a[2]+b[2])/2, d=(zz+1)/2, bk=Math.min(NB-1,Math.floor(d*NB*b[3]+ (1-b[3])*0)); var P=(zz>0?bucketsF:bucketsB)[bk]; P.moveTo(a[0],a[1]); P.lineTo(b[0],b[1]); });
-    if((j%6)===3){ rung.moveTo(a1[0],a1[1]); rung.lineTo(a2[0],a2[1]); var fr=a1[2]>0?a1:a2; dots.moveTo(fr[0]+1.6,fr[1]); dots.arc(fr[0],fr[1],1.6,0,6.283); }
-    prev1=a1; prev2=a2;
-  }
-  function paint(B){ for(var k=0;k<NB;k++){ var d=(k+.5)/NB; hctx.globalAlpha=.12+.6*d; hctx.lineWidth=.6+1.3*d; hctx.stroke(B[k]); } }
-  paint(bucketsB);
-  hctx.globalAlpha=.26; hctx.lineWidth=.8; hctx.stroke(rung);
-  hctx.globalAlpha=.5; hctx.fill(dots);
-  paint(bucketsF);
-  hctx.globalAlpha=1;
-}
-(function loop(now){ var th=cur&&threads[cur.dataset.page]; if(th) th.step(); drawHelix(th,now||0); requestAnimationFrame(loop); })();
+(function loop(){ var th=cur&&threads[cur.dataset.page]; if(th) th.step(); requestAnimationFrame(loop); })();
 var rT; addEventListener('resize',function(){ clearTimeout(rT); rT=setTimeout(function(){ if(cur) threads[cur.dataset.page].build(); },150); });
 function onPageShown(p){
-  var th=threads[p.dataset.page]; th.shown=0;
-  requestAnimationFrame(function(){ th.build(); observeNj(p); if(p.querySelector('#shishi')) shishiStart(); });
+  var th=threads[p.dataset.page]; th.reset();
+  requestAnimationFrame(function(){ th.build(); observeNj(p); });
   setTimeout(function(){ th.build(); },900);
   setTimeout(function(){ th.build(); },2500);
 }
-
-/* ================= G7 鹿威し：にじんで現れたあと、本番の挿絵のコマを水の量と指で動かす ================= */
-var shishiStart=(function(){
-  var root=document.getElementById('shishi'), box=root.querySelector('.box'), cv=box.querySelector('canvas.sprite'), ctx=cv.getContext('2d'),
-      FLOW=.45;
-  var REST=[], i; for(i=48;i<=60;i++) REST.push(i); for(i=0;i<=15;i++) REST.push(i); /* 48=戻った瞬間（コン）→15 */
-  var ACT_FROM=16, ACT_TO=47, FPS=9;
-  var sprite=null, fw=0, fh=0, state='rest', fill=0, af=0, cnt=0, visible=false, started=false, revealed=false, last=0, lastFrame=-1;
-  function size(){ var dpr=Math.min(devicePixelRatio||1,2), r=box.getBoundingClientRect(); cv.width=Math.max(2,r.width*dpr|0); cv.height=Math.max(2,r.height*dpr|0); lastFrame=-1; }
-  function draw(f){ if(!sprite||f===lastFrame) return; lastFrame=f; ctx.clearRect(0,0,cv.width,cv.height); ctx.drawImage(sprite,(f%8)*fw,Math.floor(f/8)*fh,fw,fh,0,0,cv.width,cv.height); }
-  function ready(){ if(sprite&&revealed&&!root.classList.contains('done')){ size(); draw(REST[0]); root.classList.add('done'); } }
-  function tick(now){
-    var dt=Math.min(.05,(now-last)/1000); last=now;
-    if(visible&&sprite&&root.classList.contains('done')){
-      var flow=FLOW;
-      if(state==='rest'){
-        fill+=dt*(.05+flow*.55);
-        if(fill>=1){ state='act'; af=0; fill=0; }
-        else draw(REST[Math.min(REST.length-1,Math.floor(fill*REST.length))]);
-      }
-      if(state==='act'){
-        af+=dt*FPS*(.85+flow*.4); var f=ACT_FROM+Math.floor(af);
-        if(f>ACT_TO){ state='rest'; fill=0; draw(48); knock(620,.24,.9,0); }
-        else draw(f);
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-  box.addEventListener('click',function(){ if(state==='rest') fill=Math.min(.999,fill+.34); ac(); });
-  root.addEventListener('njrevealed',function(){ revealed=true; ready(); });
-  root.addEventListener('njreset',function(){ revealed=false; root.classList.remove('done'); state='rest'; fill=0; lastFrame=-1; });
-  var loading=false;
-  function load(){ if(loading) return; loading=true;
-    var img=new Image(); img.decoding='async';
-    img.onload=function(){ sprite=img; fw=img.naturalWidth/8; fh=img.naturalHeight/8; ready(); };
-    img.src=innerWidth<900?'assets/shishi-sprite-sm.webp':'assets/shishi-sprite.webp';
-  }
-  if('IntersectionObserver' in window) new IntersectionObserver(function(es){ visible=es[0].isIntersecting; if(visible) load(); },{rootMargin:'300px'}).observe(box);
-  else { visible=true; load(); }
-  addEventListener('resize',function(){ if(sprite){ size(); } });
-  return function(){ if(started) return; started=true; last=performance.now(); requestAnimationFrame(tick); };
-})();
 
 /* ================= G2 和紙ににじむ絵（WebGL） ================= */
 var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
