@@ -16,7 +16,7 @@
 /* =========================================================
    COTOZUTE ステージング — mobile first
    文言はすべて本番 cotozute.com（GitHub HEAD 49a41e1）からそのまま転記。
-   ギミック：G1 墨流し / G2 にじみ / G3 綴じ糸 / G7 鹿威し / G10 紙芝居（めくり）
+   ギミック：G1 墨流し / G2 にじみ / G3 綴じ糸 / G7 鹿威し / G10 紙飛行機（画面遷移）
    ========================================================= */
 :root{
   --paper:#F7F4EC; --paper-2:#FCFAF6; --paper-3:#F1ECE1; --paper-back:#EDE4D1;
@@ -87,16 +87,6 @@ nav a[aria-current="page"]{color:var(--gold)}
 #pages{position:relative}
 .page{position:relative;background:var(--paper);min-height:100svh}
 .page[hidden]{display:none!important}
-.page.leaving{position:fixed;left:0;right:0;z-index:120;will-change:clip-path}
-#butai{position:fixed;inset:0;z-index:130;pointer-events:none;opacity:0;transition:opacity .3s ease}
-#butai.on{opacity:1}
-#butai::before{content:"";position:absolute;inset:0;border:clamp(10px,2.4vw,22px) solid var(--wood);
-  box-shadow:inset 0 0 0 2px var(--wood-2),inset 0 0 30px rgba(40,20,5,.45)}
-#butai::after{content:"";position:absolute;left:50%;top:0;transform:translateX(-50%);width:min(40vw,220px);height:clamp(16px,3vw,28px);
-  background:var(--wood);border-radius:0 0 50% 50%/0 0 100% 100%}
-#butai .dai{position:absolute;left:50%;top:clamp(26px,4.5vw,40px);transform:translateX(-50%);font-family:var(--latin);
-  background:var(--paper-2);padding:4px 22px;border:1px solid var(--gold);letter-spacing:.34em;color:var(--ink-2);font-size:var(--fs);white-space:nowrap}
-
 /* ---------- shared ---------- */
 .wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,12vw,130px) var(--gut);position:relative;z-index:2}
 .page-top{padding-top:calc(110px + env(safe-area-inset-top,0px))}
@@ -321,13 +311,12 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
 .foot-in .fl{font-family:var(--latin);letter-spacing:.3em}
 .foot-in .fr{color:rgba(247,244,236,.6);letter-spacing:.1em}
 
-/* ---------- G10：紙の質感・鉛筆の線画・抜かれる紙の厚み ---------- */
-#washi{position:fixed;inset:0;z-index:125;pointer-events:none;opacity:0;display:none;mix-blend-mode:multiply;
-  background:url(assets/washi.webp) 0 0/512px 512px repeat #F4ECDD}
-#washi.on{display:block}
-.sk img,.sk .nj canvas,.sk .kanji svg,.sk .seal img{filter:url(#sk)}
-.page.leaving{position:fixed;left:0;right:0;z-index:124;will-change:transform;transform-origin:0 100%;
-  box-shadow:-2px 0 0 #E9DFC8,-3px 0 0 #D2C4A2,-4px 0 0 #E6DBC2,-5px 0 0 #C7B793,-22px 0 36px -10px rgba(40,25,5,.38)}
+/* ---------- G10 紙飛行機：スッと横切って、画面を拭う ---------- */
+#fly{position:fixed;inset:0;width:100%;height:100%;z-index:130;pointer-events:none;display:none;overflow:visible}
+#fly.on{display:block}
+#fly .edge{fill:none;stroke-linecap:round;stroke-linejoin:round}
+#fly .plane path{stroke:#4B3F78;stroke-width:1.1;stroke-linejoin:round}
+#fly .plane{filter:drop-shadow(0 7px 5px rgba(30,42,68,.16))}
 .thread .t-tip{fill:none;stroke-width:1.7;stroke-linecap:round}
 </style>
 </head>
@@ -400,22 +389,27 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
   </nav>
 </header>
 
-<div id="washi" aria-hidden="true"></div>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-  <filter id="sk" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-    <feColorMatrix in="SourceGraphic" type="saturate" values="0" result="g"/>
-    <feConvolveMatrix in="g" order="3" kernelMatrix="-1 -1 -1 -1 8 -1 -1 -1 -1" preserveAlpha="true" result="e"/>
-    <feColorMatrix in="e" type="matrix" values="-2.6 0 0 0 1  -2.6 0 0 0 1  -2.6 0 0 0 1  0 0 0 1 0" result="lines"/>
-    <feTurbulence id="skT" type="fractalNoise" baseFrequency=".75" numOctaves="1" seed="1" result="n"/>
-    <feDisplacementMap in="lines" in2="n" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="wob"/>
-    <feComponentTransfer in="g" result="shade"><feFuncR type="linear" slope=".42" intercept=".6"/><feFuncG type="linear" slope=".42" intercept=".58"/><feFuncB type="linear" slope=".42" intercept=".54"/></feComponentTransfer>
-    <feBlend in="wob" in2="shade" mode="multiply" result="pencil"/>
-    <feComposite in="pencil" in2="SourceGraphic" operator="in" result="pencilA"/>
-    <feComposite id="skMix" in="SourceGraphic" in2="pencilA" operator="arithmetic" k1="0" k2="1" k3="0" k4="0"/>
-  </filter>
-</svg>
 <div class="nav-shade" id="navShade" aria-hidden="true"></div>
-<div id="butai" aria-hidden="true"><div class="dai" id="dai"></div></div>
+<svg id="fly" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="flyPaper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FCFAF6"/><stop offset="1" stop-color="#F3EEF6"/></linearGradient>
+    <linearGradient id="fg0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5FAE"/><stop offset=".4" stop-color="#A88FD6"/><stop offset=".72" stop-color="#E6A9CB"/><stop offset="1" stop-color="#8D6AB1"/></linearGradient>
+    <linearGradient id="fg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6A9CB"/><stop offset=".5" stop-color="#C3A6E6"/><stop offset="1" stop-color="#F0C7DC"/></linearGradient>
+    <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6F7FC4"/><stop offset=".55" stop-color="#9B87D4"/><stop offset="1" stop-color="#B7C3EC"/></linearGradient>
+  </defs>
+  <path id="flyShade" fill="rgba(30,42,68,.07)"/>
+  <path id="flyCover" fill="url(#flyPaper)"/>
+  <path class="edge" id="flyL0" stroke="url(#fg0)" stroke-width="2"/>
+  <path class="edge" id="flyL1" stroke="url(#fg1)" stroke-width="1.3" opacity=".8"/>
+  <path class="edge" id="flyL2" stroke="url(#fg2)" stroke-width="1.1" opacity=".7"/>
+  <path class="edge" id="flyT0" stroke="url(#fg0)" stroke-width="1.4" opacity=".55"/>
+  <path class="edge" id="flyT1" stroke="url(#fg2)" stroke-width="1" opacity=".45"/>
+  <g id="plane"><g class="plane" id="planeS">
+    <path d="M0 0 L-70 6 L-44 1 Z" fill="#E9E2F4"/>
+    <path d="M0 0 L-44 1 L-54 15 Z" fill="#CDBDEA"/>
+    <path d="M0 0 L-66 -20 L-44 1 Z" fill="#FCFAF6"/>
+  </g></g>
+</svg>
 
 <main id="pages">
 
@@ -693,11 +687,9 @@ function rustle(dur){ /* 紙がめくれる音 */
   src.connect(bp).connect(g).connect(c.destination); src.start(t);
 }
 
-/* ================= G10 紙芝居：紙になり、線画になり、横へ抜かれる ================= */
+/* ================= G10 紙飛行機：スッと横切って画面を拭う ================= */
 var pages={}; document.querySelectorAll('.page').forEach(function(p){pages[p.dataset.page]=p;});
 var cur=null, busy=false;
-var butai=document.getElementById('butai'), dai=document.getElementById('dai'), washi=document.getElementById('washi');
-var skMix=document.getElementById('skMix'), skT=document.getElementById('skT');
 var mb=document.getElementById('mb'), nv=document.getElementById('nv');
 function routeOf(){ var h=location.hash.replace(/^#/,''); return pages[h]?h:'/'; }
 function markNav(r){ document.querySelectorAll('nav a').forEach(function(a){ if(a.dataset.route===r) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
@@ -710,46 +702,56 @@ if('scrollRestoration' in history) history.scrollRestoration='manual';
 var pending=null; /* 遷移中に「戻る／進む」が来たら、終わってから追いかける */
 function settle(){ busy=false; var r=pending; pending=null; if(r!==null && pages[r]!==cur) show(r,true); }
 
-function sketch(a){ /* 0=元の絵 1=鉛筆の線画 */
-  skMix.setAttribute('k2',(1-a).toFixed(3)); skMix.setAttribute('k3',a.toFixed(3));
-}
-var boil=0, boilT=0;
-function boilTick(now){ /* 線をシャシャッと震わせる（コマ撮りのように1/9秒ごと） */
-  if(now-boilT>110){ boilT=now; boil=(boil+1)%7; skT.setAttribute('seed',boil+1); }
-}
 function ease3(k){ return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2; }
+/* 紙飛行機の先端が「紙の幕」を引いて画面を横切る。幕が画面を覆いきった瞬間にページを差し替え、
+   少し遅れて幕の後ろ端が追いかけて抜けていき、新しいページが現れる。 */
+var fly=document.getElementById('fly'), flyCover=document.getElementById('flyCover'), flyShade=document.getElementById('flyShade'),
+    flyL=[0,1,2].map(function(i){ return document.getElementById('flyL'+i); }),
+    flyT=[0,1].map(function(i){ return document.getElementById('flyT'+i); }),
+    plane=document.getElementById('plane'), planeS=document.getElementById('planeS');
+var K=.42; /* 幕の先端（くの字）の開き */
+function edgeX(xp,yp,y,R){ var d=y-yp; return xp-K*Math.sqrt(d*d+R*R)+K*R; }
+function edgePts(xp,yp,W,H,R,off){ var pts=[], n=Math.max(14,Math.ceil(H/28));
+  for(var i=0;i<=n;i++){ var y=-30+(H+60)*i/n; pts.push([edgeX(xp,yp,y,R)-off, y]); } return pts; }
+function ptsD(p){ var d='M'+p[0][0].toFixed(1)+' '+p[0][1].toFixed(1); for(var i=1;i<p.length;i++) d+='L'+p[i][0].toFixed(1)+' '+p[i][1].toFixed(1); return d; }
+function flyPath(u,W,H){ /* 飛行経路：左下から右上へ、ふわっと弧を描く */
+  var x=-.12*W+u*(1.24*W+K*H+80), y=H*(.68-.34*u)-Math.sin(u*Math.PI)*H*.07; return [x,y]; }
+function drawFly(tl,tt,W,H){
+  var R=Math.min(W,H)*.18;
+  var P=flyPath(tl,W,H), P2=flyPath(Math.min(1,tl+.01),W,H), Q=flyPath(tt,W,H);
+  var lead=edgePts(P[0],P[1],W,H,R,0), trail=tt>0?edgePts(Q[0],Q[1],W,H,R,0):lead.map(function(p){ return [-60-K*H,p[1]]; });
+  var cov='M'+trail[0][0].toFixed(1)+' '+trail[0][1].toFixed(1);
+  for(var i=0;i<lead.length;i++) cov+='L'+lead[i][0].toFixed(1)+' '+lead[i][1].toFixed(1);
+  for(i=trail.length-1;i>=0;i--) cov+='L'+trail[i][0].toFixed(1)+' '+trail[i][1].toFixed(1);
+  flyCover.setAttribute('d',cov+'Z');
+  flyShade.setAttribute('d',ptsD(lead.map(function(p){ return [p[0]+9,p[1]]; }))+'L'+(lead[lead.length-1][0]-40)+' '+(H+30)+'L'+(lead[0][0]-40)+' -30Z');
+  flyL.forEach(function(el,i){ el.setAttribute('d',ptsD(edgePts(P[0],P[1],W,H,R,[0,7,15][i]))); });
+  flyT.forEach(function(el,i){ el.setAttribute('d',tt>0?ptsD(edgePts(Q[0],Q[1],W,H,R,[0,6][i])):''); });
+  var ang=Math.atan2(P2[1]-P[1],P2[0]-P[0])*180/Math.PI, sc=Math.max(1.15,Math.min(1.6,W/600)),
+      bob=Math.sin(tl*Math.PI*3)*3; /* 風に乗ってわずかに揺れる */
+  plane.setAttribute('transform','translate('+(P[0]+16).toFixed(1)+' '+(P[1]+bob).toFixed(1)+') rotate('+(ang+Math.sin(tl*Math.PI*2)*4).toFixed(2)+') scale('+sc.toFixed(3)+')');
+  plane.style.display=tl>=1?'none':'';
+}
 function show(r, animate){
   var next=pages[r]; if(!next||next===cur){ window.scrollTo(0,0); return; }
   var old=cur; cur=next; markNav(r); document.title=next.dataset.title+'｜COTOZUTE（ステージング）';
-  if(!old||!animate){
+  if(!old||!animate||reduce){
     Object.keys(pages).forEach(function(k){ pages[k].hidden=(pages[k]!==next); }); window.scrollTo(0,0); onPageShown(next); return;
   }
-  busy=true; dai.textContent=next.dataset.title;
-  var y=window.scrollY, slow=/slow/.test(location.search)?5:1;
-  var TA=380*slow, TB=900*slow, TC=620*slow; /* 紙になる → 抜く → 色づく */
-  if(reduce){ TA=150; TB=420; TC=200; }
-  old.classList.add('sk'); next.classList.add('sk');
-  butai.classList.add('on'); washi.classList.add('on');
-  var t0=performance.now(), slid=false, cleaned=false;
-  function slideStart(){ slid=true; sketch(1); washi.style.opacity='1';
-    old.classList.add('leaving'); old.style.top=(-y)+'px';
-    next.hidden=false; window.scrollTo(0,0); onPageShown(next); rustle(TB/1000); }
-  function cleanup(){ cleaned=true; old.hidden=true; old.classList.remove('leaving','sk'); old.style.top=''; old.style.transform=''; }
-  /* ★1コマが重くて段階を飛び越えても、必ず「抜き始め」「後片付け」を通す（通らないと古いページが画面に残る） */
+  busy=true;
+  var slow=/slow/.test(location.search)?5:1;
+  var T1=640*slow, T2=560*slow; /* 覆う → 抜ける */
+  fly.classList.add('on'); drawFly(0,0,innerWidth,innerHeight);
+  rustle(T1/1000);
+  var t0=performance.now(), swapped=false;
+  function swap(){ swapped=true; old.hidden=true; next.hidden=false; window.scrollTo(0,0); onPageShown(next); }
+  /* ★1コマが重くて段階を飛び越えても、必ず「差し替え」と「後片付け」を通す */
   (function f(now){
-    now=now||performance.now(); var t=now-t0; boilTick(now);
-    if(t<TA){ var a=ease3(t/TA); sketch(a); washi.style.opacity=a.toFixed(3); requestAnimationFrame(f); return; }
-    if(!slid) slideStart();
-    if(t<TA+TB){
-      /* 紙芝居の抜き方：ためて、すっと抜いて、最後は手が止まる */
-      var k=(t-TA)/TB, e=k<.18? .02*(k/.18) : .02+.98*ease3((k-.18)/.82);
-      old.style.transform='translate3d('+(e*108).toFixed(2)+'%,0,0) rotate('+(e*.6).toFixed(3)+'deg)';
-      requestAnimationFrame(f); return;
-    }
-    if(!cleaned) cleanup();
-    if(t<TA+TB+TC){ var c=1-ease3((t-TA-TB)/TC); sketch(c); washi.style.opacity=c.toFixed(3); requestAnimationFrame(f); return; }
-    sketch(0); washi.style.opacity='0'; washi.classList.remove('on'); next.classList.remove('sk');
-    butai.classList.remove('on'); settle();
+    now=now||performance.now(); var t=now-t0, W=innerWidth, H=innerHeight;
+    if(t<T1){ drawFly(ease3(t/T1)*.9+.1*(t/T1),0,W,H); requestAnimationFrame(f); return; }
+    if(!swapped) swap();
+    if(t<T1+T2){ var k=(t-T1)/T2; drawFly(1,k<1?(k*k*(3-2*k)):1,W,H); requestAnimationFrame(f); return; }
+    fly.classList.remove('on'); settle();
   })();
 }
 document.addEventListener('click',function(e){
