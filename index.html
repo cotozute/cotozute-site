@@ -513,6 +513,13 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 .cform-note .mail{font-size:inherit}
 @media(min-width:900px){.svc-spec div{grid-template-columns:9em 1fr}}
 @media(max-width:599px){table.info th,table.info td{display:block;width:auto!important;padding:8px 0}table.info th{border-bottom:0;padding-bottom:0}}
+.wk{padding:clamp(22px,5vw,40px);border:1px solid var(--gold);background:rgba(255,255,255,.5);margin-top:clamp(20px,4vw,32px)}
+.wk p{line-height:1.95;margin:1em 0}
+.wk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:18px}
+.wk-item{margin:0;overflow:hidden;background:#fff}
+.wk-item img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
+.wk-main{grid-column:span 2}
+@media(min-width:900px){.wk-grid{grid-template-columns:repeat(4,1fr);gap:10px}.wk-main{grid-column:span 2;grid-row:span 2}}
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
 </head>
@@ -579,6 +586,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   <nav id="nv">
     <ul>
       <li><a href="#service">事業内容</a></li>
+      <li><a href="#works">取引実績</a></li>
       <li><a href="#about">会社概要</a></li>
       <li><a href="#legal">特定商取引法表記</a></li>
       <li><a href="#privacy">プライバシーポリシー</a></li>
@@ -676,6 +684,34 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
         <div><dt>提供時期</dt><dd>ご契約後、お打ち合わせのうえ決定します。</dd></div>
         <div><dt>お支払い方法</dt><dd>請求書による銀行振込</dd></div>
       </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== WORKS ==================== -->
+<section id="works">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">WORKS</p>
+      <h2>取引実績</h2>
+    </div>
+    <div class="wk reveal" style="--d:.1s">
+      <p class="svc-cat">ビジネス支援</p>
+      <h3 class="svc-title">建設現場の仮囲いデザインパネル<small>CONSTRUCTION SITE DESIGN PANELS</small></h3>
+      <dl class="svc-spec wk-spec">
+        <div><dt>お取引先</dt><dd>住協建設株式会社　東京本店 様</dd></div>
+        <div><dt>内容</dt><dd>新築工事現場の仮囲いに掲示するデザインパネルの企画・デザイン制作</dd></div>
+        <div><dt>期間</dt><dd>2019年より継続してご依頼いただいています（法人化前の個人事業から継続）</dd></div>
+      </dl>
+      <p>街並みと工事現場をつなぐパネルとして、建物・自然・折り鶴などのモチーフを立体的に組み合わせたイラストをデザインしています。
+         デザインの制作から印刷手配、現場への直送まで一貫して対応しています。</p>
+      <div class="wk-grid">
+        <figure class="wk-item wk-main"><img src="assets/works-jk-1-sm.webp" srcset="assets/works-jk-1-sm.webp 400w, assets/works-jk-1.webp 800w" sizes="(min-width:900px) 520px, 92vw" width="800" height="800" alt="デザインパネルの掲示風景" loading="lazy" decoding="async"></figure>
+        <figure class="wk-item"><img src="assets/works-jk-2-sm.webp" srcset="assets/works-jk-2-sm.webp 400w, assets/works-jk-2.webp 800w" sizes="(min-width:900px) 260px, 46vw" width="800" height="800" alt="デザインパネル" loading="lazy" decoding="async"></figure>
+        <figure class="wk-item"><img src="assets/works-jk-3-sm.webp" srcset="assets/works-jk-3-sm.webp 400w, assets/works-jk-3.webp 800w" sizes="(min-width:900px) 260px, 46vw" width="800" height="800" alt="デザインパネルの部分" loading="lazy" decoding="async"></figure>
+        <figure class="wk-item"><img src="assets/works-jk-4-sm.webp" srcset="assets/works-jk-4-sm.webp 400w, assets/works-jk-4.webp 800w" sizes="(min-width:900px) 260px, 46vw" width="800" height="800" alt="縦長のデザインパネル" loading="lazy" decoding="async"></figure>
+        <figure class="wk-item"><img src="assets/works-jk-5-sm.webp" srcset="assets/works-jk-5-sm.webp 400w, assets/works-jk-5.webp 800w" sizes="(min-width:900px) 260px, 46vw" width="800" height="800" alt="デザインパネルの掲示風景（引き）" loading="lazy" decoding="async"></figure>
+      </div>
     </div>
   </div>
 </section>
@@ -791,6 +827,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     </div>
     <ul class="foot-nav">
       <li><a href="#service">事業内容</a></li>
+      <li><a href="#works">取引実績</a></li>
       <li><a href="#about">会社概要</a></li>
       <li><a href="#legal">特定商取引法表記</a></li>
       <li><a href="#privacy">プライバシーポリシー</a></li>
