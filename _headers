@@ -1,2 +1,6 @@
 /stg/*
   X-Robots-Tag: noindex, nofollow, noarchive
+/shop
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+/shop/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
