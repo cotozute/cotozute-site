@@ -351,7 +351,9 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
   .menu-btn{display:none}
   nav{position:static;width:auto;background:none;transform:none;box-shadow:none;display:block}
   nav ul{flex-direction:row;gap:clamp(18px,2.6vw,40px)}
-  nav a{font-size:calc(var(--fs)*.8);letter-spacing:.22em}
+  nav ul{gap:clamp(12px,1.6vw,28px)}
+  nav a{font-size:calc(var(--fs)*.78);letter-spacing:.08em;white-space:nowrap}
+  nav a[href="/shop/"]{color:var(--gold)}
 
   .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
   .hero h1{font-size:calc(var(--fs)*2.2);line-height:1.55;letter-spacing:.09em}
@@ -520,7 +522,10 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
 .wk-item img{display:block;width:100%;height:auto;aspect-ratio:1/1;object-fit:cover}
 .wk-main{grid-column:span 2}
 @media(min-width:900px){.wk-grid{grid-template-columns:repeat(4,1fr);gap:10px}.wk-main{grid-column:span 2;grid-row:span 2}}
-.shoplink{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+.btn-gold{background:var(--gold);border-color:var(--gold);color:#fff}
+.shopbtn{display:block;margin-top:20px;padding:16px 18px;background:var(--gold);color:#fff;text-decoration:none;text-align:center;font-family:var(--serif);font-size:1.05rem;letter-spacing:.06em;line-height:1.5;max-width:460px}
+.shopbtn span{display:block;font-family:var(--sans);font-size:.78rem;opacity:.95;letter-spacing:.04em}
+.shopbtn:hover{opacity:.9}
 </style>
 <link rel="stylesheet" href="assets/cz-tech.css">
 </head>
@@ -588,9 +593,8 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     <ul>
       <li><a href="#service">事業内容</a></li>
       <li><a href="#works">取引実績</a></li>
+      <li><a href="/shop/">オンラインショップ</a></li>
       <li><a href="#about">会社概要</a></li>
-      <li><a href="#legal">特定商取引法表記</a></li>
-      <li><a href="#privacy">プライバシーポリシー</a></li>
       <li><a href="#contact">お問い合わせ</a></li>
     </ul>
   </nav>
@@ -627,7 +631,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     <p class="sub">
       心の整え方をお届けするオンライン会員サービスと、天然石アクセサリーの製作・販売を自社で運営し、その経験を法人のお客様へのご支援にも活かしています。
     </p>
-    <p class="hero-btns"><a class="btn" href="#service">事業内容を見る</a><a class="btn btn-o" href="#contact">お問い合わせはこちら</a></p>
+    <p class="hero-btns"><a class="btn" href="#service">事業内容を見る</a><a class="btn btn-gold" href="/shop/">オンラインショップ</a><a class="btn btn-o" href="#contact">お問い合わせはこちら</a></p>
   </div>
 
   <div class="scrollcue"><span>SCROLL</span><i></i></div>
@@ -666,10 +670,10 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
          お買い上げ後の修理・お直しも承っています。</p>
       <dl class="svc-spec">
         <div><dt>販売価格帯</dt><dd>49,800円〜98,000円（税込）</dd></div>
-        <div><dt>販売ページ</dt><dd><a class="shoplink" href="/shop/">オンラインショップ（天然石アクセサリー）を見る →</a></dd></div>
         <div><dt>引渡時期</dt><dd>ご入金確認後、1か月以内に発送します。送料は全国一律無料です。</dd></div>
         <div><dt>お支払い方法</dt><dd>クレジットカード決済</dd></div>
       </dl>
+      <a class="shopbtn" href="/shop/">天然石アクセサリーの商品ページを見る<span>ブレスレット・ネックレス／価格・ご購入はこちら</span></a>
     </div>
 
     <div class="svc reveal">
@@ -830,6 +834,7 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;pos
     <ul class="foot-nav">
       <li><a href="#service">事業内容</a></li>
       <li><a href="#works">取引実績</a></li>
+      <li><a href="/shop/">オンラインショップ</a></li>
       <li><a href="#about">会社概要</a></li>
       <li><a href="#legal">特定商取引法表記</a></li>
       <li><a href="#privacy">プライバシーポリシー</a></li>
