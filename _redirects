@@ -1,0 +1,3 @@
+/hello /pro/ 301
+/hello/ /pro/ 301
+/hello/* /pro/:splat 301
