@@ -3,27 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>COTOZUTE（ステージング）</title>
-<meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="description" content="言伝心　ことづて「心で伝えるコト」（ステージング・確認用）">
+<title>合同会社COTOZUTE</title>
+<meta name="description" content="言伝心　ことづて「心へ伝えるコト」">
 <meta name="theme-color" content="#F7F4EC">
+<meta property="og:title" content="合同会社COTOZUTE">
+<meta property="og:description" content="仕事は、結局「ひと」です。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://cotozute.com/hello/">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta property="og:site_name" content="合同会社COTOZUTE">
+<meta property="og:locale" content="ja_JP">
+<!-- SNSシェア画像。旧ロゴ（assets/logo.webp）は使わない。新しい筆ロゴの1200x630版。 -->
+<meta property="og:image" content="https://cotozute.com/assets/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="合同会社COTOZUTE">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="合同会社COTOZUTE">
+<meta name="twitter:description" content="仕事は、結局「ひと」です。">
+<meta name="twitter:image" content="https://cotozute.com/assets/og-image.png">
+<!-- ファビコン：筆で書いた漢字だけ（下の COTOZUTE の欧文は外した）。
+     旧ロゴが端末に強く残るので、ファイル名を新しくして取り直させている。 -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600&family=Cormorant+Garamond:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/cz-tech.css">
 <style>
 /* =========================================================
-   COTOZUTE ステージング — mobile first
-   文言はすべて本番 cotozute.com（GitHub HEAD 49a41e1）からそのまま転記。
-   ギミック：G1 墨流し / G2 にじみ / G3 綴じ糸 / G7 鹿威し / G10 紙飛行機（画面遷移）
+   COTOZUTE — mobile first
    ========================================================= */
 :root{
-  --paper:#F7F4EC; --paper-2:#FCFAF6; --paper-3:#F1ECE1; --paper-back:#EDE4D1;
+  --paper:#F7F4EC; --paper-2:#FCFAF6; --paper-3:#F1ECE1;
   --ink:#1E2A44; --ink-2:#2E3B58; --ink-soft:#5A6580;
   --gold:#AE8742; --gold-2:#C9A868; --gold-3:#E4D3AC;
-  --wood:#6B4A2E; --wood-2:#8C6440;
-  --shi-1:#7A5FAE; --shi-2:#A88FD6; --shi-3:#E6A9CB;   /* 筆ロゴの紫 */
   --line:rgba(174,135,66,.30); --line-2:rgba(30,42,68,.10);
   --serif:"Shippori Mincho B1",'Hiragino Mincho ProN','Yu Mincho',serif;
   --latin:"Cormorant Garamond","Shippori Mincho B1",serif;
@@ -31,85 +47,29 @@
   --ease:cubic-bezier(.22,.68,.24,1);
   --max:1180px;
   --gut:clamp(20px,5.5vw,40px);
+  /* ★サイト内の最小文字サイズ。トップの「COTOZUTEはあなたの仕事を…」と同値で、
+     ここより小さい文字を本文・ラベルに使わない（2026-09-07 指定）。
+     文字サイズは原則すべてこの値の倍数で書く。値を変えると全体が連動して動く。 */
   --fs:clamp(15px,4.1vw,27px);
   color-scheme:light;
 }
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;overflow-x:clip}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:300;
-  line-height:1.95;font-size:var(--fs);letter-spacing:.045em;-webkit-font-smoothing:antialiased;overflow-x:clip}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;overflow-x:clip}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-weight:300;line-height:1.95;font-size:var(--fs);
+  letter-spacing:.045em;-webkit-font-smoothing:antialiased;overflow-x:clip;
+}
 img{max-width:100%;display:block;height:auto}
-a{color:inherit}
+a{color:inherit;text-decoration:none}
 p{margin:0 0 1.15em}
-button{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.3;
+/* paper grain */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:90;opacity:.3;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
-  mix-blend-mode:multiply}
-
-.stg{position:fixed;left:0;bottom:0;z-index:150;background:var(--ink);color:var(--paper);
-  font-size:12px;letter-spacing:.14em;padding:4px 12px calc(4px + env(safe-area-inset-bottom,0px));border-top-right-radius:6px;pointer-events:none}
-
-/* ---------- header ---------- */
-/* ★backdrop-filter を header 本体に付けると、中の固定配置メニュー（nav）の基準が header の高さに
-   閉じ込められてスマホのメニューが潰れる。ぼかしは ::before に逃がす。 */
-header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;gap:12px;
-  padding:calc(10px + env(safe-area-inset-top,0px)) var(--gut) 10px}
-header::before{content:"";position:absolute;inset:0;z-index:-1;background:rgba(247,244,236,.86);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line-2)}
-.nav-shade{position:fixed;inset:0;z-index:99;background:rgba(30,42,68,.28);opacity:0;pointer-events:none;transition:opacity .5s var(--ease)}
-.nav-shade.on{opacity:1;pointer-events:auto}
-@media (min-width:900px){.nav-shade{display:none}}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.brand svg{width:40px;height:auto;display:block}
-.brand b{font-family:var(--latin);font-weight:500;letter-spacing:.3em;font-size:var(--fs);color:var(--ink-2)}
-.hd-r{display:flex;align-items:center;gap:6px}
-.snd{background:none;border:1px solid var(--line);padding:4px 10px;font-size:13px;letter-spacing:.1em;cursor:pointer;color:var(--ink-2);line-height:1.6}
-.snd[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.menu-btn{background:none;border:0;padding:10px;cursor:pointer;position:relative;z-index:110}
-.menu-btn span{display:block;width:24px;height:1px;background:var(--ink);margin:6px 0;transition:.4s var(--ease)}
-.menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
-.menu-btn.open span:nth-child(2){opacity:0}
-.menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-nav{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--paper-2);transform:translateX(100%);
-  transition:transform .6s var(--ease);display:flex;align-items:center;justify-content:center;box-shadow:-24px 0 70px -50px #000;z-index:105}
-nav.open{transform:none}
-nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:28px;text-align:center}
-nav a{text-decoration:none;font-family:var(--latin);font-size:calc(var(--fs)*1.1);letter-spacing:.24em;color:var(--ink-2);display:block}
-nav a[aria-current="page"]{color:var(--gold)}
-@media (min-width:900px){
-  .menu-btn{display:none}
-  nav{position:static;transform:none;width:auto;background:none;box-shadow:none;display:block}
-  nav ul{flex-direction:row;gap:30px}
-  nav a{font-size:16px}
+  mix-blend-mode:multiply;
 }
 
-/* ---------- G10 紙芝居：めくり ---------- */
-#pages{position:relative}
-.page{position:relative;background:var(--paper);min-height:100svh}
-.page[hidden]{display:none!important}
-/* ---------- shared ---------- */
-.wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,12vw,130px) var(--gut);position:relative;z-index:2}
-.page-top{padding-top:calc(110px + env(safe-area-inset-top,0px))}
-.eyebrow{font-family:var(--latin);font-size:var(--fs);letter-spacing:.4em;color:var(--gold);display:flex;align-items:center;gap:14px;margin:0 0 18px}
-.eyebrow::after{content:"";flex:0 0 42px;height:1px;background:var(--line)}
-h1,h2,h3,h4{text-wrap:balance}
-h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;font-size:calc(var(--fs)*1.75);line-height:1.7;letter-spacing:.07em}
-h3{font-family:var(--serif);font-weight:500;font-size:calc(var(--fs)*1.35);line-height:1.6;letter-spacing:.06em;margin:0 0 10px}
-h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spacing:.3em;color:var(--gold);margin-top:2px}
-.muted{color:var(--ink-soft);line-height:2.3}
-.next{display:inline-flex;align-items:center;gap:14px;text-decoration:none;font-family:var(--latin);letter-spacing:.3em;
-  border:1px solid var(--ink-2);padding:12px 26px;color:var(--ink);background:var(--paper-2);transition:background .4s var(--ease),color .4s var(--ease),box-shadow .8s var(--ease)}
-.next:hover{background:var(--ink);color:var(--paper)}
-.next::after{content:"";width:28px;height:1px;background:currentColor}
-.next.tied{box-shadow:0 0 0 5px rgba(168,143,214,.22),0 0 24px rgba(168,143,214,.35)}
-.page-end{margin-top:clamp(40px,8vw,80px)}
-
-/* ---------- G3 綴じ糸（筆ロゴの紫） ---------- */
-.thread{position:absolute;left:0;top:0;width:100%;pointer-events:none;z-index:1;overflow:visible}
-.thread .t-glow{fill:none;stroke-width:6;stroke-linecap:round;opacity:.12;filter:blur(1.5px)}
-.thread .t-main{fill:none;stroke-width:1.7;stroke-linecap:round;opacity:.72}
-
-/* ---------- 本番と同じ：筆ロゴ・イントロ・ヒーロー（cotozute.com から転記） ---------- */
 /* ---------- 筆ロゴアニメーション ---------- */
 .cz-logo{display:block;width:100%;height:auto}
 .cz-logo .cz-s{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--l);stroke-dashoffset:var(--l)}
@@ -139,6 +99,31 @@ h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spaci
   transition:opacity .9s var(--ease),visibility .9s;cursor:pointer}
 #intro .cz-logo{width:min(42vw,175px)}
 #intro.done{opacity:0;visibility:hidden}
+
+/* ---------- header ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px var(--gut);transition:background .5s var(--ease),padding .5s var(--ease),box-shadow .5s var(--ease)}
+header.scrolled{background:rgba(247,244,236,.9);backdrop-filter:blur(12px);
+  padding:9px var(--gut);box-shadow:0 1px 0 var(--line-2)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .brandmark{width:54px;height:auto;display:block;transition:width .5s var(--ease)}
+header.scrolled .brand .brandmark{width:42px}
+.brand span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.menu-btn{background:none;border:0;padding:10px;cursor:pointer;position:relative;z-index:110}
+.menu-btn span{display:block;width:24px;height:1px;background:var(--ink);margin:6px 0;transition:.4s var(--ease)}
+.menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.menu-btn.open span:nth-child(2){opacity:0}
+.menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+nav{position:fixed;inset:0 0 0 auto;width:min(80vw,320px);background:var(--paper-2);
+  transform:translateX(100%);transition:transform .6s var(--ease);
+  display:flex;align-items:center;justify-content:center;box-shadow:-24px 0 70px -50px #000}
+nav.open{transform:none}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:28px;text-align:center}
+nav a{font-family:var(--latin);font-size:calc(var(--fs)*1.1);letter-spacing:.24em;color:var(--ink-2);position:relative;padding:4px 0}
+nav a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
+nav a:hover::after{transform:scaleX(1);transform-origin:left}
 
 /* ---------- hero ---------- */
 .hero{position:relative;min-height:100svh;display:grid;align-content:center;
@@ -222,108 +207,290 @@ h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spaci
   /* .hero .sub{max-width:50%}  ← 挿絵を戻すとき一緒に戻す（2026-09-10 に外した） */
 }
 
+/* ---------- shared ---------- */
+section{position:relative;z-index:2}
+.wrap{max-width:var(--max);margin:0 auto;padding:clamp(64px,13vw,150px) var(--gut)}
+.eyebrow{font-family:var(--latin);font-size:var(--fs);letter-spacing:.4em;color:var(--gold);
+  display:flex;align-items:center;gap:14px;margin:0 0 18px}
+.eyebrow::after{content:"";flex:0 0 42px;height:1px;background:var(--line)}
+h2{font-family:var(--serif);font-weight:500;margin:0 0 26px;
+  font-size:calc(var(--fs)*1.75);line-height:1.7;letter-spacing:.07em}
+.muted{color:var(--ink-soft);font-size:var(--fs);line-height:2.3}
+.reveal{opacity:0;transform:translateY(26px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease);transition-delay:var(--d,0s)}
+.reveal.in{opacity:1;transform:none}
+
+/* セクション間の波模様（.divider）は廃止した。復活させないこと。 */
+
+/* ---------- message ---------- */
+#message{background:linear-gradient(180deg,transparent,var(--paper-3) 45%,transparent)}
+.msg-grid{display:grid;gap:clamp(30px,7vw,80px)}
+.origin{padding-left:0}
+/* スマホの筆ロゴは 62vw/260px から65%へ（大きすぎたため・2026-09-06） */
+.origin .kanji{margin:0 auto 22px;max-width:min(40vw,169px)}
+
+/* ---------- service scenes ----------
+   1シーン＝イラストの舞台。イラストがふわっと登場し、その上に文字が上から重なる。
+   各シーンの位置は下のカスタムプロパティで個別に微調整できる:
+     --aw イラスト幅 / --ax 横位置 / --ay 下からの位置 / --cw 文字幅 / --ct 文字の上余白
+   ------------------------------------ */
+.scene{position:relative;display:grid;align-content:start;
+  min-height:var(--mh,clamp(660px,180vw,780px));margin:clamp(64px,17vw,112px) 0;
+  padding-top:var(--ct,4px)}
+.stage{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}
+.art{position:absolute;right:var(--ax,-10%);bottom:var(--ay,0);width:var(--aw,82%);
+  opacity:0;transform:translateY(34px) scale(.94);
+  transition:opacity 1.4s var(--ease),transform 1.4s var(--ease);will-change:transform}
+.scene.in .art{opacity:1;transform:none}
+.art picture{display:block}
+.art .main{width:100%}
+/* 追加パーツ用（後から <img class="part" style="--px:..;--py:..;--pw:..;--pd:..s"> を足せる） */
+.art .part{position:absolute;left:var(--px,50%);top:var(--py,50%);width:var(--pw,18%)}
+.art .glow{position:absolute;left:50%;top:50%;width:96%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle,rgba(201,168,104,.22),transparent 64%)}
+.art .ring{position:absolute;left:50%;top:48%;width:84%;aspect-ratio:1;
+  transform:translate(-50%,-50%);border-radius:50%;border:1px solid var(--line)}
+.art .ring::after{content:"";position:absolute;inset:8%;border-radius:50%;
+  border:1px dashed rgba(174,135,66,.24);animation:spinSlow 70s linear infinite}
+.spark{position:absolute;border-radius:50%;background:var(--gold-2);
+  width:5px;height:5px;opacity:0;transition:opacity 1.3s var(--ease) .7s}
+.scene.in .spark{opacity:.55}
+.spark.s1{right:14%;top:14%;animation:bob 6.5s ease-in-out infinite}
+.spark.s2{right:56%;top:36%;width:3px;height:3px;animation:bob 8.5s ease-in-out .6s infinite}
+.spark.s3{right:30%;bottom:16%;width:4px;height:4px;animation:bob 7.5s ease-in-out 1.2s infinite}
+
+.copy{position:relative;z-index:2;max-width:var(--cw,32em)}
+.copy > *{opacity:0;transform:translateY(-22px);
+  transition:opacity 1s var(--ease),transform 1s var(--ease);
+  background:rgba(255,255,255,.75);border-radius:3px;
+  width:fit-content;max-width:100%;
+  padding:.18em .5em;margin-left:-.5em}
+/* 挿絵に重なる説明文は、キャッチコピーと同じ濃さまで上げて読みやすさを優先 */
+.copy .muted{color:var(--ink-2)}
+.scene.in .copy > *{opacity:1;transform:none}
+.scene.in .copy > *:nth-child(1){transition-delay:.30s}
+.scene.in .copy > *:nth-child(2){transition-delay:.44s}
+.scene.in .copy > *:nth-child(3){transition-delay:.58s}
+.scene.in .copy > *:nth-child(4){transition-delay:.72s}
+.num{font-family:var(--latin);font-size:var(--fs);letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
+.scene h3{font-family:var(--serif);font-weight:500;margin:0;
+  font-size:calc(var(--fs)*1.5);letter-spacing:.07em}
+.scene h3 small{display:block;font-family:var(--latin);font-size:var(--fs);letter-spacing:.3em;
+  color:var(--gold);margin-top:9px;font-weight:400}
+.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;
+  font-size:calc(var(--fs)*1.1);margin:16px 0 12px}
+
+.cards{display:grid;gap:18px;margin-top:14px}
+.card{background:var(--paper-2);border:1px solid var(--line-2);padding:0 0 26px;overflow:hidden;
+  transition:transform .7s var(--ease),box-shadow .7s var(--ease),border-color .7s var(--ease)}
+.card:hover{transform:translateY(-7px);box-shadow:0 22px 44px -28px rgba(30,42,68,.45);border-color:var(--line)}
+.card .strip{height:186px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--paper-3);padding:8px 0}
+.card .strip img{width:auto;height:100%;max-width:none;object-fit:contain;transition:transform 1.2s var(--ease)}
+.card .strip img.deco{width:170%;height:auto;object-fit:cover}
+.card:hover .strip img{transform:scale(1.07)}
+.card .body{padding:22px clamp(18px,5vw,28px) 0}
+.card h4{font-family:var(--serif);font-weight:500;font-size:calc(var(--fs)*1.2);letter-spacing:.07em;margin:0 0 5px}
+.card .en{font-family:var(--latin);font-size:var(--fs);letter-spacing:.26em;color:var(--gold);margin-bottom:12px}
+.card p{font-size:var(--fs);line-height:2.1;color:var(--ink-soft);margin:0}
+
+/* ---------- 02 業務自動化相談（鹿威し）----------
+   この項目だけ挿絵が横長なので、縦長前提の寸法だと小さく沈み、
+   スマホでは --overlap に飲み込まれて文字の下へ完全に隠れる。
+   この項目にだけ寸法と重なり量を持たせる。 ---------- */
+.scene.wide{--overlap:clamp(56px,16vw,96px)}
+@media(min-width:900px){ .scene.wide{--art-w:clamp(340px,52vw,560px);--art-off:4%} }
+@media(max-width:899px){ .scene.wide .art{width:min(96%,380px);margin:0 0 0 -6%} }
+
+/* ---------- about ---------- */
+#about{background:var(--paper-3)}
+.about-grid{display:grid;gap:clamp(28px,7vw,80px)}
+table.info{width:100%;border-collapse:collapse;font-size:var(--fs)}
+table.info th,table.info td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
+table.info th{font-weight:400;color:var(--gold);font-family:var(--serif);letter-spacing:.1em;
+  width:6.5em;padding-right:14px}
+table.info td{color:var(--ink-2);line-height:2.05}
+
+/* ---------- contact ---------- */
+#contact{text-align:center}
+#contact .wrap{max-width:820px}
+#contact .eyebrow{justify-content:center}
+.contact-seal{width:min(82vw,400px);margin:0 auto 14px}
+.mail{display:inline-flex;align-items:center;font-family:var(--latin);
+  font-size:calc(var(--fs)*1.25);letter-spacing:.1em;word-break:break-all;
+  border-bottom:1px solid var(--line);padding:9px 4px;
+  transition:color .5s var(--ease),border-color .5s var(--ease)}
+.mail:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ---------- footer ---------- */
+footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 34px;position:relative;z-index:2}
+.foot-in{max-width:var(--max);margin:0 auto;display:grid;gap:26px}
+.fl{font-family:var(--latin);letter-spacing:.3em;font-size:var(--fs)}
+.fr{font-size:var(--fs);letter-spacing:.1em;color:rgba(247,244,236,.6)}
+.foot-nav{display:flex;flex-wrap:wrap;gap:18px;list-style:none;margin:0;padding:0;
+  font-size:var(--fs);letter-spacing:.16em}
+.foot-nav a{color:rgba(247,244,236,.78);transition:color .4s}
+.foot-nav a:hover{color:var(--gold-2)}
+
+/* =========================================================
+   ≥ 600px
+   ========================================================= */
+@media (min-width:600px){
+  /* 600〜899pxは1列のまま。基準文字が27pxなので2列だと1行10文字しか入らない（2026-09-07） */
+  .floatword.b,.floatword.d{display:block}
+  .hero-figure{width:46%;right:-2%}
+}
+
+/* =========================================================
+   ≥ 900px  (desktop)
+   ========================================================= */
 @media (min-width:900px){
+  header{padding:22px var(--gut)}
+  header.scrolled{padding:12px var(--gut)}
+  .brand .brandmark{width:82px}
+  header.scrolled .brand .brandmark{width:60px}
+  .menu-btn{display:none}
+  nav{position:static;width:auto;background:none;transform:none;box-shadow:none;display:block}
+  nav ul{flex-direction:row;gap:clamp(18px,2.6vw,40px)}
+  nav a{font-size:calc(var(--fs)*.8);letter-spacing:.22em}
+
   .hero{display:flex;align-items:center;padding:130px var(--gut) 90px}
   .hero h1{font-size:calc(var(--fs)*2.2);line-height:1.55;letter-spacing:.09em}
   .hero-inner{max-width:var(--max)}
+  /* .hero .sub{max-width:52%}  ← 挿絵を戻すとき一緒に戻す（2026-09-10 に外した） */
   .hero::after{z-index:4}
+  .hero-figure{width:min(40vw,560px);max-width:none;height:auto;right:1.5%;top:auto;bottom:5%;
+    -webkit-mask-image:none;mask-image:none;
+    animation:heroIn 1.9s var(--ease) .45s forwards}
+  .hero-figure img{width:100%;height:auto;object-fit:contain}
+  @keyframes heroIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:none}}
+  .seal{right:24vw;top:26%;width:min(30vw,340px);max-width:none}
+  .wave.w1{left:-8%;width:116%;bottom:6%}
+  .wave.w2{left:-14%;width:120%;bottom:24%}
   .scrollcue{display:flex}
   .brsm{display:none}
   .rule{margin:38px 0 26px}
   @keyframes ruleGrow{to{width:110px}}
+
+  .msg-grid{grid-template-columns:1.05fr .95fr;align-items:center}
+  .origin{border-left:1px solid var(--line);padding-left:clamp(18px,4.5vw,36px)}
+  .origin .kanji{margin:0 0 20px;max-width:min(54vw,240px)}
+  .about-grid{grid-template-columns:1fr 1fr}
+  table.info th{width:9em}
+
+  /* PCは「文字の段」と「挿絵の段」を分ける。挿絵の幅と位置を --art-w / --art-off の
+     1か所で持ち、.art と .copy の両方がそれを見る。文字は挿絵の手前で必ず折り返すので、
+     どのセクションでも文字がキャラクターの顔に重ならない（2026-09-12） */
+  .scene{min-height:clamp(620px,62vw,840px);align-content:center;padding-top:0;
+    --art-w:clamp(300px,44vw,540px);--art-off:7%;--art-gap:clamp(20px,3vw,48px)}
+  .art{--aw:var(--art-w);--ax:var(--art-off)}
+  .scene.alt .art{right:auto;left:var(--ax)}
+  .copy{--cw:41em;
+    max-width:min(var(--cw),calc(100% - var(--art-off) - var(--art-w) - var(--art-gap)))}
+  .scene.alt .copy{margin-left:auto}
+  .spark.s1{right:10%;top:12%}
+  .spark.s3{right:24%;bottom:18%}
+
+  .foot-in{grid-template-columns:auto 1fr auto;align-items:center;gap:30px}
+  .foot-nav{justify-content:center}
+  .fr{text-align:right}
 }
+
+/* =========================================================
+   ≥ 1200px
+   ========================================================= */
+@media (min-width:1200px){
+  /* 最小文字が27pxになったので4列だと1行8文字しか入らない。2列で組む（2026-09-07） */
+  .cards{grid-template-columns:1fr 1fr;gap:clamp(22px,2.4vw,34px)}
+}
+
 @media (prefers-reduced-motion:reduce){
-  .hero h1 .ln i{transform:none!important;animation:none!important}
-  .rule{width:88px;animation:none!important}
-  .hero .lead,.hero .sub,.scrollcue{opacity:1!important;animation:none!important}
+  *{animation:none!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+  .art,.copy > *{opacity:1!important;transform:none!important}
+  .spark{opacity:.55!important}
+  .hero h1 .ln i{transform:none}
+  .rule{width:88px}
+  .hero .lead,.hero .sub,.scrollcue,.seal,.floatword{opacity:1}
+  .hero-figure{opacity:1}
+  .wave{opacity:.85}
+  .wave .wtrack{transform:none}
+  @media(min-width:900px){.hero-figure{opacity:1}.rule{width:110px}}
 }
+/* 挿絵の動きは各WebPアニメーション自体が持つ。
+   CSS側で絵を上下させる levitate / karakuri / shishi と、
+   湯気・しずく・波紋の擬似エフェクトは全て廃止した。復活させないこと。 */
 
-/* ---------- message ---------- */
-.msg{display:grid;gap:clamp(30px,7vw,80px)}
-.msg .kanji{max-width:min(40vw,169px);margin:0 auto 22px}
-@media (min-width:900px){.msg{grid-template-columns:1.3fr 1fr;align-items:center}}
-
-/* ---------- G2 にじみ ---------- */
-.nj{position:relative;width:100%}
-.nj .box{position:relative;width:100%;aspect-ratio:var(--ar,4/3)}
-.nj canvas,.nj .anim{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.nj canvas{z-index:2;inset:-2px;width:calc(100% + 4px);height:calc(100% + 4px)}
-.nj .anim{opacity:0}
-.nj.live .anim{opacity:1}
-.nj.done canvas:not(.anim){opacity:0;transition:opacity .9s ease .2s}
-.nj.fallback .anim{-webkit-mask-image:radial-gradient(circle at var(--ox,30%) var(--oy,60%),#000 0,#000 var(--r,0%),transparent calc(var(--r,0%) + 12%));
-  mask-image:radial-gradient(circle at var(--ox,30%) var(--oy,60%),#000 0,#000 var(--r,0%),transparent calc(var(--r,0%) + 12%))}
-
-.scenes{display:grid;gap:clamp(56px,13vw,120px);margin-top:clamp(40px,7vw,70px)}
-/* 並び：スマホは「番号・タイトル → 挿絵 → キャッチ・本文」。本文の白帯は挿絵の下のほう（体・足元）にだけ重ね、顔には載せない。
-   PCは文字の列と挿絵の列を分ける（重ねない）。 */
-.scene{position:relative;display:grid;--ov:clamp(34px,12vw,80px)}
-.scene .copy{position:relative;z-index:2;max-width:32em}
-.scene .copy > *{background:rgba(255,255,255,.78);border-radius:3px;width:fit-content;max-width:100%;padding:.18em .5em;margin-left:-.5em}
-.scene .num{font-family:var(--latin);letter-spacing:.32em;color:var(--gold);margin-bottom:10px}
-.scene h3{font-size:calc(var(--fs)*1.5);letter-spacing:.07em;margin:0}
-.scene h3 small{margin-top:9px}
-.scene .catch{font-family:var(--serif);color:var(--ink-2);line-height:2.05;font-size:calc(var(--fs)*1.1);margin:0 0 12px}
-.scene .muted{color:var(--ink-2);margin:0}
-.scene .stage{position:relative;z-index:0;display:flex;justify-content:center;margin-top:clamp(8px,3vw,20px)}
-.scene .art{width:min(100%,460px);position:relative}
-.scene .copy-body{margin-top:calc(var(--ov) * -1)}
-@media (min-width:900px){
-  .scene{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;column-gap:clamp(32px,4vw,64px);align-items:center;--ov:0px}
-  .scene .copy-head{grid-column:1;grid-row:1;align-self:end}
-  .scene .copy-body{grid-column:1;grid-row:2;align-self:start;margin-top:18px}
-  .scene .stage{grid-column:2;grid-row:1 / span 2;margin:0}
-  .scene.alt .copy-head,.scene.alt .copy-body{grid-column:2}
-  .scene.alt .stage{grid-column:1}
-  .scene .art{width:min(100%,600px)}
-  .scene.small .art{width:min(100%,520px)}
-}
-/* 本番と同じ：そろばんの読み上げ（周期15.2秒＝アニメWebPと同じ）。にじみ終わってアニメが始まった瞬間から回す */
-.scene.abacus .art{container-type:inline-size}
-.chant{position:absolute;top:5%;right:2.5%;z-index:2;pointer-events:none;writing-mode:vertical-rl;text-orientation:mixed;
-  font-family:var(--serif);color:var(--ink-2);font-size:13px;font-size:3.5cqw;line-height:1.5;letter-spacing:.05em}
+/* ---------- スマホ・タブレット：挿絵を思い切り上へ寄せ、文字を重ねる ----------
+   PCと同じ「舞台の上に文字が乗る」構図を、縦長画面でも成立させる。
+   絵を負のマージンで文字の下へ潜り込ませることで、
+   セクションの高さ＝文字＋絵−重なり ぶんだけになり、間延びしない。
+   重なり量は --overlap の1か所で調整できる。 ---------- */
+/* 01 そろばん少年：顔の右横の余白に、そろばんの読み上げを縦書きで重ねる。
+   画像には焼き込まず、HTML側の重ね書き（文字が潰れない・文言を後から直せる）。
+   周期はアニメWebPと同じ15.2秒なので、絵と文字がずれずに回り続ける。
+   位置は素材1024x768の空き矩形 x820-1000 / y40-420 から算出した。 */
+.s-abacus .art{container-type:inline-size}
+.chant{position:absolute;top:5%;right:2.5%;z-index:2;pointer-events:none;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:var(--serif);color:var(--ink-2);
+  font-size:13px;font-size:3.5cqw;line-height:1.5;letter-spacing:.05em}
 .chant > span{display:block;margin-left:.55em;opacity:0;white-space:nowrap}
 .chant .tcy{display:inline;text-combine-upright:all}
-.art.go .chant > span:nth-child(1){animation:chant1 15.2s linear infinite}
-.art.go .chant > span:nth-child(2){animation:chant2 15.2s linear infinite}
-.art.go .chant > span:nth-child(3){animation:chant3 15.2s linear infinite}
-@keyframes chant1{0%{opacity:0;transform:translateY(-6px)}5.3%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
-@keyframes chant2{0%,23.7%{opacity:0;transform:translateY(-6px)}28.9%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
-@keyframes chant3{0%,47.4%{opacity:0;transform:translateY(-6px)}52.6%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
-@media (prefers-reduced-motion:reduce){ .art.go .chant > span{opacity:1!important;transform:none!important} }
-/* ---------- G7 鹿威し（本番の挿絵をそのまま操作） ---------- */
+.chant > span:nth-child(1){animation:chant1 15.2s linear infinite}
+.chant > span:nth-child(2){animation:chant2 15.2s linear infinite}
+.chant > span:nth-child(3){animation:chant3 15.2s linear infinite}
+@keyframes chant1{0%{opacity:0;transform:translateY(-6px)}
+  5.3%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant2{0%,23.7%{opacity:0;transform:translateY(-6px)}
+  28.9%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+@keyframes chant3{0%,47.4%{opacity:0;transform:translateY(-6px)}
+  52.6%,89.5%{opacity:1;transform:none}96%,100%{opacity:0;transform:none}}
+/* アニメーション効果オフの環境では3行とも出したままにする（消えないように） */
+@media (prefers-reduced-motion:reduce){ .chant > span{opacity:1!important;transform:none!important} }
 
-/* ---------- about / contact ---------- */
-.about{display:grid;gap:clamp(30px,6vw,70px)}
-@media (min-width:900px){.about{grid-template-columns:1fr 1.5fr}}
-table.info{width:100%;border-collapse:collapse}
-table.info th,table.info td{text-align:left;padding:13px 0;border-bottom:1px solid var(--line-2);vertical-align:top}
-table.info th{font-weight:400;color:var(--gold);font-family:var(--serif);letter-spacing:.1em;width:7.5em;padding-right:1em}
-table.info td{color:var(--ink-2);line-height:2.05}
-.contact{display:grid;gap:30px;align-items:center}
-.contact .seal{width:min(82vw,400px);margin:0 auto}
-@media (min-width:900px){.contact{grid-template-columns:1fr 1.2fr}}
-.mail{display:inline-flex;align-items:center;font-family:var(--latin);font-size:calc(var(--fs)*1.2);letter-spacing:.08em;color:var(--ink);
-  border-bottom:1px solid var(--gold);padding-bottom:4px;text-decoration:none;word-break:break-all}
+/* 01 そろばん少年：この挿絵だけ横長で顔が上寄りなので、スマホでは
+      01・見出し → 絵 → キャッチ（3行の短い組み）→ 本文（横いっぱい）
+   の順に組み替える。キャッチの白帯だけを絵の下端（机とそろばん）へ軽く重ね、
+   顔には文字を一切乗せない。この1項目だけの特別扱い。復活させないこと。 */
+@media (max-width:899px){
+  .scene.s-abacus{--mh:0}
+  .scene.s-abacus .copy-head{order:0}
+  .scene.s-abacus .stage{order:1;position:relative;inset:auto;z-index:0;
+    margin:clamp(4px,1.6vw,12px) 0 0;display:flex;justify-content:center;overflow:visible}
+  .scene.s-abacus .art{position:relative;right:auto;bottom:auto;
+    width:min(100%,430px);margin:0}
+  .scene.s-abacus .copy-body{order:2;margin-top:calc(var(--catch-over,42px) * -1)}
+  .scene.s-abacus .catch{margin-top:0}
+}
 
-footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;position:relative;z-index:2}
-.foot-in{max-width:var(--max);margin:0 auto;display:grid;gap:18px}
-.foot-in .fl{font-family:var(--latin);letter-spacing:.3em}
-.foot-in .fr{color:rgba(247,244,236,.6);letter-spacing:.1em}
+/* 03 動画制作：挿絵が横長（4:3）になったので、縦長前提の --overlap では
+      絵が本文の下へほぼ隠れてしまう。この項目だけ重なりを浅くして中央に置く。 */
+@media (max-width:899px){
+  .scene.s-video{--overlap:clamp(18px,4.5vw,44px)}
+  .scene.s-video .stage{justify-content:center}
+  .scene.s-video .art{width:min(100%,420px);margin:0}
+}
 
-/* ---------- G10 紙飛行機：スッと横切って、画面を拭う ---------- */
-#fly{position:fixed;inset:0;width:100%;height:100%;z-index:130;pointer-events:none;display:none;overflow:visible}
-#fly.on{display:block}
-#fly .edge{fill:none;stroke-linecap:round;stroke-linejoin:round}
-#fly .plane path{stroke:#4B3F78;stroke-width:1.1;stroke-linejoin:round}
-#fly .plane{filter:drop-shadow(0 7px 5px rgba(30,42,68,.16))}
-.thread .t-tip{fill:none;stroke-width:1.7;stroke-linecap:round}
+@media (max-width:899px){
+  .scene{min-height:0;margin:clamp(24px,6vw,44px) 0;
+         --overlap:clamp(170px,62vw,300px)}
+  .copy{order:1;position:relative;z-index:2}
+  .stage{position:relative;inset:auto;order:2;z-index:0;overflow:visible;
+         display:flex;justify-content:flex-end;
+         margin-top:calc(var(--overlap) * -1)}
+  .art{position:relative;right:auto;bottom:auto;
+       width:min(80%,330px);margin:0 -4% 0 0}
+  .scene.alt .stage{justify-content:flex-start}
+  .scene.alt .art{margin:0 0 0 -4%}
+  .spark.s2{display:none}
+}
 </style>
+<link rel="stylesheet" href="assets/cz-tech.css">
 </head>
 <body>
 
-
-<div class="stg">STAGING ・ 確認用（検索に出ない設定）</div>
+<noscript><style>.cz-logo .cz-s{stroke-dashoffset:0}.cz-logo .cz-word{opacity:1}</style></noscript>
 
 <div id="intro">
   <svg class="cz-logo" id="czlogo-a" viewBox="358 301 559 648" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="合同会社COTOZUTE">
@@ -371,53 +538,29 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
 </div>
 
 <header id="hd">
-  <a class="brand" href="#/" data-route="/">
-    <svg viewBox="358 301 559 648" aria-hidden="true"><image x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/><image x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/></svg>
-    <b>COTOZUTE</b>
+  <a class="brand" href="#top">
+    <svg class="brandmark" viewBox="358 301 559 648" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <image x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/>
+      <image x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/>
+    </svg>
+    <span>合同会社COTOZUTE</span>
   </a>
-  <div class="hd-r">
-    <button class="snd" id="snd" type="button" aria-pressed="false">音 なし</button>
-    <button class="menu-btn" id="mb" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="nv"><span></span><span></span><span></span></button>
-  </div>
+  <button class="menu-btn" id="mb" aria-label="メニューを開く" aria-expanded="false" aria-controls="nv">
+    <span></span><span></span><span></span>
+  </button>
   <nav id="nv">
     <ul>
-      <li><a href="#/" data-route="/">TOP</a></li>
-      <li><a href="#/service" data-route="/service">SERVICE</a></li>
-      <li><a href="#/about" data-route="/about">ABOUT</a></li>
-      <li><a href="#/contact" data-route="/contact">CONTACT</a></li>
+      <li><a href="#top">TOP</a></li>
+      <li><a href="#message">MESSAGE</a></li>
+      <li><a href="#service">SERVICE</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#contact">CONTACT</a></li>
     </ul>
   </nav>
 </header>
 
-<div class="nav-shade" id="navShade" aria-hidden="true"></div>
-<svg id="fly" aria-hidden="true" focusable="false">
-  <defs>
-    <linearGradient id="flyPaper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FCFAF6"/><stop offset="1" stop-color="#F3EEF6"/></linearGradient>
-    <linearGradient id="fg0" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5FAE"/><stop offset=".4" stop-color="#A88FD6"/><stop offset=".72" stop-color="#E6A9CB"/><stop offset="1" stop-color="#8D6AB1"/></linearGradient>
-    <linearGradient id="fg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E6A9CB"/><stop offset=".5" stop-color="#C3A6E6"/><stop offset="1" stop-color="#F0C7DC"/></linearGradient>
-    <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6F7FC4"/><stop offset=".55" stop-color="#9B87D4"/><stop offset="1" stop-color="#B7C3EC"/></linearGradient>
-  </defs>
-  <path id="flyShade" fill="rgba(30,42,68,.07)"/>
-  <path id="flyCover" fill="url(#flyPaper)"/>
-  <path class="edge" id="flyL0" stroke="url(#fg0)" stroke-width="2"/>
-  <path class="edge" id="flyL1" stroke="url(#fg1)" stroke-width="1.3" opacity=".8"/>
-  <path class="edge" id="flyL2" stroke="url(#fg2)" stroke-width="1.1" opacity=".7"/>
-  <path class="edge" id="flyT0" stroke="url(#fg0)" stroke-width="1.4" opacity=".55"/>
-  <path class="edge" id="flyT1" stroke="url(#fg2)" stroke-width="1" opacity=".45"/>
-  <g id="plane"><g class="plane" id="planeS">
-    <path d="M0 0 L-70 6 L-44 1 Z" fill="#E9E2F4"/>
-    <path d="M0 0 L-44 1 L-54 15 Z" fill="#CDBDEA"/>
-    <path d="M0 0 L-66 -20 L-44 1 Z" fill="#FCFAF6"/>
-  </g></g>
-</svg>
-
-<main id="pages">
-
-<!-- ======================= TOP ======================= -->
-<div class="page" data-page="/" data-title="TOP">
-  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
-
-<section class="hero" id="hero">
+<!-- ==================== HERO ==================== -->
+<section class="hero" id="top">
   <!-- ★トップの挿絵（本を抱いて眠る赤ちゃん）は 2026-09-10 に外した。「また戻すかもしれない」との事。
        戻すときはこの4点セットを復活させる：
          (1) 下の <figure> をコメント解除
@@ -452,16 +595,19 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
   <div class="scrollcue"><span>SCROLL</span><i></i></div>
 </section>
 
-  <section id="message">
-    <div class="wrap">
-      <div class="msg">
-        <div>
-          <p class="eyebrow" data-knot>MESSAGE</p>
-          <h2>結局「ひと」</h2>
-          <p class="muted">「時代が大きく変わる」と、ITに騒ぎ、AIに騒ぎ、ひととおり大騒ぎしても、結局最後は人でした。売るのも買うのも人だから「人となりが見える人」を大切に、COTOZUTEはあなたと良い仕事をします。</p>
-        </div>
-        <div data-knot>
-          <div class="kanji">
+<!-- ==================== MESSAGE ==================== -->
+<section id="message">
+  <div class="wrap">
+    <div class="msg-grid">
+      <div class="reveal">
+        <p class="eyebrow">MESSAGE</p>
+        <h2>結局「ひと」</h2>
+        <p class="muted">
+          「時代が大きく変わる」と、ITに騒ぎ、AIに騒ぎ、ひととおり大騒ぎしても、結局最後は人でした。売るのも買うのも人だから「人となりが見える人」を大切に、COTOZUTEはあなたと良い仕事をします。
+        </p>
+      </div>
+      <div class="origin reveal" style="--d:.15s">
+        <div class="kanji">
   <svg class="cz-logo" id="czlogo-b" viewBox="358 301 559 648" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="合同会社COTOZUTE">
     <defs>
       <clipPath id="czc1-b"><path d="M 636.9000000000001,320.4 C 631.0,322.19999999999993 629.0,324.5999999999999 629.0,329.9 C 629.0,333.29999999999995 629.8000000000001,335.5999999999999 632.0,338.9 C 636.1,344.9 636.2,348.0999999999999 632.9000000000001,363.79999999999995 C 627.7,389.29999999999995 602.5,469.79999999999995 589.2,503.5 C 579.1,529.0 574.4,539.9 563.8000000000001,562.0 C 553.9,582.8 549.4,588.5999999999999 538.7,594.0 C 531.0,597.9 529.3000000000001,602.5999999999999 532.8000000000001,609.8 C 539.7,623.9 545.3000000000001,628.9 554.0,629.0 C 557.0,629.0 560.1,628.5999999999999 560.7,628.1999999999999 C 561.4,627.8 563.9,622.9 566.3000000000001,617.5 C 570.1,608.8 571.1,607.1999999999999 574.6,605.3 C 584.0,599.9 593.5,604.5 598.6,616.8 C 602.4,625.8 602.6,640.6999999999999 599.2,651.6 C 596.0,661.9 596.3000000000001,664.9 600.8000000000001,670.4 C 607.1,678.1999999999999 612.0,681.0 619.0,681.0 C 627.0,681.0 627.6,679.9 628.4000000000001,664.5 C 629.3000000000001,649.6 632.0,633.5 636.6,616.0 C 640.8000000000001,600.0999999999999 643.2,593.6999999999999 649.4000000000001,580.9 C 652.4000000000001,574.8 654.0,570.0999999999999 654.0,567.5999999999999 C 654.0,563.9 654.0,563.9 650.3000000000001,564.1999999999999 C 647.2,564.5 646.0,565.3 642.7,569.5 C 640.6,572.1999999999999 638.0,576.0999999999999 636.9000000000001,578.0 C 635.8000000000001,579.9 634.2,582.5999999999999 633.4000000000001,584.0 C 632.7,585.4 628.8000000000001,592.6999999999999 624.8000000000001,600.4 L 617.7,614.3 L 615.6,610.1999999999999 C 610.4,600.0 599.4,590.5 590.0,588.0999999999999 C 587.5,587.4 584.3000000000001,586.4 582.8000000000001,585.9 L 580.2,584.8 L 584.2,575.1999999999999 C 586.4,569.9 590.2,561.3 592.7,556.0999999999999 C 599.1,542.5 610.9,515.3 612.7,510.19999999999993 C 615.0,503.4 628.4000000000001,471.4 637.7,450.5 C 658.4000000000001,404.19999999999993 674.8000000000001,358.29999999999995 675.7,344.5 L 676.2,336.5 L 672.3000000000001,331.0 C 666.7,323.0999999999999 658.5,319.0 648.0,319.0999999999999 C 643.9000000000001,319.19999999999993 638.9000000000001,319.69999999999993 636.9000000000001,320.4"/></clipPath>
@@ -504,479 +650,218 @@ footer{background:var(--ink);color:var(--paper);padding:44px var(--gut) 50px;pos
     <image mask="url(#czm-b)" x="375" y="315" width="528" height="535" href="assets/cz-art.webp"/>
     <image class="cz-word" x="372" y="894" width="509" height="41" href="assets/cz-word.webp"/>
   </svg>
-</div>
-          <p class="muted">COTOZUTEのロゴは「言伝（ことづて）」を支える為に「心」を置いた一文字の漢字。ただ伝えるだけのコンテンツではなく、心の乗せ方を常に模索します</p>
         </div>
+        <p class="muted">
+          COTOZUTEのロゴは「言伝（ことづて）」を支える為に「心」を置いた一文字の漢字。ただ伝えるだけのコンテンツではなく、心の乗せ方を常に模索します
+        </p>
       </div>
-      <p class="page-end"><a class="next" href="#/service" data-route="/service" data-end>SERVICE</a></p>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-<!-- ======================= SERVICE ======================= -->
-<div class="page" data-page="/service" data-title="SERVICE" hidden>
-  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
-  <section id="service">
-    <div class="wrap page-top">
-      <p class="eyebrow" data-knot>SERVICE</p>
+<!-- ==================== SERVICE ==================== -->
+<section id="service">
+  <div class="wrap">
+    <div class="reveal">
+      <p class="eyebrow">SERVICE</p>
       <h2>事業内容</h2>
-      <p class="muted" style="max-width:38em">あなたがお仕事で困っている事をお伺いし<br>マーケティングとAIを駆使して解決をお手伝いする会社です。</p>
-
-      <div class="scenes">
-        <article class="scene abacus" data-knot>
-          <div class="copy copy-head">
-            <div class="num">01</div>
-            <h3>AI活用の相談<small>AI SUPPORT</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-abacus.webp" data-anim="assets/svc-abacus-anim.webp" data-anim-sm="assets/svc-abacus-anim-sm.webp" style="--ar:900/676" data-ox=".3" data-oy=".72"><div class="box"><canvas></canvas><img class="anim" alt="AI活用の相談"></div></div><div class="chant" aria-hidden="true"><span>願いましては<span class="tcy">AI</span>なり</span><span>引いては作業なり</span><span>加えて仕事なり</span></div></div></div>
-          <div class="copy copy-body">
-            <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
-            <p class="muted">「仕事が大変で時間が足りない」と感じるなら、AIを上手に活用し沢山の時間を手に入れましょう。</p>
-          </div>
-        </article>
-        <article class="scene alt" data-knot>
-          <div class="copy copy-head">
-            <div class="num">02</div>
-            <h3>業務自動化<small>AUTOMATION</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-auto.webp" data-anim="assets/svc-auto-anim.webp" data-anim-sm="assets/svc-auto-anim-sm.webp" style="--ar:560/364" data-ox=".62" data-oy=".45"><div class="box"><canvas></canvas><img class="anim" alt="業務自動化"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="catch">まごころを自動化しよう。</p>
-            <p class="muted">仕事は面倒なことほど、手抜きが出来ない大切な事です。ですが、まごころを大事にしてる人が、真剣に取り組み過ぎて作業でクタクタになると、ちゃんと真心が届かなくなります。真心を自動化しよう。</p>
-          </div>
-        </article>
-        <article class="scene" data-knot>
-          <div class="copy copy-head">
-            <div class="num">03</div>
-            <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-video.webp" data-anim="assets/svc-video-anim.webp" data-anim-sm="assets/svc-video-anim-sm.webp" style="--ar:620/465" data-ox=".55" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="動画制作"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="catch">動画で伝えられる情報は文字の5000倍</p>
-            <p class="muted">動画は「人間と一緒」企画、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。</p>
-          </div>
-        </article>
-        <article class="scene alt small" data-knot>
-          <div class="copy copy-head">
-            <div class="num">04</div>
-            <h3>SNSの助言<small>SNS ADVICE</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-sns.webp" data-anim="assets/card-sns-anim.webp" style="--ar:496/372" data-ox=".35" data-oy=".5"><div class="box"><canvas></canvas><img class="anim" alt="SNSの助言"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="muted">新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。COTOZUTEは「腑に落ちる助言」をします。</p>
-          </div>
-        </article>
-        <article class="scene small" data-knot>
-          <div class="copy copy-head">
-            <div class="num">05</div>
-            <h3>コンテンツ制作環境構築<small>CREATIVE SETUP</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-creative.webp" data-anim="assets/card-creative-anim.webp" style="--ar:496/372" data-ox=".45" data-oy=".7"><div class="box"><canvas></canvas><img class="anim" alt="コンテンツ制作環境構築"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="muted">つくる。つくってもらう。もっと大切なのは「つくり続ける」<br><br>仕事が苦じゃなく、楽しくなる環境を共に目指します。</p>
-          </div>
-        </article>
-        <article class="scene alt small" data-knot>
-          <div class="copy copy-head">
-            <div class="num">06</div>
-            <h3>LINEマーケティング<small>LINE MARKETING</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-line.webp" data-anim="assets/card-line-anim.webp" style="--ar:496/372" data-ox=".5" data-oy=".45"><div class="box"><canvas></canvas><img class="anim" alt="LINEマーケティング"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="muted">LTV（顧客生涯価値）を上げる。誠実であること以上に大切なのは「誠実な人だと感じさせる」ことです。誠実さがきちんと伝わり続ける仕組みを作りましょう。</p>
-          </div>
-        </article>
-        <article class="scene small" data-knot>
-          <div class="copy copy-head">
-            <div class="num">07</div>
-            <h3>音声・音楽・演出<small>SOUND &amp; DIRECTION</small></h3>
-          </div>
-          <div class="stage"><div class="art"><div class="nj" data-static="assets/first-sound.webp" data-anim="assets/card-sound-anim.webp" style="--ar:496/372" data-ox=".55" data-oy=".55"><div class="box"><canvas></canvas><img class="anim" alt="音声・音楽・演出"></div></div></div></div>
-          <div class="copy copy-body">
-            <p class="muted">「映像の７割は音で決まる」かつて無声映画は、上映する横で人間がピアノを弾いていました。音楽にこだわらない人が、人の心を動かすのは難しい</p>
-          </div>
-        </article>
-      </div>
-      <p class="page-end"><a class="next" href="#/about" data-route="/about" data-end>ABOUT</a></p>
+      <p class="muted" style="max-width:38em">
+        あなたがお仕事で困っている事をお伺いし
+        マーケティングとAIを駆使して解決をお手伝いする会社です。
+      </p>
     </div>
-  </section>
-</div>
 
-<!-- ======================= ABOUT ======================= -->
-<div class="page" data-page="/about" data-title="ABOUT" hidden>
-  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
-  <section id="about">
-    <div class="wrap page-top">
-      <div class="about">
-        <div>
-          <p class="eyebrow" data-knot>ABOUT</p>
-          <h2>会社概要</h2>
-          <p class="muted">COTOZUTEは言葉の力を信じ、AIの時代にどんな言葉で物語を残すかを模索します。</p>
+    <article class="scene wide s-abacus" style="--ax:-9%;--aw:86%">
+      <div class="copy copy-head">
+        <div class="num">01</div>
+        <h3>AI活用の相談<small>AI SUPPORT</small></h3>
+      </div>
+      <div class="stage">
+        <div class="art">
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-abacus-anim.webp">
+            <img class="main" src="assets/svc-abacus-anim-sm.webp" alt="AI活用の相談"
+                 width="900" height="676" loading="lazy" decoding="async">
+          </picture>
+          <div class="chant" aria-hidden="true">
+            <span>願いましては<span class="tcy">AI</span>なり</span>
+            <span>引いては作業なり</span>
+            <span>加えて仕事なり</span>
+          </div>
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
         </div>
-        <div data-knot>
-          <table class="info">
-            <tr><th>商号</th><td>合同会社COTOZUTE</td></tr>
-            <tr><th>本店所在地</th><td>〒103-0026<br>東京都中央区日本橋兜町17-2<br>兜町第6ビル4F</td></tr>
-            <tr><th>設立年月日</th><td>2026年8月7日</td></tr>
-            <tr><th>代表社員</th><td>向後 晋之介</td></tr>
-            <tr><th>資本金</th><td>100,000円</td></tr>
-            <tr><th>法人番号</th><td>3010003052316</td></tr>
-            <tr><th>事業目的</th><td>SNSマーケティングの企画、運用及びコンサルティング業務／AI（人工知能）を活用したシステム及びコンテンツの開発並びに提供業務／Webサイト及びSNSコンテンツの制作並びに運用代行業務／オンライン講座及びデジタルコンテンツの企画、制作並びに販売業務／D2C物販／各種物品の企画、製造及び販売業務／前各号に附帯又は関連する一切の事業</td></tr>
-            <tr><th>連絡先</th><td>kogo.cotozute@gmail.com</td></tr>
-          </table>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy copy-body">
+        <p class="catch">AIはあなたから<br>「作業を奪います」<br>「仕事は奪いません」</p>
+        <p class="muted">
+          「仕事が大変で時間が足りない」と感じるなら、AIを上手に活用し沢山の時間を手に入れましょう。
+        </p>
+      </div>
+    </article>
+
+    <article class="scene alt wide" style="--ax:-10%;--aw:88%">
+      <div class="stage">
+        <div class="art shishi">
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-auto-anim.webp">
+            <img class="main" src="assets/svc-auto-anim-sm.webp" alt="業務自動化"
+                 width="560" height="364" loading="lazy" decoding="async">
+          </picture>
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
+        </div>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy">
+        <div class="num">02</div>
+        <h3>業務自動化<small>AUTOMATION</small></h3>
+        <p class="catch">まごころを自動化しよう。</p>
+        <p class="muted">
+          仕事は面倒なことほど、手抜きが出来ない大切な事です。ですが、まごころを大事にしてる人が、真剣に取り組み過ぎて作業でクタクタになると、ちゃんと真心が届かなくなります。真心を自動化しよう。
+        </p>
+      </div>
+    </article>
+
+    <article class="scene s-video" style="--ax:-8%;--aw:82%;--mh:clamp(560px,140vw,660px)">
+      <div class="stage">
+        <div class="art">
+          <picture>
+            <source media="(min-width:900px)" srcset="assets/svc-video-anim.webp">
+            <img class="main" src="assets/svc-video-anim-sm.webp" alt="動画制作"
+                 width="620" height="465" loading="lazy" decoding="async">
+          </picture>
+          <!-- 追加パーツはここに: <img class="part" src="assets/xxx.webp" style="--px:70%;--py:22%;--pw:16%;--pd:.8s" alt=""> -->
+        </div>
+        <span class="spark s1"></span>
+        <span class="spark s2"></span>
+        <span class="spark s3"></span>
+      </div>
+      <div class="copy">
+        <div class="num">03</div>
+        <h3>動画制作<small>VIDEO PRODUCTION</small></h3>
+        <p class="catch">動画で伝えられる情報は文字の5000倍</p>
+        <p class="muted">
+          動画は「人間と一緒」企画、台本、編集。１本の筋が通っていないと「ブレてる」と無意識に感じられてしまい、魅力のない動画だと思われる。映像は空間と時間を操る芸術です。
+        </p>
+      </div>
+    </article>
+
+    <div class="cards">
+      <div class="card reveal">
+        <div class="strip"><img src="assets/card-sns-anim.webp" alt="SNSの助言" width="496" height="372" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>SNSの助言</h4>
+          <div class="en">SNS ADVICE</div>
+          <p>新しくSNSを立ち上げる人、今のSNSをなんとかしたい人。
+             COTOZUTEは「腑に落ちる助言」をします。</p>
         </div>
       </div>
-      <p class="page-end"><a class="next" href="#/contact" data-route="/contact" data-end>CONTACT</a></p>
-    </div>
-  </section>
-</div>
-
-<!-- ======================= CONTACT ======================= -->
-<div class="page" data-page="/contact" data-title="CONTACT" hidden>
-  <svg class="thread" aria-hidden="true"><defs></defs><path class="t-glow"/><path class="t-main"/></svg>
-  <section id="contact">
-    <div class="wrap page-top">
-      <div class="contact">
-        <div class="seal" data-knot><img src="assets/contact-post-sm.webp" srcset="assets/contact-post-sm.webp 480w, assets/contact-post.webp 840w" sizes="(min-width:900px) 400px, 82vw" alt="" width="840" height="809" decoding="async"></div>
-        <div>
-          <p class="eyebrow" data-knot>CONTACT</p>
-          <h2>お問い合わせ</h2>
-          <p class="muted">ご相談・お見積り・取材のご依頼は、メールにて承っております。</p>
-          <p style="margin-top:30px"><a class="mail next-mail" href="mailto:kogo.cotozute@gmail.com" data-end>kogo.cotozute@gmail.com</a></p>
+      <div class="card reveal" style="--d:.08s">
+        <div class="strip"><img src="assets/card-creative-anim.webp" alt="コンテンツ制作環境構築" width="496" height="372" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>コンテンツ制作環境構築</h4>
+          <div class="en">CREATIVE SETUP</div>
+          <p>つくる。つくってもらう。もっと大切なのは「つくり続ける」<br><br>
+             仕事が苦じゃなく、楽しくなる環境を共に目指します。</p>
+        </div>
+      </div>
+      <div class="card reveal" style="--d:.16s">
+        <div class="strip"><img src="assets/card-line-anim.webp" alt="LINEマーケティング" width="496" height="372" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>LINEマーケティング</h4>
+          <div class="en">LINE MARKETING</div>
+          <p>LTV（顧客生涯価値）を上げる。誠実であること以上に大切なのは「誠実な人だと感じさせる」ことです。
+             誠実さがきちんと伝わり続ける仕組みを作りましょう。</p>
+        </div>
+      </div>
+      <div class="card reveal" style="--d:.24s">
+        <div class="strip"><img src="assets/card-sound-anim.webp" alt="音声・音楽・演出" width="496" height="372" loading="lazy" decoding="async"></div>
+        <div class="body">
+          <h4>音声・音楽・演出</h4>
+          <div class="en">SOUND &amp; DIRECTION</div>
+          <p>「映像の７割は音で決まる」かつて無声映画は、上映する横で人間がピアノを弾いていました。
+             音楽にこだわらない人が、人の心を動かすのは難しい</p>
         </div>
       </div>
     </div>
-  </section>
-</div>
+  </div>
+</section>
 
-</main>
+<!-- ==================== ABOUT ==================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="eyebrow">ABOUT</p>
+        <h2>会社概要</h2>
+        <p class="muted">
+          COTOZUTEは言葉の力を信じ、AIの時代にどんな言葉で物語を残すかを模索します。
+        </p>
+      </div>
+      <div class="reveal" style="--d:.15s">
+        <table class="info">
+          <tr><th>商号</th><td>合同会社COTOZUTE</td></tr>
+          <tr><th>本店所在地</th><td>〒103-0026<br>東京都中央区日本橋兜町17-2<br>兜町第6ビル4F</td></tr>
+          <tr><th>設立年月日</th><td>2026年8月7日</td></tr>
+          <tr><th>代表社員</th><td>向後 晋之介</td></tr>
+          <tr><th>資本金</th><td>100,000円</td></tr>
+          <tr><th>法人番号</th><td>3010003052316</td></tr>
+          <tr><th>事業目的</th><td>SNSマーケティングの企画、運用及びコンサルティング業務／AI（人工知能）を活用したシステム及びコンテンツの開発並びに提供業務／Webサイト及びSNSコンテンツの制作並びに運用代行業務／オンライン講座及びデジタルコンテンツの企画、制作並びに販売業務／D2C物販／各種物品の企画、製造及び販売業務／前各号に附帯又は関連する一切の事業</td></tr>
+          <tr><th>連絡先</th><td>kogo.cotozute@gmail.com</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-seal reveal">
+      <img src="assets/contact-post-sm.webp"
+           srcset="assets/contact-post-sm.webp 480w, assets/contact-post.webp 840w"
+           sizes="(min-width:900px) 400px, 82vw" alt="" width="840" height="809"
+           loading="lazy" decoding="async">
+    </div>
+    <div class="reveal" style="--d:.1s">
+      <p class="eyebrow">CONTACT</p>
+      <h2>お問い合わせ</h2>
+      <p class="muted">
+        ご相談・お見積り・取材のご依頼は、メールにて承っております。
+      </p>
+      <p style="margin-top:30px">
+        <a class="mail" href="mailto:kogo.cotozute@gmail.com">kogo.cotozute@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="foot-in">
-    <div class="fl">COTOZUTE</div>
-    <div class="fr">合同会社COTOZUTE</div>
+    <div>
+      <div class="fl">COTOZUTE</div>
+      <div class="fr" style="margin-top:6px">合同会社COTOZUTE</div>
+    </div>
+    <ul class="foot-nav">
+      <li><a href="#message">MESSAGE</a></li>
+      <li><a href="#service">SERVICE</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#contact">CONTACT</a></li>
+    </ul>
     <div class="fr">&copy; COTOZUTE LLC.</div>
   </div>
 </footer>
-<script src="assets/cz-tech.js" defer></script>
+
 <script>
 (function(){
-'use strict';
-var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-/* ================= 音（WebAudio・既定は無音） ================= */
-var AC=null, soundOn=false;
-function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } if(AC&&AC.state==='suspended') AC.resume(); return AC; }
-var sndBtn=document.getElementById('snd');
-sndBtn.addEventListener('click',function(){ soundOn=!soundOn; if(soundOn) ac(); sndBtn.setAttribute('aria-pressed',soundOn); sndBtn.textContent=soundOn?'音 あり':'音 なし'; });
-function noiseBuf(c,dur,pow){ var n=c.createBuffer(1,Math.max(1,c.sampleRate*dur|0),c.sampleRate), d=n.getChannelData(0); for(var i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/d.length,pow); return n; }
-function knock(freq,dur,vol,when){ /* 竹・木を打つ音 */
-  var c=ac(); if(!c||!soundOn) return; var t=c.currentTime+(when||0);
-  var src=c.createBufferSource(); src.buffer=noiseBuf(c,dur,6);
-  var bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=freq; bp.Q.value=9;
-  var o=c.createOscillator(); o.type='sine'; o.frequency.setValueAtTime(freq*.5,t); o.frequency.exponentialRampToValueAtTime(freq*.42,t+dur);
-  var g=c.createGain(); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  var g2=c.createGain(); g2.gain.setValueAtTime(vol*.6,t); g2.gain.exponentialRampToValueAtTime(.0001,t+dur*.8);
-  src.connect(bp).connect(g).connect(c.destination); o.connect(g2).connect(c.destination);
-  src.start(t); o.start(t); o.stop(t+dur);
-}
-function rustle(dur){ /* 紙がめくれる音 */
-  var c=ac(); if(!c||!soundOn) return; var t=c.currentTime;
-  var src=c.createBufferSource(); src.buffer=noiseBuf(c,dur,1.2);
-  var bp=c.createBiquadFilter(); bp.type='bandpass'; bp.Q.value=.8; bp.frequency.setValueAtTime(2600,t); bp.frequency.exponentialRampToValueAtTime(700,t+dur);
-  var g=c.createGain(); g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.22,t+dur*.35); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
-  src.connect(bp).connect(g).connect(c.destination); src.start(t);
-}
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ================= G10 紙飛行機：スッと横切って画面を拭う ================= */
-var pages={}; document.querySelectorAll('.page').forEach(function(p){pages[p.dataset.page]=p;});
-var cur=null, busy=false;
-var mb=document.getElementById('mb'), nv=document.getElementById('nv');
-function routeOf(){ var h=location.hash.replace(/^#/,''); return pages[h]?h:'/'; }
-function markNav(r){ document.querySelectorAll('nav a').forEach(function(a){ if(a.dataset.route===r) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); }); }
-var shade=document.getElementById('navShade');
-function closeNav(){ nv.classList.remove('open'); mb.classList.remove('open'); mb.setAttribute('aria-expanded','false'); shade.classList.remove('on'); }
-mb.addEventListener('click',function(){ var o=nv.classList.toggle('open'); mb.classList.toggle('open',o); mb.setAttribute('aria-expanded',o); shade.classList.toggle('on',o); });
-shade.addEventListener('click',closeNav);
-addEventListener('keydown',function(e){ if(e.key==='Escape') closeNav(); });
-if('scrollRestoration' in history) history.scrollRestoration='manual';
-var pending=null; /* 遷移中に「戻る／進む」が来たら、終わってから追いかける */
-function settle(){ busy=false; var r=pending; pending=null; if(r!==null && pages[r]!==cur) show(r,true); }
-
-function ease3(k){ return k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2; }
-/* 紙飛行機の先端が「紙の幕」を引いて画面を横切る。幕が画面を覆いきった瞬間にページを差し替え、
-   少し遅れて幕の後ろ端が追いかけて抜けていき、新しいページが現れる。 */
-var fly=document.getElementById('fly'), flyCover=document.getElementById('flyCover'), flyShade=document.getElementById('flyShade'),
-    flyL=[0,1,2].map(function(i){ return document.getElementById('flyL'+i); }),
-    flyT=[0,1].map(function(i){ return document.getElementById('flyT'+i); }),
-    plane=document.getElementById('plane'), planeS=document.getElementById('planeS');
-var K=.42; /* 幕の先端（くの字）の開き */
-function edgeX(xp,yp,y,R){ var d=y-yp; return xp-K*Math.sqrt(d*d+R*R)+K*R; }
-function edgePts(xp,yp,W,H,R,off){ var pts=[], n=Math.max(14,Math.ceil(H/28));
-  for(var i=0;i<=n;i++){ var y=-30+(H+60)*i/n; pts.push([edgeX(xp,yp,y,R)-off, y]); } return pts; }
-function ptsD(p){ var d='M'+p[0][0].toFixed(1)+' '+p[0][1].toFixed(1); for(var i=1;i<p.length;i++) d+='L'+p[i][0].toFixed(1)+' '+p[i][1].toFixed(1); return d; }
-function flyPath(u,W,H){ /* 飛行経路：左下から右上へ、ふわっと弧を描く */
-  var x=-.12*W+u*(1.24*W+K*H+80), y=H*(.68-.34*u)-Math.sin(u*Math.PI)*H*.07; return [x,y]; }
-function drawFly(tl,tt,W,H){
-  var R=Math.min(W,H)*.18;
-  var P=flyPath(tl,W,H), P2=flyPath(Math.min(1,tl+.01),W,H), Q=flyPath(tt,W,H);
-  var lead=edgePts(P[0],P[1],W,H,R,0), trail=tt>0?edgePts(Q[0],Q[1],W,H,R,0):lead.map(function(p){ return [-60-K*H,p[1]]; });
-  var cov='M'+trail[0][0].toFixed(1)+' '+trail[0][1].toFixed(1);
-  for(var i=0;i<lead.length;i++) cov+='L'+lead[i][0].toFixed(1)+' '+lead[i][1].toFixed(1);
-  for(i=trail.length-1;i>=0;i--) cov+='L'+trail[i][0].toFixed(1)+' '+trail[i][1].toFixed(1);
-  flyCover.setAttribute('d',cov+'Z');
-  flyShade.setAttribute('d',ptsD(lead.map(function(p){ return [p[0]+9,p[1]]; }))+'L'+(lead[lead.length-1][0]-40)+' '+(H+30)+'L'+(lead[0][0]-40)+' -30Z');
-  flyL.forEach(function(el,i){ el.setAttribute('d',ptsD(edgePts(P[0],P[1],W,H,R,[0,7,15][i]))); });
-  flyT.forEach(function(el,i){ el.setAttribute('d',tt>0?ptsD(edgePts(Q[0],Q[1],W,H,R,[0,6][i])):''); });
-  var ang=Math.atan2(P2[1]-P[1],P2[0]-P[0])*180/Math.PI, sc=Math.max(1.15,Math.min(1.6,W/600)),
-      bob=Math.sin(tl*Math.PI*3)*3; /* 風に乗ってわずかに揺れる */
-  plane.setAttribute('transform','translate('+(P[0]+16).toFixed(1)+' '+(P[1]+bob).toFixed(1)+') rotate('+(ang+Math.sin(tl*Math.PI*2)*4).toFixed(2)+') scale('+sc.toFixed(3)+')');
-  plane.style.display=tl>=1?'none':'';
-}
-function show(r, animate){
-  var next=pages[r]; if(!next||next===cur){ window.scrollTo(0,0); return; }
-  var old=cur; cur=next; markNav(r); document.title=next.dataset.title+'｜COTOZUTE（ステージング）';
-  if(!old||!animate||reduce){
-    Object.keys(pages).forEach(function(k){ pages[k].hidden=(pages[k]!==next); }); window.scrollTo(0,0); onPageShown(next); return;
-  }
-  busy=true;
-  var slow=/slow/.test(location.search)?5:1;
-  var T1=640*slow, T2=560*slow; /* 覆う → 抜ける */
-  fly.classList.add('on'); drawFly(0,0,innerWidth,innerHeight);
-  rustle(T1/1000);
-  var t0=performance.now(), swapped=false;
-  function swap(){ swapped=true; old.hidden=true; next.hidden=false; window.scrollTo(0,0); onPageShown(next); }
-  /* ★1コマが重くて段階を飛び越えても、必ず「差し替え」と「後片付け」を通す */
-  (function f(now){
-    now=now||performance.now(); var t=now-t0, W=innerWidth, H=innerHeight;
-    if(t<T1){ drawFly(ease3(t/T1)*.9+.1*(t/T1),0,W,H); requestAnimationFrame(f); return; }
-    if(!swapped) swap();
-    if(t<T1+T2){ var k=(t-T1)/T2; drawFly(1,k<1?(k*k*(3-2*k)):1,W,H); requestAnimationFrame(f); return; }
-    fly.classList.remove('on'); settle();
-  })();
-}
-document.addEventListener('click',function(e){
-  var a=e.target.closest('a[data-route]'); if(!a) return;
-  e.preventDefault(); closeNav();
-  var r=a.dataset.route;
-  if(busy){ if(pages[r]!==cur){ history.pushState(null,'','#'+r); pending=r; } return; }
-  if(pages[r]===cur){ window.scrollTo({top:0,behavior:'smooth'}); return; }
-  history.pushState(null,'','#'+r); show(r,true);
-});
-addEventListener('popstate',function(){ if(busy){ pending=routeOf(); return; } show(routeOf(),true); });
-
-/* ================= G3 綴じ糸（筆ロゴの紫系・3本） =================
-   ・端に着いた点では必ず縦向きに折り返す（＝画面の外へ膨らまず、端で「クッ」と折れない）
-   ・3本は折り返しの深さと曲がり具合を少しずつ変え、ほどけるように離れて、着地点で1本に結ばれる
-   ・スクロールに少し遅れて、やわらかく追いかける／先端はフェード
-   ・描き直しは発生しない（最初に引いた線を、見せる長さだけ変える）ので軽い */
-var tid=0, NS='http://www.w3.org/2000/svg', FADE_N=10;
-var STRANDS=[
-  {off:0,  k:.55, w:1.7, o:.72, per:1400, stops:[['0','#7A5FAE'],['.4','#A88FD6'],['.72','#E6A9CB'],['1','#8D6AB1']], glow:true},
-  {off:16, k:.48, w:1.1, o:.55, per:1100, stops:[['0','#E6A9CB'],['.5','#C3A6E6'],['1','#F0C7DC']]},
-  {off:30, k:.62, w:1.0, o:.5,  per:1700, stops:[['0','#6F7FC4'],['.55','#9B87D4'],['1','#B7C3EC']]}
-];
-function Strand(svg,cfg){
-  this.cfg=cfg; var id='tg'+(tid++), lg=document.createElementNS(NS,'linearGradient');
-  lg.setAttribute('id',id); lg.setAttribute('gradientUnits','userSpaceOnUse'); lg.setAttribute('x1','0'); lg.setAttribute('y1','0'); lg.setAttribute('x2','0'); lg.setAttribute('y2',String(cfg.per)); lg.setAttribute('spreadMethod','reflect');
-  cfg.stops.forEach(function(s){ var st=document.createElementNS(NS,'stop'); st.setAttribute('offset',s[0]); st.setAttribute('stop-color',s[1]); lg.appendChild(st); });
-  svg.querySelector('defs').appendChild(lg);
-  var mk=function(cls,w,o){ var p=document.createElementNS(NS,'path'); p.setAttribute('class',cls); p.setAttribute('stroke','url(#'+id+')'); p.style.strokeWidth=w; p.style.opacity=o; svg.appendChild(p); return p; };
-  this.glow=cfg.glow?mk('t-glow',6,.12):null;
-  this.main=mk('t-main',cfg.w,cfg.o);
-  this.tips=[]; for(var i=0;i<FADE_N;i++) this.tips.push(mk('t-tip',cfg.w,(cfg.o*(1-(i+1)/(FADE_N+1))).toFixed(3)));
-  this.len=0; this.samples=[]; this.shown=0; this.target=0;
-}
-Strand.prototype.build=function(d){
-  var all=[this.main].concat(this.tips); if(this.glow) all.push(this.glow);
-  all.forEach(function(p){ p.setAttribute('d',d); });
-  this.len=this.main.getTotalLength();
-  this.samples=[]; var step=Math.max(6,this.len/1600), maxY=0;
-  for(var s=0;s<=this.len;s+=step){ var q=this.main.getPointAtLength(s); maxY=Math.max(maxY,q.y); this.samples.push([s,maxY]); }
-  this.samples.push([this.len,maxY]);
-};
-Strand.prototype.measure=function(pen){ var drawn=0; for(var i=0;i<this.samples.length;i++){ if(this.samples[i][1]<=pen) drawn=this.samples[i][0]; else break; } this.target=drawn; };
-Strand.prototype.render=function(){
-  var L=this.len, s=this.shown, F=Math.min(170,s), body=Math.max(0,s-F), seg=F/FADE_N;
-  this.main.style.strokeDasharray=body+' '+(L+10); if(this.glow) this.glow.style.strokeDasharray=body+' '+(L+10);
-  for(var i=0;i<FADE_N;i++){ var t=this.tips[i]; t.style.strokeDasharray=(seg+.6).toFixed(2)+' '+(L+10); t.style.strokeDashoffset=(-(body+i*seg)).toFixed(2); }
-};
-Strand.prototype.step=function(){ var d=this.target-this.shown; if(Math.abs(d)<.5){ if(d!==0){ this.shown=this.target; this.render(); } return false; } this.shown+=d*(reduce?1:.09); this.render(); return true; };
-
-function Thread(page){
-  this.page=page; this.svg=page.querySelector('.thread');
-  this.svg.querySelectorAll('path').forEach(function(p){ p.remove(); });
-  this.end=page.querySelector('[data-end]'); var svg=this.svg;
-  this.strands=STRANDS.map(function(c){ return new Strand(svg,c); });
-}
-Thread.prototype.build=function(){
-  var p=this.page, pr=p.getBoundingClientRect(), W=pr.width, H=p.scrollHeight;
-  if(!W||!H) return;
-  this.svg.setAttribute('width',W); this.svg.setAttribute('height',H); this.svg.setAttribute('viewBox','0 0 '+W+' '+H);
-  var mL=Math.max(10,Math.min(W*.05,64)), mR=W-mL, minDy=Math.max(260,Math.min(W*.85,620));
-  var hero=p.querySelector('.hero'), y0=hero?hero.offsetHeight-30:60;
-  var pts=[[mR,y0]];
-  p.querySelectorAll('[data-knot]').forEach(function(k){
-    var r=k.getBoundingClientRect(), y=r.top-pr.top+10, last=pts[pts.length-1];
-    if(y-last[1]<minDy) return;               /* 近すぎる点では振り返さない＝急角度を作らない */
-    pts.push([last[0]===mR?mL:mR, y]);
-  });
-  var ex=null;
-  if(this.end){
-    var er=this.end.getBoundingClientRect(); ex=[er.left-pr.left+Math.min(36,er.width*.25), er.top-pr.top-2];
-    while(pts.length>1 && ex[1]-pts[pts.length-1][1]<minDy*.55) pts.pop();
-    pts.push(ex);
-  }
-  var n=pts.length, scale=Math.min(1,W/700)*.6+.4;
-  this.strands.forEach(function(st){
-    var c=st.cfg, q=pts.map(function(pt,i){
-      if(i===0||i===n-1) return pt;                       /* 出発点と着地点は3本とも同じ＝結ばれる */
-      var inward=pt[0]<W/2?1:-1; return [pt[0]+inward*c.off*scale, pt[1]];
-    });
-    var d='M'+q[0][0].toFixed(1)+' '+q[0][1].toFixed(1);
-    for(var i=0;i<q.length-1;i++){ var a=q[i], b=q[i+1], dy=b[1]-a[1];
-      d+=' C'+a[0].toFixed(1)+' '+(a[1]+dy*c.k).toFixed(1)+' '+b[0].toFixed(1)+' '+(b[1]-dy*c.k).toFixed(1)+' '+b[0].toFixed(1)+' '+b[1].toFixed(1); }
-    st.build(d);
-  });
-  this.measure(); this.strands.forEach(function(st){ st.shown=Math.min(st.shown,st.target); st.render(); }); this.tie();
-};
-Thread.prototype.measure=function(){
-  var pr=this.page.getBoundingClientRect(), pen=(-pr.top)+innerHeight*.78;
-  this.strands.forEach(function(st){ if(st.len) st.measure(pen); });
-};
-Thread.prototype.tie=function(){ var m=this.strands[0]; if(this.end) this.end.classList.toggle('tied', m.len>0 && m.shown>=m.len-8); };
-Thread.prototype.step=function(){ var moved=false; this.strands.forEach(function(st){ if(st.step()) moved=true; }); if(moved) this.tie(); };
-Thread.prototype.reset=function(){ this.strands.forEach(function(st){ st.shown=0; }); };
-var threads={}; Object.keys(pages).forEach(function(k){ threads[k]=new Thread(pages[k]); });
-addEventListener('scroll',function(){ if(cur) threads[cur.dataset.page].measure(); },{passive:true});
-(function loop(){ var th=cur&&threads[cur.dataset.page]; if(th) th.step(); requestAnimationFrame(loop); })();
-var rT; addEventListener('resize',function(){ clearTimeout(rT); rT=setTimeout(function(){ if(cur) threads[cur.dataset.page].build(); },150); });
-function onPageShown(p){
-  var th=threads[p.dataset.page]; th.reset();
-  requestAnimationFrame(function(){ th.build(); observeNj(p); });
-  setTimeout(function(){ th.build(); },900);
-  setTimeout(function(){ th.build(); },2500);
-}
-
-/* ================= G2 和紙ににじむ絵（WebGL） ================= */
-var VS='attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
-/* 動く絵（アニメWebP）の上に「和紙のおおい」を描き、そのおおいが墨のにじみで退いていく。
-   ＝絵は最初から動いたまま現れる。おおいの形は1コマ目の輪郭（少し太らせる）で、背景の紙と同じ色。 */
-var FS=[
-'precision highp float;varying vec2 v;uniform sampler2D t;uniform float pr;uniform vec2 o;uniform float asp;uniform float sd;uniform vec3 paper;',
-'float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
-'float n(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}',
-'float fb(vec2 p){float s=0.,a=.5;for(int i=0;i<5;i++){s+=a*n(p);p*=2.03;a*=.5;}return s;}',
-'float sh(vec2 uv){float a=texture2D(t,uv).a;',
-' for(int i=0;i<12;i++){ float an=float(i)*.5236; vec2 d=vec2(cos(an),sin(an));',
-'  a=max(a,texture2D(t,uv+d*.022).a); a=max(a,texture2D(t,uv+d*.045).a); }',
-' return smoothstep(.0,.08,a);}',
-'void main(){',
-' vec2 uv=vec2(v.x,1.-v.y);',
-' vec2 q=vec2(uv.x*asp,uv.y);',
-' float big=fb(q*2.2+sd), fine=fb(q*14.+sd*3.);',
-' float field=distance(q,vec2(o.x*asp,o.y))*.85+big*.55+fine*.12;',
-' float th=pr*2.1-.15;',
-' float m=1.-smoothstep(th-.06,th,field);',
-' float S=sh(uv);',
-' float cover=1.-m;',
-' float wash=(1.-smoothstep(th,th+.16,field))*(1.-m);',
-' float rim=smoothstep(th-.14,th-.02,field)*m*S;',
-' vec3 inkc=vec3(.17,.20,.29);',
-' vec3 cc=mix(paper,inkc,wash*.22*(.7+.6*fine)*S);',
-' float ra=rim*.34*(.75+.5*fine);',
-' vec3 col=cc*cover+inkc*ra*(1.-cover);',
-' float a=cover+ra*(1.-cover);',
-' gl_FragColor=vec4(col,a);',
-'}'].join('\n');
-function glReveal(nj, img, onFirst){
-  var cv=nj.querySelector('.box canvas:not(.anim)'), dpr=Math.min(devicePixelRatio||1,2);
-  var r=cv.getBoundingClientRect(); cv.width=Math.max(2,r.width*dpr|0); cv.height=Math.max(2,r.height*dpr|0);
-  var gl=cv.getContext('webgl',{premultipliedAlpha:true,alpha:true,antialias:false});
-  if(!gl) throw new Error('nogl');
-  function sh(tp,src){var s=gl.createShader(tp);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw new Error(gl.getShaderInfoLog(s));return s;}
-  var pg=gl.createProgram(); gl.attachShader(pg,sh(gl.VERTEX_SHADER,VS)); gl.attachShader(pg,sh(gl.FRAGMENT_SHADER,FS)); gl.linkProgram(pg); gl.useProgram(pg);
-  var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-  var loc=gl.getAttribLocation(pg,'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-  var tx=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,tx);
-  gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);
-  gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
-  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
-  var uPr=gl.getUniformLocation(pg,'pr');
-  gl.uniform2f(gl.getUniformLocation(pg,'o'),parseFloat(nj.dataset.ox||.4),parseFloat(nj.dataset.oy||.6));
-  gl.uniform1f(gl.getUniformLocation(pg,'asp'),cv.width/cv.height);
-  gl.uniform1f(gl.getUniformLocation(pg,'sd'),Math.random()*10);
-  gl.uniform3f(gl.getUniformLocation(pg,'paper'),247/255,244/255,236/255);
-  gl.viewport(0,0,cv.width,cv.height);
-  var t0=performance.now(), D=(reduce?900:3200)*(/slow/.test(location.search)?8:1);
-  return new Promise(function(res){
-    (function f(){
-      var k=Math.min(1,(performance.now()-t0)/D), e=k*k*(3-2*k);
-      gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT); gl.uniform1f(uPr,e); gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-      if(onFirst){ var of=onFirst; onFirst=null; requestAnimationFrame(of); }
-      if(k<1) requestAnimationFrame(f); else res(gl);
-    })();
-  });
-}
-function cssReveal(nj,img,onFirst){
-  nj.classList.add('fallback'); if(onFirst) onFirst();
-  nj.style.setProperty('--ox',(parseFloat(nj.dataset.ox||.4)*100)+'%'); nj.style.setProperty('--oy',(parseFloat(nj.dataset.oy||.6)*100)+'%');
-  var t0=performance.now(),D=1800;
-  return new Promise(function(res){ (function f(){ var k=Math.min(1,(performance.now()-t0)/D); nj.style.setProperty('--r',(k*130)+'%'); if(k<1) requestAnimationFrame(f); else res(); })(); });
-}
-/* 画面に入るたびに、にじんで現れ直す。完全に画面から外れたら元（白紙）に戻す。 */
-function loseGL(nj){ var gl=nj._gl; nj._gl=null; if(gl&&gl.getExtension){ var ext=gl.getExtension('WEBGL_lose_context'); if(ext) ext.loseContext(); } }
-function freshCanvas(nj){ var old=nj.querySelector('.box canvas:not(.anim)'); if(!old) return; var c=document.createElement('canvas'); old.parentNode.replaceChild(c,old); }
-function animSrc(nj){ return (innerWidth<900&&nj.dataset.animSm)?nj.dataset.animSm:nj.dataset.anim; }
-function preloadNj(nj){ /* 画面に近づいた時点で、動く絵を先に読み込んでおく */
-  if(nj._pre) return nj._pre;
-  var a=nj.querySelector('.anim'), src=animSrc(nj);
-  nj._pre=new Promise(function(res){ if(a.getAttribute('src')===src&&a.complete) return res(); a.onload=a.onerror=function(){ res(); }; a.src=src; setTimeout(res,6000); });
-  return nj._pre;
-}
-function loadStatic(nj){
-  if(nj._st) return nj._st;
-  nj._st=new Promise(function(res){ var img=new Image(); img.decoding='async'; img.onload=function(){ res(img); }; img.onerror=function(){ res(null); }; img.src=nj.dataset.static; });
-  return nj._st;
-}
-function revealNj(nj){
-  if(nj.dataset.state) return; nj.dataset.state='run';
-  var gen=nj._gen=(nj._gen||0)+1;
-  if(nj._used) freshCanvas(nj); nj._used=true;
-  Promise.all([preloadNj(nj),loadStatic(nj)]).then(function(r){
-    if(gen!==nj._gen) return;
-    var img=r[1];
-    var live=function(){ if(gen!==nj._gen) return; nj.classList.add('live'); var aw=nj.closest('.art'); if(aw) aw.classList.add('go'); };
-    var p; try{ if(!img) throw 0; p=glReveal(nj,img,live); }catch(e){ p=cssReveal(nj,img,live); }
-    p.then(function(gl){
-      if(gen!==nj._gen) return;
-      nj._gl=gl; nj.dataset.state='done'; nj.classList.add('done');
-      setTimeout(function(){ if(gen===nj._gen) loseGL(nj); },1400);
-    });
-  });
-}
-function resetNj(nj){
-  if(!nj.dataset.state) return;
-  nj._gen=(nj._gen||0)+1; nj.dataset.state=''; loseGL(nj);
-  nj.classList.remove('done','fallback','live'); nj.style.removeProperty('--r');
-  var aw=nj.closest('.art'); if(aw) aw.classList.remove('go');
-  freshCanvas(nj);
-}
-var njIO=('IntersectionObserver' in window)? new IntersectionObserver(function(es){
-  es.forEach(function(e){
-    if(e.isIntersecting && e.intersectionRatio>=.3) revealNj(e.target);
-    else if(!e.isIntersecting) resetNj(e.target);
-  });
-},{threshold:[0,.3]}) : null;
-var preIO=('IntersectionObserver' in window)? new IntersectionObserver(function(es){
-  es.forEach(function(e){ if(e.isIntersecting){ preloadNj(e.target); loadStatic(e.target); } });
-},{rootMargin:'900px 0px'}) : null;
-function observeNj(p){ p.querySelectorAll('.nj').forEach(function(n){ if(n._obs) return; n._obs=true; if(njIO){ preIO.observe(n); njIO.observe(n); } else revealNj(n); }); }
-/* ================= 本番と同じ：イントロと本文ロゴの筆書き ================= */
   /* intro : ロゴを筆で書き上げてから閉じる（描画3.5秒＋英字0.8秒＋余韻） */
   var intro = document.getElementById('intro');
-  /* イントロはトップを開いたときだけ。ほかのページを直接開いたときは出さない */
-  if(location.hash && location.hash!=='#/' && location.hash!=='#'){ intro.classList.add('done'); intro.style.display='none'; }
   var closeIntro = function(){ intro.classList.add('done'); };
   var start = function(){
     var a = document.getElementById('czlogo-a');
@@ -989,7 +874,40 @@ function observeNj(p){ p.querySelectorAll('.nj').forEach(function(n){ if(n._obs)
   window.addEventListener('wheel', closeIntro, {passive:true, once:true});
   window.addEventListener('touchstart', closeIntro, {passive:true, once:true});
 
+  /* header */
+  var hd = document.getElementById('hd');
+  var onScroll = function(){ hd.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
+  /* drawer */
+  var mb = document.getElementById('mb'), nv = document.getElementById('nv');
+  mb.addEventListener('click', function(){
+    var open = nv.classList.toggle('open');
+    mb.classList.toggle('open', open);
+    mb.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  nv.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
+      nv.classList.remove('open'); mb.classList.remove('open');
+      mb.setAttribute('aria-expanded','false');
+    }
+  });
+
+  /* scroll reveal */
+  var els = document.querySelectorAll('.reveal, .scene');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* 本文中のロゴ：画面に入ったら筆で書き始める。
+     書き上がった絵はそのまま残す（従来どおり）。
+     ただし、いちど画面から完全に外れたら状態を巻き戻し、
+     次にこのエリアへ戻ってきたときはまた最初から書き直す。 */
   var b = document.getElementById('czlogo-b');
   if(b){
     if(reduce || !('IntersectionObserver' in window)){
@@ -1015,12 +933,44 @@ function observeNj(p){ p.querySelectorAll('.nj').forEach(function(n){ if(n._obs)
     }
   }
 
+  /* ★静止画→アニメWebPの差し替えは 2026-09-10 に停止（トップの挿絵を外したため）。
+     挿絵を戻すときはこのブロックのコメントを解除する。assets/hero-anim*.webp は残してある。
+  if(!reduce){
+    (function(){
+      var img = document.querySelector('.hero-figure img');
+      if(!img) return;
+      var src = window.matchMedia('(min-width:900px)').matches
+                ? 'assets/hero-anim.webp' : 'assets/hero-anim-sm.webp';
+      var swap = function(){
+        var pre = new Image();
+        pre.onload = function(){
+          img.removeAttribute('srcset'); img.removeAttribute('sizes');
+          img.src = src;
+        };
+        pre.src = src;
+      };
+      if(document.readyState === 'complete'){ setTimeout(swap, 400); }
+      else { window.addEventListener('load', function(){ setTimeout(swap, 400); }); }
+    })();
+  }
+  */
 
-/* ================= 起動 ================= */
-show(routeOf(), false);
-addEventListener('load',function(){ if(cur) threads[cur.dataset.page].build(); });
+  /* hero parallax (pointer devices only) */
+  if(!reduce && document.getElementById('hf') && window.matchMedia('(min-width:900px) and (hover:hover)').matches){
+    var hf = document.getElementById('hf'), tx=0, ty=0, cx=0, cy=0, raf=null;
+    var loop = function(){
+      cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+      hf.style.transform = 'translate3d(' + cx.toFixed(2) + 'px,' + cy.toFixed(2) + 'px,0)';
+      if(Math.abs(tx-cx) > .1 || Math.abs(ty-cy) > .1){ raf = requestAnimationFrame(loop); } else { raf = null; }
+    };
+    window.addEventListener('mousemove', function(e){
+      tx = (e.clientX / window.innerWidth - .5) * -18;
+      ty = (e.clientY / window.innerHeight - .5) * -12;
+      if(!raf) raf = requestAnimationFrame(loop);
+    }, {passive:true});
+  }
 })();
 </script>
-
+<script src="assets/cz-tech.js" defer></script>
 </body>
 </html>
